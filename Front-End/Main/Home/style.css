@@ -8,14 +8,13 @@ body {
 }
 /*End NavBar*/
 
-
-
-
-
-
-
-
-
+footer div {
+  background-color: aqua;
+  display: inline-block;
+}
+footer .container-child {
+  display: block;
+}
 
 /* Start Dark Mode Button */
 .switch {
