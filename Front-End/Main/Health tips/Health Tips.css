@@ -26,6 +26,18 @@ body {
   margin-top: auto;
 }
 
+
+/* Start bannar */
+.header-image img {
+  width: 100%;           /* تاخد العرض بالكامل */
+  height: auto;         /* ارتفاع ثابت أو حسب ما تحب */
+  object-fit: cover;     /* تقطع الصورة بشكل مناسب */
+  display: block;        /* يشيل أي مسافات تحت الصورة */
+}
+/* End bannar */
+
+
+
 /* ------------------- Start NavBar ------------------- */
 .navbar {
   position: fixed;
@@ -134,63 +146,66 @@ body {
 }
 /* ------------------- End NavBar ------------------- */
 
-/* Start About Section */
-.about-se7ty {
-  background-color: #f8fafc;
-  padding: 100px 20px;
-  direction: rtl;
-  font-family: "Cairo", "Noto Sans Arabic", sans-serif;
-}
 
-.about-container {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  flex-wrap: wrap;
-}
 
-.about-content {
-  flex: 1;
-  min-width: 320px;
-}
-
-.about-content h2 {
-  font-size: 2rem;
-  color: #0f172a;
-  margin-bottom: 20px;
-  border-right: 6px solid #00a3e0;
-  padding-right: 10px;
-}
-
-.about-content p {
-  font-size: 1.1rem;
-  color: #334155;
-  line-height: 1.9;
-  text-align: justify;
-  margin-bottom: 15px;
-}
-
-.about-image {
-  flex: 1;
+/* Start Tips */
+.health-tips {
   text-align: center;
+  padding: 40px 0;
+  background-color: #f8fafc;
 }
 
-.about-image img {
-  max-width: 50%;
-  border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+.health-tips h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #0f172a;
+}
+
+.tips-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 بطاقات في الصف */
+  gap: 25px;
+  justify-items: center;
+  direction: rtl;
+  max-width: 1200px;
+  margin: 0 auto; /* علشان يجي في النص */
+}
+
+.tip-card {
+  width: 250px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background: #fff;
   transition: transform 0.3s ease;
 }
 
-.about-image img:hover {
-  transform: scale(1.03);
+.tip-card:hover {
+  transform: translateY(-5px);
 }
 
+.tip-card a {
+  display: block;
+  text-decoration: none;
+  color: #000;
+  text-align: center;
+}
 
-/* End About Section */
+.tip-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.tip-card h3 {
+  padding: 15px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* End Tips */
 
 
 
