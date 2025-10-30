@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
     font-family: "Segoe UI", "Noto Sans Arabic", "Arial", sans-serif, "Cairo";
@@ -5,7 +6,7 @@ body {
   background: #f8f8f8;
   color: #333;
   /* مساحة للنافبار والفوتر */
-  /* padding-top: 80px; */
+  padding-top: 80px;
   /* padding-bottom: 220px; */
 }
 /* ✅ تثبيت الفوتر في أسفل الصفحة */
@@ -25,18 +26,6 @@ body {
 .footer {
   margin-top: auto;
 }
-
-
-/* Start bannar */
-.header-image img {
-  width: 100%;           /* تاخد العرض بالكامل */
-  height: auto;         /* ارتفاع ثابت أو حسب ما تحب */
-  object-fit: cover;     /* تقطع الصورة بشكل مناسب */
-  display: block;        /* يشيل أي مسافات تحت الصورة */
-}
-/* End bannar */
-
-
 
 /* ------------------- Start NavBar ------------------- */
 .navbar {
@@ -146,66 +135,169 @@ body {
 }
 /* ------------------- End NavBar ------------------- */
 
-
-
-/* Start Tips */
-.health-tips {
-  text-align: center;
-  padding: 40px 0;
-  background-color: #f8fafc;
+/* End search-bar */
+/* ====== شريط البحث ====== */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px auto 10px auto;
+  width: 100%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+  padding: 5px 10px;
+  direction: rtl;
+  transition: box-shadow 0.3s ease;
 }
 
-.health-tips h2 {
+/* ====== input ====== */
+.search-bar input {
+  flex: 1;
+  border: 2px solid transparent;
+  outline: none;
+  padding: 12px 15px;
+  font-size: 1rem;
+  font-family: "Cairo", sans-serif;
+  color: #333;
+  border-radius: 8px;
+  background-color: #fafafa;
+  transition: all 0.3s ease;
+}
+
+/* 🔹 لما المستخدم يضغط أو يكتب */
+.search-bar input:focus {
+  border-color: #0077ff; /* اللون الأساسي */
+  box-shadow: 0 0 8px rgba(0, 119, 255, 0.3);
+  background: linear-gradient(135deg, #f9fcff, #eaf4ff);
+}
+
+/* 🔹 النص داخل الـ input */
+.search-bar input::placeholder {
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+.search-bar input:focus::placeholder {
+  color: #bbb;
+}
+
+/* ====== الزر (أيقونة العدسة) ====== */
+.search-bar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  font-size: 1.2rem;
+  padding: 10px;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+}
+
+/* تأثير عند المرور بالماوس */
+.search-bar button:hover {
+  color: #0077ff;
+  box-shadow: 0 0 8px rgba(0, 119, 255, 0.3);
+}
+
+/* تأثير عند الضغط */
+.search-bar button:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 10px 4px rgba(0, 119, 255, 0.4);
+}
+
+/* End search-bar */
+
+
+
+/* ====== قسم البحث بالقسم ====== */
+.categories {
+  text-align: center;
+  background-color: #f8f9fb;
+  padding: 60px 20px;
+  direction: rtl;
+  font-family: "Cairo", "Segoe UI", sans-serif;
+
+  /* تضييق القسم وتوسيطه في الصفحة */
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* العنوان الرئيسي */
+.categories h2 {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 40px;
   color: #0f172a;
+  margin-bottom: 40px;
 }
 
-.tips-container {
+/* شبكة من 4 أعمدة */
+.categories-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 بطاقات في الصف */
-  gap: 25px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px; /* تضييق المسافات بين الكروت */
   justify-items: center;
-  direction: rtl;
-  max-width: 1200px;
-  margin: 0 auto; /* علشان يجي في النص */
 }
 
-.tip-card {
-  width: 250px;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+/* الكارد (القسم الواحد) */
+.category-card {
   background: #fff;
-  transition: transform 0.3s ease;
-}
-
-.tip-card:hover {
-  transform: translateY(-5px);
-}
-
-.tip-card a {
-  display: block;
-  text-decoration: none;
-  color: #000;
-  text-align: center;
-}
-
-.tip-card img {
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
   width: 100%;
-  height: 200px;
+  max-width: 250px;
+
+  /* علشان الكارت كله يكون رابط */
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* تأثير عند المرور بالماوس */
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* الصورة داخل الكارد */
+.category-card img {
+  width: 100%;
+  height: 180px;
   object-fit: cover;
+  transition: transform 0.4s ease;
 }
 
-.tip-card h3 {
-  padding: 15px;
-  margin: 0;
-  font-size: 16px;
+/* تأثير خفيف على الصورة عند hover */
+.category-card:hover img {
+  transform: scale(1.05);
+}
+
+/* العنوان داخل الكارد */
+.category-card p {
+  background: #fff;
+  color: #0f172a;
   font-weight: 600;
+  padding: 15px 0;
+  font-size: 1.1rem;
+  margin: 0;
 }
 
-/* End Tips */
+/* للموبايل (شاشتين في الصف) */
+@media (max-width: 768px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* للشاشات الصغيرة جدًا (صف واحد) */
+@media (max-width: 480px) {
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 
 
