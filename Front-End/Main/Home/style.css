@@ -10,6 +10,7 @@ body {
 }
 
 /* ------------------- Start NavBar ------------------- */
+/* ================= Start Navbar Scroll Effect ================= */
 .navbar {
   position: fixed;
   top: 0;
@@ -20,9 +21,67 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 15px 40px;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.08); /* شفافة فوق الصورة */
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.4s ease, opacity 0.4s ease, background 0.4s ease;
 }
+
+/* تختفي عند السحب لتحت */
+.navbar.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* ======= Navbar Theme Colors ======= */
+
+/* الوضع الفاتح (الكلاس dark مش موجود) */
+body:not(.dark) .navbar {
+  background: #fff;
+  color: #222;
+}
+
+body:not(.dark) .navbar .nav-links a,
+body:not(.dark) .navbar .login-btn {
+  color: #222; /* أسود/غامق */
+}
+
+/* الوضع الداكن (الكلاس dark مفعّل) */
+body.dark .navbar {
+  background: #1e1e1e; /* رمادي غامق أو أسود ناعم */
+  color: #fff;
+}
+
+body.dark .navbar .nav-links a,
+body.dark .navbar .logo span,
+body.dark .navbar i,
+body.dark .navbar .login-btn {
+  color: #fff; /* أبيض في الوضع الداكن */
+}
+
+/* تأثير hover ثابت */
+.navbar .nav-links a:hover {
+  color: #ff59c7;
+  transition: color 0.3s ease;
+}
+
+/* الناف بار الشفافة في أول الصفحة */
+.navbar:not(.scrolled):not(.hidden) {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+/* ================= End Navbar Scroll Effect ================= */
+
+
+
+
+
+
+
+
+
+
+
 
 .navbar .logo {
   display: flex;
