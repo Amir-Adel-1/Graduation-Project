@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استشارة طبية</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="form-container">
+        <header class="form-header">
+            <h1><i class="fas fa-stethoscope"></i> استمارة الاستشارة الطبية</h1>
+        </header>
+        
+        <form id="medical-form" class="medical-form">
+            
+            <div class="form-group">
+                <label for="description">وصف السؤال (اشرح مشكلتك الصحية بالتفصيل)</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>نوع السؤال</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="questionType" value="forMyself" required>
+                        <span class="radio-custom"></span>
+                        لنفسي
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="questionType" value="forAnotherPatient" required>
+                        <span class="radio-custom"></span>
+                        لمريض آخر
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>الجنس</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="gender" value="male" required>
+                        <span class="radio-custom"></span>
+                        ذكر
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="gender" value="female" required>
+                        <span class="radio-custom"></span>
+                        أنثى
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">العمر</label>
+                <input type="number" id="age" name="age" min="1" max="120" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="chronicDiseases">هل تعاني من أي أمراض مزمنة؟</label>
+                <textarea id="chronicDiseases" name="chronicDiseases" rows="2" placeholder="اذكر أي أمراض مزمنة تعاني منها" required></textarea>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">التالي <i class="fas fa-arrow-left"></i></button>
+            </div>
+            
+            <div class="disclaimer">
+                <p>هذا النموذج مخصص للاستشارة الطبية العامة فقط ولا يغني عن زيارة الطبيب</p>
+            </div>
+        </form>
+        
+        <div id="response-container" class="response-container" style="display: none;">
+            <h2>شكراً لتقديم استشارتك</h2>
+            <div id="response-content" class="response-content"></div>
+            <button id="new-consultation" class="submit-btn">استشارة جديدة <i class="fas fa-redo"></i></button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
