@@ -21,54 +21,78 @@
 </head>
 <body>
 
-    <!-- Start Content -->
-    <div class="messageBox">
-  <div class="fileUploadWrapper">
-    <label for="file">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
-        <circle
-          stroke-width="20"
-          stroke="#6c6c6c"
-          fill="none"
-          r="158.5"
-          cy="168.5"
-          cx="168.5"
-        ></circle>
-        <path
-          stroke-linecap="round"
-          stroke-width="25"
-          stroke="#6c6c6c"
-          d="M167.759 79V259"
-        ></path>
-        <path
-          stroke-linecap="round"
-          stroke-width="25"
-          stroke="#6c6c6c"
-          d="M79 167.138H259"
-        ></path>
-      </svg>
-      <span class="tooltip">Add an image</span>
-    </label>
-    <input type="file" id="file" name="file" />
+<!-- مكان عرض الداتا (الرسائل) -->
+  <div class="data-box" id="dataBox">
+    <div class="data-item system-message">مرحبًا بك 👋 في نظام المحادثة!</div>
   </div>
-  <input required="" placeholder="Message..." type="text" id="messageInput" />
-  <button id="sendButton">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
-      <path
-        fill="none"
-        d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
-      ></path>
-      <path
-        stroke-linejoin="round"
-        stroke-linecap="round"
-        stroke-width="33.67"
-        stroke="#6c6c6c"
-        d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
-      ></path>
-    </svg>
-  </button>
+
+  <!-- صندوق الشات -->
+  <div class="chat-container">
+    <div class="messageBox">
+      <div class="fileUploadWrapper">
+        <label for="file">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
+            <circle stroke-width="20" stroke="#6c6c6c" fill="none" r="158.5" cy="168.5" cx="168.5"></circle>
+            <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M167.759 79V259"></path>
+            <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M79 167.138H259"></path>
+          </svg>
+          <span class="tooltip">أضف صورة</span>
+        </label>
+        <input type="file" id="file" name="file" />
+      </div>
+      <input required placeholder="💬 اكتب رسالتك هنا..." type="text" id="messageInput" />
+      <button id="sendButton">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
+          <path stroke-linejoin="round" stroke-linecap="round" stroke-width="33.67" stroke="#fff"
+            d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888" />
+        </svg>
+      </button>
     </div>
-    <!-- End Content -->
+  </div>
+
+
+
+  <!-- JavaScript -->
+  <script>
+    const input = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendButton");
+    const dataBox = document.getElementById("dataBox");
+
+    // عند الضغط على زر الإرسال
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keypress", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if (text) {
+        // رسالة المستخدم
+        const userMsg = document.createElement("div");
+        userMsg.classList.add("data-item", "user-message");
+        userMsg.textContent = text;
+        dataBox.appendChild(userMsg);
+        input.value = "";
+        dataBox.scrollTop = dataBox.scrollHeight;
+
+        // رد تلقائي من النظام
+        setTimeout(() => {
+          const systemMsg = document.createElement("div");
+          systemMsg.classList.add("data-item", "system-message");
+          systemMsg.textContent = "✅ تم استلام رسالتك، شكرًا لتواصلك معنا!";
+          dataBox.appendChild(systemMsg);
+          dataBox.scrollTop = dataBox.scrollHeight;
+        }, 800);
+      }
+    }
+  </script>
+
+
+
+
+
+
+
 
 </body>
 </html>
