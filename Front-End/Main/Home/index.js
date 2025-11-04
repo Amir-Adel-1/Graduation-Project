@@ -36,21 +36,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-// حركة إخفاء الناف بار أثناء التمرير
+
+
   let lastScrollTop = 0;
   const navbar = document.getElementById('navbar');
 
   window.addEventListener('scroll', () => {
     let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-    // 🟢 اخفاء الناف بار عند النزول
+    // اخفاء عند السحب لتحت
     if (currentScroll > lastScrollTop && currentScroll > 100) {
       navbar.classList.add('hidden');
     } else {
       navbar.classList.remove('hidden');
     }
 
-    // 🟦 تغيير لون الخلفية بعد التمرير البسيط
+    // لو الصفحة نزلت شوية -> خلي الخلفية بيضاء
     if (currentScroll > 50) {
       navbar.classList.add('scrolled');
     } else {
@@ -59,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   });
+
 
 
 

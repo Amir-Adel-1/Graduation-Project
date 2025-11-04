@@ -10,170 +10,182 @@ body {
 }
 
 /* ------------------- Start NavBar ------------------- */
-/* ================= Start Navbar Scroll Effect ================= */
+/* ============ Navbar Scroll + Theme Effect ============ */
+
+/* ====== إعدادات الناف بار الأساسية ====== */
 .navbar {
   position: fixed;
   top: 0;
-  right: 0;
   left: 0;
-  z-index: 1000;
+  width: 100%;
+  padding: 15px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 40px;
-  background: rgba(255, 255, 255, 0.08); /* شفافة فوق الصورة */
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.4s ease, opacity 0.4s ease, background 0.4s ease;
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+  z-index: 9999;
+  background: transparent; /* شفاف في البداية */
+  box-shadow: none;
 }
 
-/* تختفي عند السحب لتحت */
+/* لما تسكرول لتحت شوية تبقى بيضاء */
+.navbar.scrolled {
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* إخفاء عند السحب لتحت */
 .navbar.hidden {
   transform: translateY(-100%);
   opacity: 0;
 }
 
-/* ======= Navbar Theme Colors ======= */
-
-/* الوضع الفاتح (الكلاس dark مش موجود) */
-body:not(.dark) .navbar {
-  background: #fff;
-  color: #222;
-}
-
-body:not(.dark) .navbar .nav-links a,
-body:not(.dark) .navbar .login-btn {
-  color: #222; /* أسود/غامق */
-}
-
-/* الوضع الداكن (الكلاس dark مفعّل) */
-body.dark .navbar {
-  background: #1e1e1e; /* رمادي غامق أو أسود ناعم */
-  color: #fff;
-}
-
-body.dark .navbar .nav-links a,
-body.dark .navbar .logo span,
-body.dark .navbar i,
-body.dark .navbar .login-btn {
-  color: #fff; /* أبيض في الوضع الداكن */
-}
-
-/* تأثير hover ثابت */
-.navbar .nav-links a:hover {
-  color: #ff59c7;
-  transition: color 0.3s ease;
-}
-
-/* الناف بار الشفافة في أول الصفحة */
-.navbar:not(.scrolled):not(.hidden) {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-}
-/* ================= End Navbar Scroll Effect ================= */
-
-
-
-
-
-
-
-
-
-
-
-
-.navbar .logo {
+/* ===== الروابط ===== */
+.nav-links {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: rgb(235, 146, 217);
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.navbar .logo i {
-  background: rgb(235, 146, 217);
-  color: #fff;
-  border-radius: 50%;
-  padding: 6px;
-}
-
-.nav-links {
+  gap: 25px;
   list-style: none;
-  display: flex;
-  gap: 40px;
   margin: 0;
   padding: 0;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: #333;
-  font-size: 16px;
-  transition: color 0.3s;
+  font-weight: 600;
+  color: #fff; /* أبيض لما فوق */
+  transition: color 0.3s ease;
+}
+
+.navbar.scrolled .nav-links a {
+  color: #222; /* غامق لما تسكرول */
 }
 
 .nav-links a:hover {
-  color: rgb(235, 146, 217);
+  color: #ff59c7;
 }
 
+/* ===== اللوجو ===== */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ff59c7;
+}
+
+/* ===== قسم الأكشن (الأزرار + الأيقونات) ===== */
 .actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 20px; /* مسافة متوسطة بين الأيقونات والأزرار */
 }
 
+/* ===== الأيقونات ===== */
 .icons {
   display: flex;
-  gap: 15px;
   align-items: center;
+  gap: 20px; /* المسافة بين أيقونة المفضلة والعربة */
 }
 
 .icon {
   position: relative;
-  font-size: 20px;
-  color: #444;
-}
-
-.count {
-  position: absolute;
-  top: -8px;
-  right: -10px;
-  background: #ccc;
-  color: #fff;
-  border-radius: 50%;
-  font-size: 12px;
-  width: 18px;
-  height: 18px;
+  font-size: 23px; /* حجم مناسب للأيقونة */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.green {
-  background: rgb(235, 146, 217);
+.icon a {
+  color: #ff59c7;
+  transition: transform 0.3s ease;
 }
 
-.red {
-  background: #e53935;
+.icon a:hover {
+  transform: scale(1.1);
 }
 
-.login-btn {
-  border: 2px solid rgb(235, 146, 217);
-  background: none;
-  color: rgb(235, 146, 217);
-  font-size: 16px;
-  padding: 6px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.login-btn:hover {
-  background: rgb(235, 146, 217);
+.count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  font-size: 10px;
+  background: #ff59c7;
   color: #fff;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
 }
+
+.count.green {
+  background: #00c851;
+}
+
+.count.red {
+  background: #ff4444;
+}
+
+/* ===== أزرار الدخول والتسجيل ===== */
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 🔹 مفيش أي فراغ بين الزرين */
+  margin-left: -15px; /* 🔹 قربهم شوية للشمال */
+}
+
+.auth-buttons .btn {
+  margin: 0 !important;
+  padding: 9px 14px;
+  border: 1.5px solid #ff59c7;
+  background: transparent;
+  border-radius: 50px; /* 🔹 يخلي الزر مدوّر */
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* الزر الأول */
+.auth-buttons .btn.login {
+  color: #ff59c7;
+  border-radius: 50px; /* 🔹 حواف ناعمة من الطرفين */
+}
+
+/* الزر الثاني */
+.auth-buttons .btn.register {
+  background: #ff59c7;
+  color: #fff;
+  border-radius: 50px; /* 🔹 نفس الكلام */
+  margin-left: -1px; /* 🔹 يشيل أي فاصل صغير */
+}
+
+/* تأثير عند الهوفر */
+.auth-buttons .btn:hover {
+  transform: scale(0.95);
+  box-shadow: 0 0 8px rgba(255, 89, 199, 0.5);
+}
+
+/* ===== تظليل الخلفية فوق الصورة (overlay غامق) ===== */
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+/* لما تسكرول تختفي الطبقة */
+.navbar.scrolled::before {
+  opacity: 0;
+}
+
+
 /* ------------------- End NavBar ------------------- */
 
 
@@ -194,15 +206,20 @@ body {
 /* ===== خلفية الصورة ===== */
 .hero {
   position: relative;
-  background-image: url('images/bannar.jpg');
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.9),   /* 🔹 تظليل غامق من فوق */
+      rgba(0, 0, 0, 0) 60%  /* 🔹 يختفي تدريجي بعد 60% من الصورة */
+    ),
+    url("../Home/images/bannar02.png");
   background-size: cover;
-  background-position: center;
-  height: 24rem;
+  background-position: center center;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  margin-top: 67px;
+  margin-top: 0px;
 }
 
 /* ===== تظليل خفيف ===== */
