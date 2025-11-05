@@ -1,0 +1,193 @@
+-- =========================
+-- 1) Users
+-- =========================
+CREATE TABLE users (
+  id_user         SERIAL PRIMARY KEY,
+  first_name      VARCHAR(100),
+  last_name       VARCHAR(100),
+  name            VARCHAR(201) GENERATED ALWAYS AS (CONCAT_WS(' ', first_name, last_name)) STORED, -- optional, convenience
+  gender          VARCHAR(16),
+  email           VARCHAR(255) NOT NULL UNIQUE,
+  password_hash   VARCHAR(255) NOT NULL,
+  role            VARCHAR(50) DEFAULT 'user',
+  date_of_birth   DATE,
+  weight_kg       NUMERIC(5,2),
+  height_cm       NUMERIC(5,2),
+  blood_type      VARCHAR(5),
+  health_status   TEXT,
+  created_at      TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  updated_at      TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+-- trigger for updated_at
+CREATE OR REPLACE FUNCTION trg_set_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_users_updated_at
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE PROCEDURE trg_set_updated_at();
+
+
+-- =========================
+-- 2) User phones
+-- =========================
+CREATE TABLE user_phones (
+  id SERIAL PRIMARY KEY,
+  id_user INTEGER NOT NULL REFERENCES users(id_user) ON DELETE CASCADE,
+  phone VARCHAR(50) NOT NULL,
+  is_primary BOOLEAN DEFAULT FALSE,
+  CONSTRAINT uq_user_primary_phone UNIQUE (id_user, is_primary) WHERE (is_primary)
+);
+
+CREATE INDEX idx_user_phones_user ON user_phones(id_user);
+
+
+-- =========================
+-- 3) User addresses
+-- =========================
+CREATE TABLE user_addresses (
+  id SERIAL PRIMARY KEY,
+  id_user INTEGER NOT NULL REFERENCES users(id_user) ON DELETE CASCADE,
+  address TEXT NOT NULL,
+  address_type VARCHAR(50), -- e.g. home, work
+  is_primary BOOLEAN DEFAULT FALSE
+);
+
+CREATE INDEX idx_user_addresses_user ON user_addresses(id_user);
+
+
+-- =========================
+-- 4) User allergies
+-- =========================
+CREATE TABLE user_allergies (
+  id SERIAL PRIMARY KEY,
+  id_user INTEGER NOT NULL REFERENCES users(id_user) ON DELETE CASCADE,
+  allergy_name VARCHAR(255) NOT NULL
+);
+
+CREATE INDEX idx_user_allergies_user ON user_allergies(id_user);
+
+
+-- =========================
+-- 5) User chronic diseases (normalized)
+-- =========================
+CREATE TABLE user_chronic_diseases (
+  id SERIAL PRIMARY KEY,
+  id_user INTEGER NOT NULL REFERENCES users(id_user) ON DELETE CASCADE,
+  chronic_disease_name VARCHAR(255) NOT NULL,
+  disease_type VARCHAR(100) -- e.g. chronic, temporary, genetic, etc.
+);
+
+CREATE INDEX idx_user_chronic_user ON user_chronic_diseases(id_user);
+
+
+-- =========================
+-- 6) Favorites
+-- =========================
+CREATE TABLE favorites (
+  id_favorite SERIAL PRIMARY KEY,
+  id_user INTEGER NOT NULL REFERENCES users(id_user) ON DELETE CASCADE,
+  product_api_id VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  UNIQUE (id_user, product_api_id)
+);
+
+CREATE INDEX idx_favorites_user ON favorites(id_user);
+CREATE INDEX idx_favorites_productapi ON favorites(product_api_id);
+
+
+-- =========================
+-- 7) Cart (one cart per user in this design)
+-- =========================
+CREATE TABLE carts (
+  id_cart SERIAL PRIMARY KEY,
+  id_user INTEGER NOT NULL REFERENCES users(id_user) ON DELETE CASCADE,
+  total_products INTEGER DEFAULT 0, -- derived: can be kept for performance, but must be maintained
+  total_price NUMERIC(12,2) DEFAULT 0.00, -- derived: see note
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  CONSTRAINT uq_cart_per_user UNIQUE (id_user) -- enforce 1 cart per user
+);
+
+CREATE TRIGGER trg_carts_updated_at
+BEFORE UPDATE ON carts
+FOR EACH ROW
+EXECUTE PROCEDURE trg_set_updated_at();
+
+CREATE INDEX idx_carts_user ON carts(id_user);
+
+
+-- =========================
+-- 8) Cart items
+-- =========================
+CREATE TABLE cart_items (
+  id_cart_item SERIAL PRIMARY KEY,
+  id_cart INTEGER NOT NULL REFERENCES carts(id_cart) ON DELETE CASCADE,
+  product_api_id VARCHAR(255) NOT NULL,
+  quantity INTEGER NOT NULL CHECK (quantity > 0),
+  price NUMERIC(12,2) NOT NULL CHECK (price >= 0), -- price per unit (at time of add)
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE INDEX idx_cart_items_cart ON cart_items(id_cart);
+CREATE INDEX idx_cart_items_productapi ON cart_items(product_api_id);
+
+
+-- =========================
+-- 9) Orders
+-- =========================
+CREATE TABLE orders (
+  id_order SERIAL PRIMARY KEY,
+  id_user INTEGER NOT NULL REFERENCES users(id_user) ON DELETE RESTRICT,
+  id_cart INTEGER NOT NULL REFERENCES carts(id_cart) ON DELETE RESTRICT,
+  order_date TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  total_amount NUMERIC(12,2) NOT NULL CHECK (total_amount >= 0),
+  status VARCHAR(50) DEFAULT 'pending' -- e.g. pending, paid, shipped, cancelled
+);
+
+CREATE INDEX idx_orders_user ON orders(id_user);
+CREATE INDEX idx_orders_cart ON orders(id_cart);
+
+
+-- =========================
+-- 10) Medicine requests
+-- =========================
+CREATE TABLE medicine_requests (
+  id_request SERIAL PRIMARY KEY,
+  id_user INTEGER REFERENCES users(id_user) ON DELETE SET NULL,
+  medicine_name VARCHAR(255) NOT NULL,
+  quantity INTEGER DEFAULT 1 CHECK (quantity > 0),
+  is_available BOOLEAN DEFAULT NULL, -- NULL = unknown, TRUE/FALSE when known
+  status VARCHAR(50) DEFAULT 'requested', -- e.g. requested, available, unavailable, delivered
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE TRIGGER trg_medicine_requests_updated_at
+BEFORE UPDATE ON medicine_requests
+FOR EACH ROW
+EXECUTE PROCEDURE trg_set_updated_at();
+
+CREATE INDEX idx_medreq_user ON medicine_requests(id_user);
+CREATE INDEX idx_medreq_medicine ON medicine_requests(medicine_name);
+
+
+-- =========================
+-- Helpful view (optional)
+-- derive cart totals dynamically from cart_items
+-- =========================
+CREATE OR REPLACE VIEW cart_totals AS
+SELECT
+  c.id_cart,
+  c.id_user,
+  COALESCE(SUM(ci.quantity),0) AS computed_total_products,
+  COALESCE(SUM(ci.quantity * ci.price),0.00) AS computed_total_price
+FROM carts c
+LEFT JOIN cart_items ci ON ci.id_cart = c.id_cart
+GROUP BY c.id_cart, c.id_user;

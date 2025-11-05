@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
+// currentScroll
 
   let lastScrollTop = 0;
   const navbar = document.getElementById('navbar');
