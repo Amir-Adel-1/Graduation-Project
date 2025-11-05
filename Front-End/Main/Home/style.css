@@ -111,24 +111,24 @@ body {
   top: -6px;
   right: -8px;
   font-size: 10px;
-  background: #ff59c7;
+  /* background: #ff59c7; */
   color: #fff;
   border-radius: 50%;
-  width: 15px;
-  height: 15px;
+  width: 45px;
+  height: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
 }
 
-.count.green {
+/* .count.green {
   background: #00c851;
 }
 
 .count.red {
   background: #ff4444;
-}
+} */
 
 /* ===== أزرار الدخول والتسجيل ===== */
 .auth-buttons {

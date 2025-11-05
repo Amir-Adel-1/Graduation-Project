@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
-
+let cart_clr = document.getElementById("cart_clr");
+let fav_clr = document.getElementById("fav_clr");
 
 // currentScroll
 
@@ -54,8 +54,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // لو الصفحة نزلت شوية -> خلي الخلفية بيضاء
     if (currentScroll > 50) {
       navbar.classList.add('scrolled');
+      cart_clr.style.color = "black";
+      fav_clr.style.color = "black";
     } else {
       navbar.classList.remove('scrolled');
+      cart_clr.style.color = "white";
+      fav_clr.style.color = "white";
     }
 
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
@@ -66,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
+// Button Login and Signup
 let btnsignin = document.getElementById("login");
 let btnsignup = document.getElementById("signup");
 btnsignin.onclick = function() {
