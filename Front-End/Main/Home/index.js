@@ -67,3 +67,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+let btnsignin = document.getElementById("login");
+let btnsignup = document.getElementById("signup");
+btnsignin.onclick = function() {
+window.location.href = "../Log In/Log In.html";
+}
+btnsignup.onclick = function() {
+window.location.href = "../Log In/Sign Up.html";
+}
