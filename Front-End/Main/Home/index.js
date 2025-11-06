@@ -54,8 +54,8 @@ let fav_clr = document.getElementById("fav_clr");
     // لو الصفحة نزلت شوية -> خلي الخلفية بيضاء
     if (currentScroll > 50) {
       navbar.classList.add('scrolled');
-      cart_clr.style.color = "black";
-      fav_clr.style.color = "black";
+      cart_clr.style.color = "white";
+      fav_clr.style.color = "white";
     } else {
       navbar.classList.remove('scrolled');
       cart_clr.style.color = "white";
@@ -82,6 +82,18 @@ window.location.href = "../Sign Up/Sign Up.html";
 
 
 
+// 🔹 تحديد الصفحة الحالية
+const currentPage = window.location.pathname.split("/").pop();
+
+// 🔹 جلب كل روابط الناف بار
+const navLinks = document.querySelectorAll(".nav-links a");
+
+// 🔹 نمر عليهم ونفعّل المناسب
+navLinks.forEach(link => {
+  if (link.getAttribute("href").includes(currentPage)) {
+    link.classList.add("active");
+  }
+});
 
 
 

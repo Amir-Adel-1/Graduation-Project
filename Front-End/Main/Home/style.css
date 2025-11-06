@@ -1,19 +1,22 @@
+
+/* ------------------- 🟢 Global Styles ------------------- */
 body {
   margin: 0;
-    font-family: "Segoe UI", "Noto Sans Arabic", "Arial", sans-serif, "Cairo";
+  font-family: "Segoe UI", "Noto Sans Arabic", "Arial", sans-serif, "Cairo";
   direction: rtl;
-  /* background: #f8f8f8; */
-  background: radial-gradient(circle, #009ad755, #ffffff);
-  color: #333;
-  /* مساحة للنافبار والفوتر */
-  /* padding-top: 80px;
-  padding-bottom: 220px; */
+      background: radial-gradient(circle, #009ad755, #ffffff);
+  color: #ffffff;
+    overflow-x: hidden;
 }
 
-/* ------------------- Start NavBar ------------------- */
-/* ============ Navbar Scroll + Theme Effect ============ */
 
-/* ====== إعدادات الناف بار الأساسية ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ------------------- 🔵 Navbar Base ------------------- */
 .navbar {
   position: fixed;
   top: 0;
@@ -23,25 +26,99 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: transparent;
+  box-shadow: none;
   transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
   z-index: 9999;
-  background: transparent; /* شفاف في البداية */
-  box-shadow: none;
 }
 
-/* لما تسكرول لتحت شوية تبقى بيضاء */
+/* عند السحب للأسفل */
 .navbar.scrolled {
-  background: #fff;
+  background: #0f1923;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* إخفاء عند السحب لتحت */
+/* عند الإخفاء */
 .navbar.hidden {
   transform: translateY(-100%);
   opacity: 0;
 }
 
-/* ===== الروابط ===== */
+
+/* ------------------- 🟣 Navbar Overlay ------------------- */
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.navbar.scrolled::before {
+  opacity: 0;
+}
+
+
+/* ------------------- 🟠 Logo ------------------- */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.logo .gradient-color,
+.logo span {
+  background: radial-gradient(circle, #009ad755, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo .gradient-color {
+  font-size: 40px;
+}
+
+.logo span {
+  font-size: 30px;
+  padding-bottom: 4px;
+}
+
+/* تأثير اللمعان في النص */
+.glowing-text {
+  color: #9bc4d4;
+  font-size: 45px;
+  font-weight: bold;
+  text-shadow:
+    0 0 10px #009ad7,
+    0 0 20px #009ad7,
+    0 0 40px #009ad7,
+    0 0 80px #00e0ff,
+    0 0 120px #00e0ff;
+  animation: glowMove 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowMove {
+  0% {
+    text-shadow:
+      0 0 5px #009ad7,
+      0 0 10px #009ad7,
+      0 0 20px #009ad7,
+      0 0 40px #00e0ff;
+  }
+  100% {
+    text-shadow:
+      0 0 20px #00e0ff,
+      0 0 40px #00e0ff,
+      0 0 60px #009ad7,
+      0 0 80px #009ad7;
+  }
+}
+
+
+/* ------------------- 🟡 Nav Links ------------------- */
 .nav-links {
   display: flex;
   align-items: center;
@@ -54,73 +131,104 @@ body {
 .nav-links a {
   text-decoration: none;
   font-weight: 600;
-  color: #fff; /* أبيض لما فوق */
+  color: white;
   transition: color 0.3s ease;
 }
 
 .navbar.scrolled .nav-links a {
-  color: #222; /* غامق لما تسكرول */
+  color: black;
 }
 
 .nav-links a:hover {
-  color: #ff59c7;
-}
-
-/* ===== اللوجو ===== */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.logo .gradient-color {
-  background: radial-gradient(circle, #009ad755, #ffffff);
+  background: radial-gradient(circle, #00e0ff, #009ad7);
   background-clip: text;
-  -webkit-background-clip: text; /*معناها: "اقطع الخلفية بحيث تبان جوه النص بس"*/
+  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 40px;
-}
-
-.logo span {
-  background: radial-gradient(circle, #009ad755, #ffffff);
-  background-clip: text;
-  -webkit-background-clip: text; /*معناها: "اقطع الخلفية بحيث تبان جوه النص بس"*/
-  -webkit-text-fill-color: transparent;
-    font-size: 30px;
-    padding-bottom: 4px;
 }
 
 
-/* ===== قسم الأكشن (الأزرار + الأيقونات) ===== */
+
+/* اللينك النشط */
+.nav-links a.active {
+  position: relative;
+  color: white;
+  font-weight: 600;
+}
+
+/* شريط النبض */
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -15px;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 3px;
+  background: linear-gradient(90deg, #009ad7, #00d4ff, #009ad7);
+  border-radius: 5px;
+  animation: heartbeat 1.2s infinite ease-in-out;
+}
+
+/* حركة النبض */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(-50%) scaleX(1.5);
+    opacity: 1;
+  }
+}
+
+/* ===== تأثير الإضاءة عند مرور الماوس على الروابط ===== */
+.nav-links a:hover {
+  color: #00e0ff; /* اللون الأساسي وقت الهوفر */
+  text-shadow:
+    0 0 6px #00e0ff,
+    0 0 12px #00e0ff,
+    0 0 24px #00e0ff;
+  transition: all 0.3s ease;
+}
+
+
+
+/* ------------------- 🟢 Icons ------------------- */
 .actions {
   display: flex;
   align-items: center;
-  gap: 20px; /* مسافة متوسطة بين الأيقونات والأزرار */
+  gap: 20px;
 }
 
-/* ===== الأيقونات ===== */
 .icons {
   display: flex;
   align-items: center;
-  gap: 20px; /* المسافة بين أيقونة المفضلة والعربة */
+  gap: 20px;
 }
 
 .icon {
   position: relative;
-  font-size: 23px; /* حجم مناسب للأيقونة */
+  font-size: 23px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .icon a {
-  color: #ff59c7;
+  background: radial-gradient(circle, #00e0ff, #009ad7);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   transition: transform 0.3s ease;
 }
 
 .icon a:hover {
+    color: #00e0ff; /* اللون الأساسي وقت الهوفر */
+  text-shadow:
+    0 0 6px #00e0ff,
+    0 0 12px #00e0ff,
+    0 0 24px #00e0ff;
+  transition: all 0.3s ease;
   transform: scale(1.1);
 }
 
@@ -128,367 +236,387 @@ body {
   position: absolute;
   top: -6px;
   right: -8px;
-  font-size: 10px;
-  /* background: #ff59c7; */
-  color: #fff;
+  font-size: 11px;
+  color: #009ad7;
   border-radius: 50%;
   width: 45px;
   height: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* .count.green {
-  background: #00c851;
-}
 
-.count.red {
-  background: #ff4444;
-} */
-
-/* ===== أزرار الدخول والتسجيل ===== */
+/* ------------------- 🔴 Auth Buttons ------------------- */
 .auth-buttons {
   display: flex;
   align-items: center;
-  gap: 10px; /* 🔹 مفيش أي فراغ بين الزرين */
-  margin-left: -15px; /* 🔹 قربهم شوية للشمال */
+  gap: 10px;
+  margin-left: -15px;
 }
 
 .auth-buttons .btn {
+  position: relative;
   margin: 0 !important;
-  padding: 9px 14px;
-  border: 1.5px solid #ff59c7;
-  background: transparent;
-  border-radius: 50px; /* 🔹 يخلي الزر مدوّر */
-  font-weight: 600;
+  padding: 9px 18px;
   font-size: 15px;
+  font-weight: 600;
+  border: 1.5px solid #009ad7;
+  border-radius: 50px;
+  background: transparent;
+  color: #009ad7;
   cursor: pointer;
+  overflow: hidden;
   transition: all 0.3s ease;
 }
 
-/* الزر الأول */
+/* تسجيل الدخول */
 .auth-buttons .btn.login {
-  color: #ff59c7;
-  border-radius: 50px; /* 🔹 حواف ناعمة من الطرفين */
+  color: #009ad7;
 }
 
-/* الزر الثاني */
+/* تسجيل جديد */
 .auth-buttons .btn.register {
-  background: #ff59c7;
+  background: #009ad7;
   color: #fff;
-  border-radius: 50px; /* 🔹 نفس الكلام */
-  margin-left: -1px; /* 🔹 يشيل أي فاصل صغير */
 }
 
-/* تأثير عند الهوفر */
-.auth-buttons .btn:hover {
-  transform: scale(0.95);
-  box-shadow: 0 0 8px rgba(255, 89, 199, 0.5);
-}
-
-/* ===== تظليل الخلفية فوق الصورة (overlay غامق) ===== */
-.navbar::before {
+/* تأثير الإضاءة المتحركة */
+.auth-buttons .btn::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
-  z-index: -1;
-  transition: opacity 0.3s ease;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transition: 0.5s;
 }
 
-/* لما تسكرول تختفي الطبقة */
-.navbar.scrolled::before {
-  opacity: 0;
+.auth-buttons .btn:hover::before {
+  left: 100%;
+}
+
+/* تأثير الظل والرفع */
+.auth-buttons .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 8px #009ad7, 0 0 20px rgba(0, 154, 215, 0.4);
+}
+
+/* عند الضغط */
+.auth-buttons .btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 4px #009ad7;
 }
 
 
-/* ------------------- End NavBar ------------------- */
+/* ------------------- 🔘 End Navbar ------------------- */
 
 
-/* ------------------- Start Bannar ----------------- */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Cairo", sans-serif;
-}
 
-body {
-  background-color: #fff;
-  overflow-x: hidden;
-}
 
-/* ===== خلفية الصورة ===== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------- 🎯 Start Banner Section ---------------- */
+
+/* ===== Wrapper & Background ===== */
 .hero {
   position: relative;
-  background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.9),   /* 🔹 تظليل غامق من فوق */
-      rgba(0, 0, 0, 0) 60%  /* 🔹 يختفي تدريجي بعد 60% من الصورة */
-    ),
-    url("../Home/images/bannar02.png");
-  background-size: cover;
-  background-position: center center;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  margin-top: 0px;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.85),
+      rgba(0, 0, 0, 0.2) 70%
+    ),
+    url("../Home/images/bannar02.png");
+  background-size: cover;
+  background-position: center center;
 }
 
-/* ===== تظليل خفيف ===== */
+/* ===== Overlay Layer ===== */
 .overlay {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.45);
 }
 
-/* ===== المحتوى ===== */
-.hero-content {
-  position: relative;
-  text-align: center;
-  width: 100%;
-  color: #fff;
-}
+/* ---- ✨ Light Effect Animation ---- */
 
-/* ===== النصوص ===== */
-.hero-content h2 {
-  font-size: 28px;
-  margin-bottom: 15px;
-}
-
-.hero-content p {
-  font-size: 18px;
-  margin-bottom: 25px;
-  line-height: 1.6;
-}
-
-/* ===== الأزرار ===== */
-.hero-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-
-.btn {
-  padding: 12px 30px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.btn.primary {
-  background-color: rgb(235, 146, 217);
-  color: white;
-}
-
-.btn.primary:hover {
-  background-color: rgb(205, 146, 235);
-}
-
-.btn.secondary {
-  background-color: transparent;
-  border: 2px solid white;
-  color: white;
-}
-
-.btn.secondary:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* ===== تأثير اسم Se7ty ===== */
-.loader-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 120px;
-  width: auto;
-  margin: 2rem auto;
-  direction: ltr;
-  font-family: "Poppins", sans-serif;
-  font-size: 1.6em;
-  font-weight: 600;
-  user-select: none;
-  color: rgb(235, 146, 217);
-  scale: 2;
-}
-
-.loader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 1;
-  background-color: transparent;
-  mask: repeating-linear-gradient(
-    90deg,
-    transparent 0,
-    transparent 6px,
-    black 7px,
-    black 8px
-  );
-}
-
-.loader::after {
+.hero::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  animation:
-    transform-animation 2s infinite alternate,
-    opacity-animation 4s infinite;
-  animation-timing-function: cubic-bezier(0.6, 0.8, 0.5, 1);
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  opacity: 0;
+  pointer-events: none;
+  animation: lightPulse 4s ease-in-out infinite;
 }
 
-@keyframes transform-animation {
+@keyframes lightPulse {
   0% {
-    transform: translate(-55%);
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(10%);
   }
   100% {
-    transform: translate(55%);
+    opacity: 0;
+    transform: translateY(100%);
   }
 }
 
-@keyframes opacity-animation {
-  0%, 100% {
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  65% {
-    opacity: 0;
-  }
+/* ---- 💡 Banner Content ---- */
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+}
+
+/* ===== Website Name Animation ===== */
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  direction: ltr;
+  font-family: "Poppins", sans-serif;
+  font-size: 2.5em;
+  font-weight: 700;
+  color: #009ad7;
+  user-select: none;
 }
 
 .loader-letter {
   display: inline-block;
   opacity: 0;
-  animation: loader-letter-anim 2s infinite linear;
-  z-index: 2;
+  animation: loader-letter-anim 2.5s infinite ease-in-out;
 }
 
 .loader-letter:nth-child(1) { animation-delay: 0.1s; }
-.loader-letter:nth-child(2) { animation-delay: 0.205s; }
-.loader-letter:nth-child(3) { animation-delay: 0.31s; }
-.loader-letter:nth-child(4) { animation-delay: 0.415s; }
-.loader-letter:nth-child(5) { animation-delay: 0.521s; }
+.loader-letter:nth-child(2) { animation-delay: 0.25s; }
+.loader-letter:nth-child(3) { animation-delay: 0.4s; }
+.loader-letter:nth-child(4) { animation-delay: 0.55s; }
+.loader-letter:nth-child(5) { animation-delay: 0.7s; }
 
 @keyframes loader-letter-anim {
-  0% { opacity: 0; }
-  5% {
-    opacity: 1;
-    text-shadow: 0 0 4px #ff0505;
-    transform: scale(1.1) translateY(-2px);
-  }
-  20% { opacity: 0.2; }
+  0% { opacity: 0; transform: translateY(0); }
+  10% { opacity: 1; transform: translateY(-8px); text-shadow: 0 0 6px #00e0ff, 0 0 12px #00e0ff; }
+  40% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; }
 }
 
+/* ===== Headings & Paragraph ===== */
+.hero-content h2 {
+  font-size: 36px;
+  margin-bottom: 15px;
+  color: #fff;
+  letter-spacing: 1px;
+}
 
-/* ------------------- End Bannar ----------------- */
+.hero-content p {
+  font-size: 18px;
+  line-height: 1.7;
+  max-width: 700px;
+  margin: 0 auto 30px;
+  color: #f1f1f1;
+}
+
+/* ---- Buttons ---- */
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  padding: 12px 32px;
+  border-radius: 50px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* ===== Primary Button ===== */
+.btn.primary {
+  background-color: #009ad7;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 154, 215, 0.5);
+}
+
+.btn.primary:hover {
+  background-color: #00b6f1;
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(0, 192, 255, 0.8);
+}
+
+/* ===== Secondary Button ===== */
+.btn.secondary {
+  border: 2px solid #fff;
+  background-color: transparent;
+  color: #fff;
+}
+
+.btn.secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.08);
+}
+
+/* ---------------- 🎯 End Banner Section ---------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 /* ------------------- Start Content Area ------------- */
-.content {
-  min-height: calc(100vh - 300px);
-}
-/* Start offers-section */
+/* ===========================
+   🩺 Offers Section
+=========================== */
 .offers-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* توسيط عمودي */
+  align-items: center;     /* توسيط أفقي */
+  padding: 80px 20px 60px;
+  background: radial-gradient(circle, #e6f8ff, #ffffff);
+  direction: rtl;
+  font-family: "Cairo", sans-serif;
   text-align: center;
-  margin: 50px auto;
+}
 
+/* ===== Header ===== */
+.offers-header {
+    padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeSlideUp 1s ease forwards;
 }
 
 .offers-header h2 {
-  font-size: 2rem;
-  color: #c6cbd7;
-  font-weight: 700;
+  font-size: 2.4rem;
+  color: black;
+  font-weight: 800;
   margin-bottom: 10px;
+  text-shadow: 0 0 10px rgba(0, 154, 215, 0.15);
 }
 
 .offers-header p {
-  color: white;
-  font-size: 1rem;
-  margin-bottom: 40px;
+  color: black;
+  font-size: 1.1rem;
+  margin: 0;
+  animation-delay: 0.2s;
 }
 
-/* 🎨 الوضع الفاتح (الافتراضي) */
-.offers-section h2,
-.offers-section p {
-  color: #0f172a; /* لون غامق وواضح على الخلفية الفاتحة */
+/* 🎬 Animation */
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* 🌙 الوضع الداكن */
-body.dark .offers-section h2,
-body.dark .offers-section p {
-  color: #ffffff; /* أبيض على الخلفية الداكنة */
+/* ===========================
+   💊 Cards Section
+=========================== */
+.cards-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin: 0 auto 40px;
 }
 
-
-/* End offers-section */
-
-/* Start Cards */
+/* ===== Single Card ===== */
 .card {
-  --card-bg: #ffffff;
-  --card-accent: #7c3aed;
-  --card-text: #1e293b;
-  --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-
-  width: 300px;
-  height: auto;
-  background: var(--card-bg);
+  width: 280px;
+  background: #ffffff;
   border-radius: 20px;
   position: relative;
   overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, sans-serif;
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 15px rgba(0, 154, 215, 0.15);
+  border: 1px solid rgba(0, 154, 215, 0.2);
 }
 
-.card__shine {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, 0.8) 50%,
-    rgba(255, 255, 255, 0) 60%
-  );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.card__glow {
-  position: absolute;
-  inset: -10px;
-  background: radial-gradient(
-    circle at 50% 0%,
-    rgba(124, 58, 237, 0.3) 0%,
-    rgba(124, 58, 237, 0) 70%
-  );
-  opacity: 0;
-  transition: opacity 0.5s ease;
+.card__badge {
+  color: #009bd7;
+  font-weight: bold;
 }
 
 .card__content {
   padding: 1.25em;
-  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.75em;
@@ -496,74 +624,39 @@ body.dark .offers-section p {
   z-index: 2;
 }
 
-.card__badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: #10b981;
-  color: white;
-  padding: 0.25em 0.5em;
-  border-radius: 999px;
-  font-size: 0.7em;
-  font-weight: 600;
-  transform: scale(0.8);
-  opacity: 0;
-  transition: all 0.4s ease 0.1s;
-}
-
+/* ===== Image ===== */
 .card__image {
   width: 100%;
-  height: auto;
-  background: linear-gradient(45deg, #a78bfa, #8b5cf6);
-  border-radius: 12px;
-  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
+  border-radius: 15px;
   overflow: hidden;
+  background: linear-gradient(45deg, #009ad7, #00b6f1);
+  box-shadow: 0 4px 8px rgba(0, 154, 215, 0.3);
+  transition: all 0.4s ease;
 }
 
 .card__image img {
   width: 100%;
+  transition: transform 0.4s ease;
 }
 
-.card__image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-      circle at 30% 30%,
-      rgba(255, 255, 255, 0.1) 0%,
-      transparent 30%
-    ),
-    repeating-linear-gradient(
-      45deg,
-      rgba(139, 92, 246, 0.1) 0px,
-      rgba(139, 92, 246, 0.1) 2px,
-      transparent 2px,
-      transparent 4px
-    );
-  opacity: 0.5;
-}
-
-.card__text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25em;
-}
-
+/* ===== Text ===== */
 .card__title {
-  color: var(--card-text);
-  font-size: 20px;
-  margin: 0;
+  font-size: 1.2rem;
   font-weight: 700;
-  transition: all 0.3s ease;
+  color: #009ad7;
+  margin: 5px 0 0;
 }
 
 .card__description {
-  color: var(--card-text);
-  font-size: 0.75em;
-  margin: 0;
-  opacity: 0.7;
-  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* ===== Price & Buttons ===== */
+.card__price {
+  color: #009ad7;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 .card__footer {
@@ -575,157 +668,75 @@ body.dark .offers-section p {
 
 .card__footer .buttons {
   display: flex;
-  gap: 25px; /* ← دي المسافة بين الزرين، قللها زي ما تحب */
+  gap: 15px;
 }
 
-.cards-container {
-  display: flex;
-  justify-content: center;       /* توسيط الكروت في النص */
-  align-items: flex-start;
-  gap: 20px;                     /* المسافة بين الكروت */
-  flex-wrap: wrap;               /* عشان لو الشاشة صغيرة ينزلوا تحت بعض */
-  margin: 50px auto;
-  max-width: auto;              /* عرض الحاوية */
-}
-
-/* ✅ تعديل الزرين هنا */
 .card__button {
-  width: 34px;
-  height: 34px;
-  background: linear-gradient(135deg, #7c3aed, #9d6bff); /* البنفسجي */
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #009ad7, #00b6f1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  transform: scale(0.95);
-  box-shadow: 0 3px 8px rgba(124, 58, 237, 0.3);
-  border: none; /* عشان ميكونش في إطار أبيض */
+  box-shadow: 0 4px 10px rgba(0, 154, 215, 0.3);
+  border: none;
 }
 
 .card__button i {
+  color: #fff;
   font-size: 15px;
-  color: white; /* لون الأيقونة أبيض */
 }
 
-.card:hover .card__button {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+.card__button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(0, 192, 255, 0.6);
 }
 
-
-.card:hover .card__button {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
-}
-
-.card__price {
-  color: var(--card-text);
-  font-weight: 700;
-  font-size: 20px;
-  transition: all 0.3s ease;
-}
-
-/* Hover Effects */
+/* ===== Hover Effects ===== */
 .card:hover {
   transform: translateY(-10px);
-  box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  border-color: rgba(124, 58, 237, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 154, 215, 0.3);
 }
 
-.card:hover .card__shine {
-  opacity: 1;
-  animation: shine 3s infinite;
+.card:hover img {
+  transform: scale(1.05);
 }
 
-.card:hover .card__glow {
-  opacity: 1;
-}
-
-.card:hover .card__badge {
-  transform: scale(1);
-  opacity: 1;
-  z-index: 1;
-}
-
-.card:hover .card__image {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.card:hover .card__title {
-  color: var(--card-accent);
-  transform: translateX(2px);
-}
-
-.card:hover .card__description {
-  opacity: 1;
-  transform: translateX(2px);
-}
-
-.card:hover .card__price {
-  color: var(--card-accent);
-  transform: translateX(2px);
-}
-
-/* Active State */
-.card:active {
-  transform: translateY(-5px) scale(0.98);
-}
-
-/* Animations */
-@keyframes shine {
-  0% {
-    background-position: -100% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* 🔽 زرار عرض جميع العروض */
+/* ===========================
+   🩵 View All Button
+=========================== */
 .offers-footer {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin: 50px 0;
 }
 
 .view-all-btn {
-  background-color: rgb(235, 146, 217);
-  color: white;
+  background-color: #009ad7;
+  color: #fff;
   border: none;
-  padding: 12px 32px;
-  border-radius: 12px;
+  padding: 14px 40px;
+  border-radius: 50px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: 600;
+  box-shadow: 0 0 15px rgba(0, 192, 255, 0.6);
+  letter-spacing: 0.5px;
 }
 
 .view-all-btn:hover {
-  background-color: rgb(182, 94, 163);;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(163, 22, 156, 0.3);
+  background-color: #00b6f1;
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(0, 192, 255, 0.8);
 }
 
-/* End Cards */
-
-/* Start Testimonials Section */
+/* ===========================
+   💬 Testimonials Section
+=========================== */
 .testimonials {
   text-align: center;
   background-color: #f8f9fb;
@@ -756,7 +767,7 @@ body.dark .offers-section p {
 .testimonial-card {
   background-color: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 30px 20px;
   width: 320px;
   transition: transform 0.3s ease;
@@ -764,6 +775,7 @@ body.dark .offers-section p {
 
 .testimonial-card:hover {
   transform: translateY(-8px);
+    box-shadow: 0 4px 12px rgba(0, 192, 255, 0.8);
 }
 
 .testimonial-card img {
@@ -781,7 +793,7 @@ body.dark .offers-section p {
 }
 
 .testimonial-card .stars {
-  color: #facc15; /* اللون الذهبي */
+  color: #facc15;
   margin-bottom: 15px;
   font-size: 1.1rem;
 }
@@ -792,18 +804,17 @@ body.dark .offers-section p {
   font-size: 0.95rem;
 }
 
-
-/* End Testimonials Section */
-
-/* Start Call To Action */
+/* ===========================
+   💬 Call To Action Section
+=========================== */
 .cta-section {
-      background: radial-gradient(circle, #009ad755, #ffffff);
+  background: radial-gradient(circle, #009ad755, #ffffff);
   color: black;
   text-align: center;
   padding: 60px 20px;
   direction: rtl;
   font-family: "Cairo", sans-serif;
-  margin: 0; /* علشان تلزق في الفوتر */
+  margin: 0;
 }
 
 .cta-section h2 {
@@ -821,175 +832,210 @@ body.dark .offers-section p {
 .cta-buttons {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+  align-items: center;
 }
 
-.cta-buttons a {
-  text-decoration: none;
+.btn-primary {
+  background-color: #009ad7;
+  color: #fff;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 50px;
   font-size: 1rem;
   font-weight: 600;
-  padding: 12px 25px;
-  border-radius: 8px;
+  cursor: pointer;
   transition: all 0.3s ease;
-}
-
-/* الزر الأبيض */
-.btn-primary {
-  background-color: #fff;
-  color: #0f172a;
+  box-shadow: 0 0 10px rgba(0, 154, 215, 0.5);
+  text-decoration: none;
+  letter-spacing: 0.5px;
 }
 
 .btn-primary:hover {
-  background-color: #f1f5f9;
+  background-color: #00b6f1;
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(0, 192, 255, 0.8);
 }
-
-/* علشان تلزق بالفوتر */
-footer {
-  margin-top: 0;
-}
-
-/* End Call To Action */
-
 
 /* ------------------- End Content Area ------------- */
 
 
 
-/* ------------------- Start Footer ----------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==================== Start Footer ================== */
 .footer {
-  background-color: #0f1923;
+  background: #0f1923;
   color: #fff;
-  direction: rtl;
-  padding: 40px 60px 20px;
+  padding: 60px 0 20px;
   font-family: "Cairo", sans-serif;
-  /* position: fixed; */
-  bottom: 0;
-  right: 0;
-  left: 0;
-  z-index: 999;
+  direction: rtl;
 }
 
+/* ===== Footer Content ===== */
 .footer-content {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
+  align-items: flex-start;
   gap: 30px;
+  padding: 0 40px;
 }
 
+/* ===== Footer Sections ===== */
 .footer-section {
-  flex: 1 1 220px;
+  flex: 1;
+  min-width: 220px;
 }
 
+/* ===== Logo ===== */
 .footer .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: rgb(235, 146, 217);
-  font-size: 22px;
+  font-size: 28px;
   font-weight: bold;
-  margin-bottom: 10px;
+  color: #009ad7;
+  margin-bottom: 15px;
 }
 
 .footer .logo i {
-  background: rgb(235, 146, 217);
+  margin-left: 8px;
+  color: #009ad7;
+}
+
+/* ===== Text ===== */
+.footer-section.about p {
   color: #fff;
-  border-radius: 50%;
-  padding: 6px;
+  font-size: 15px;
+  line-height: 1.8;
 }
 
-.footer-section p {
-  color: #ddd;
-  line-height: 1.6;
-}
-
-.footer-section h3 {
+/* ===== Links ===== */
+.footer-section.links h3,
+.footer-section.contact h3,
+.footer-section.social h3 {
   color: #fff;
   font-size: 18px;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #009ad7;
+  display: inline-block;
+  padding-bottom: 5px;
 }
 
-.footer-section ul {
+.footer-section.links ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
-.footer-section ul li {
-  margin: 6px 0;
+.footer-section.links ul li {
+  margin-bottom: 10px;
 }
 
-.footer-section ul li a {
-  color: #ccc;
+.footer-section.links ul li a {
+  color: #fff;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color 0.3s, transform 0.3s;
 }
 
-.footer-section ul li a:hover {
-  color: rgb(235, 146, 217);
+.footer-section.links ul li a:hover {
+  color: #009ad7;
+  transform: translateX(-5px);
 }
 
-.footer-section .made {
-  display: block;
-  color: #aaa;
-  margin-top: 10px;
+/* ===== Contact ===== */
+.footer-section.contact p {
+  margin: 8px 0;
+  font-size: 15px;
 }
 
-.contact p {
-  margin: 6px 0;
-  color: #ccc;
+.footer-section.contact i {
+  color: #009ad7;
+  margin-left: 10px;
 }
 
-.contact i {
-  color: rgb(235, 146, 217);
-  margin-left: 6px;
-}
-
-.social-icons {
+/* ===== Social Icons ===== */
+.footer-section.social .social-icons {
   display: flex;
-  gap: 12px;
+  gap: 15px;
 }
 
-.social-icons a {
-  color: #ccc;
+.footer-section.social .social-icons a {
+  color: #fff;
   font-size: 20px;
-  transition: color 0.3s;
+  transition: all 0.3s ease;
 }
 
-.social-icons a:hover {
-  color: rgb(235, 146, 217);
+.footer-section.social .social-icons a:hover {
+  color: #009ad7;
+  transform: scale(1.2);
 }
 
+/* ===== Divider Line ===== */
 .footer hr {
   border: none;
-  border-top: 1px solid #222;
-  margin: 20px 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 30px 0;
 }
 
+/* ===== Footer Bottom ===== */
 .footer-bottom {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
   align-items: center;
-  color: #aaa;
+  flex-wrap: wrap;
+  text-align: center;
+  padding: 0 40px;
+}
+
+.footer-bottom .rights p {
+  color: #fff;
   font-size: 14px;
 }
 
 .footer-bottom .policy a {
-  color: #aaa;
-  margin-left: 20px;
+  color: #fff;
+  margin: 0 10px;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 .footer-bottom .policy a:hover {
-  color: rgb(235, 146, 217);
+  color: #009ad7;
 }
-/* ------------------- End Footer ------------------- */
 
-
-
-/* ------------------- Start Responsive ------------- */
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
   .footer-content {
     flex-direction: column;
@@ -1000,17 +1046,35 @@ footer {
     flex-direction: column;
     gap: 10px;
   }
-
-  .footer-bottom .policy a {
-    margin-left: 10px;
-  }
-
-  .nav-links {
-    flex-wrap: wrap;
-    gap: 20px;
-  }
 }
-/* ------------------- End Responsive ------------- */
+/* ==================== End Footer ================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
