@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
+// Start NavBar
 let cart_clr = document.getElementById("cart_clr");
 let fav_clr = document.getElementById("fav_clr");
 
@@ -67,9 +67,6 @@ let fav_clr = document.getElementById("fav_clr");
 
 
 
-
-
-
 // Button Login and Signup
 let btnsignin = document.getElementById("login");
 let btnsignup = document.getElementById("signup");
@@ -77,5 +74,34 @@ btnsignin.onclick = function() {
 window.location.href = "../Log In/Log In.html";
 }
 btnsignup.onclick = function() {
-window.location.href = "../Log In/Sign Up.html";
+window.location.href = "../Sign Up/Sign Up.html";
 }
+// End NavBar
+
+
+
+
+
+
+
+
+
+
+// scroll To Top Btn
+  const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 200) {
+      scrollToTopBtn.style.display = "block";
+    } else {
+      scrollToTopBtn.style.display = "none";
+    }
+  });
+
+  scrollToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+

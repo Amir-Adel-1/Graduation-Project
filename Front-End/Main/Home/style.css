@@ -2,7 +2,8 @@ body {
   margin: 0;
     font-family: "Segoe UI", "Noto Sans Arabic", "Arial", sans-serif, "Cairo";
   direction: rtl;
-  background: #f8f8f8;
+  /* background: #f8f8f8; */
+  background: radial-gradient(circle, #009ad755, #ffffff);
   color: #333;
   /* مساحة للنافبار والفوتر */
   /* padding-top: 80px;
@@ -72,8 +73,25 @@ body {
   gap: 10px;
   font-size: 22px;
   font-weight: 700;
-  color: #ff59c7;
 }
+
+.logo .gradient-color {
+  background: radial-gradient(circle, #009ad755, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text; /*معناها: "اقطع الخلفية بحيث تبان جوه النص بس"*/
+  -webkit-text-fill-color: transparent;
+  font-size: 40px;
+}
+
+.logo span {
+  background: radial-gradient(circle, #009ad755, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text; /*معناها: "اقطع الخلفية بحيث تبان جوه النص بس"*/
+  -webkit-text-fill-color: transparent;
+    font-size: 30px;
+    padding-bottom: 4px;
+}
+
 
 /* ===== قسم الأكشن (الأزرار + الأيقونات) ===== */
 .actions {
@@ -779,8 +797,8 @@ body.dark .offers-section p {
 
 /* Start Call To Action */
 .cta-section {
-  background-color: rgb(235, 146, 217);;
-  color: #fff;
+      background: radial-gradient(circle, #009ad755, #ffffff);
+  color: black;
   text-align: center;
   padding: 60px 20px;
   direction: rtl;
@@ -796,7 +814,7 @@ body.dark .offers-section p {
 
 .cta-section p {
   font-size: 1.1rem;
-  color: #e6f6e8;
+  color: black;
   margin-bottom: 30px;
 }
 
@@ -824,17 +842,6 @@ body.dark .offers-section p {
 
 .btn-primary:hover {
   background-color: #f1f5f9;
-}
-
-/* الزر المحدد بإطار أبيض */
-.btn-outline {
-  border: 2px solid #fff;
-  color: #fff;
-}
-
-.btn-outline:hover {
-  background-color: #fff;
-  color: #0f172a;
 }
 
 /* علشان تلزق بالفوتر */
@@ -1291,3 +1298,33 @@ body.dark .slider {
   background-color: #333 !important;
 }
 /* End Dark Mode Button */
+
+
+
+
+
+
+/* scroll To Top Btn */
+#scrollToTopBtn {
+  position: fixed;
+  bottom: 70px;
+  left: 40px;
+  z-index: 20000;
+  background-color: #009BD7; /* اللون الطبي */
+  color: white;
+  border: none;
+  outline: none;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: none; /* مخفي في البداية */
+  transition: all 0.3s ease;
+}
+
+#scrollToTopBtn:hover {
+  background-color: #007bb0;
+  transform: scale(1.1);
+}
