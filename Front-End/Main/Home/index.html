@@ -12,6 +12,8 @@
     <link rel="icon" href="" type="png" />
     <!-- Main Template CSS File -->
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login and signup/login.css">
+    <link rel="stylesheet" href="login and signup/signup.css">
     <!-- Bootstrap -->
     <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
     <!-- Font Awsome -->
@@ -31,33 +33,111 @@
 
       <ul class="nav-links">
         <li><a href="../Home/index.html">الرئيسية</a></li>
-        <li><a href="../About Us/About Us.html">نبذة عنا</a></li>
-        <li><a href="../Products/Products.html">المنتجات</a></li>
-        <li><a href="../Health tips/Health Tips.html">نصائح صحية</a></li>
-        <li><a href="../Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
-        <li><a href="../Inquiry About Medication/Inquiry About Medication.html">الآستفسار عن دواء</a></li>
-        <li><a href="../Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
+        <li><a class="login">نبذة عنا</a></li>
+        <li><a class="login" >المنتجات</a></li>
+        <li><a class="login" >نصائح صحية</a></li>
+        <li><a class="login" >اسأل طبيب</a></li>
+        <li><a class="login" >الآستفسار عن دواء</a></li>
+        <li><a class="login" >طلبات الأدوية الناقصة</a></li>
       </ul>
 
       <div class="actions">
         <div class="icons">
           <div class="icon">
-            <a href="../Shopping Cart/Shopping Cart.html"><i class="fa-solid fa-cart-shopping"></i></a>
+            <a><i class="fa-solid fa-cart-shopping login "></i></a>
             <span class="count green" id="cart_clr">0</span>
           </div>
           <div class="icon">
-            <a href="../Favorites/Favorites.html"><i class="fa-solid fa-heart"></i></a>
+            <a><i class="fa-solid fa-heart login "></i></a>
             <span class="count red" id="fav_clr">0</span>
           </div>
         </div>
         <div class="auth-buttons">
-          <button class="btn login" id="login">تسجيل الدخول</button>
-          <button class="btn register" id="signup" >تسجيل</button>
+          <button class="btn login" >تسجيل الدخول</button>
+          <button class="btn register signup" >تسجيل</button>
         </div>
 
       </div>
     </nav>
     <!--  End NavBar -->
+
+
+
+<!--  start login -->
+
+  <div class="overlay" id="overlay">
+    <div class="popup">
+      <span class="close-btn" id="closePopup">&times;</span>
+      <h2>Login Form</h2>
+      <input type="email" placeholder="Enter your email">
+      <input type="password" placeholder="Enter your password">
+      <div class="remember-forgot">
+        <label><input type="checkbox"> Remember me</label>
+        <a href="#" style="color:#fff;">Forgot password?</a>
+      </div>
+      <button>Log In</button>
+      <div class="footer">
+        Don’t have an account? <a href="#" id="switchToSignup" >Register</a>
+      </div>
+    </div>
+  </div>
+<!--  End login -->
+
+
+
+<!-- ✅ SIGNUP POPUP -->
+<div class="overlay" id="signupOverlay">
+  <div class="popup signup-popup">
+    <span class="close-btn" id="closeSignup">&times;</span>
+    <h2>إنشاء حساب جديد</h2>
+    <p class="subtitle">إنه سريع وسهل.</p>
+
+    <div class="name-fields">
+      <input type="text" placeholder="الاسم الأول" />
+      <input type="text" placeholder="اللقب" />
+    </div>
+
+    <input type="text" placeholder="البريد الإلكتروني أو رقم الهاتف" />
+    <input type="password" placeholder="كلمة المرور الجديدة" />
+
+    <label class="label">تاريخ الميلاد</label>
+    <div class="birthday">
+      <select>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+      </select>
+      <select>
+        <option>يناير</option>
+        <option>فبراير</option>
+        <option>مارس</option>
+      </select>
+      <select>
+        <option>2025</option>
+        <option>2024</option>
+        <option>2023</option>
+      </select>
+    </div>
+
+    <label class="label">النوع</label>
+    <div class="gender">
+      <label><input type="radio" name="gender" /> ذكر</label>
+      <label><input type="radio" name="gender" /> أنثى</label>
+    </div>
+
+    <button class="create-btn">إنشاء حساب</button>
+
+    <p class="terms">
+      بالتسجيل، أنت توافق على <a href="#">الشروط</a> و
+      <a href="#">سياسة الخصوصية</a>.
+    </p>
+
+    <div class="have-account">
+      <p>هل لديك حساب بالفعل؟ <a href="#" id="switchToLogin">تسجيل الدخول</a></p>
+    </div>
+  </div>
+</div>
+
 
     <!-- Start Bannar -->
     <section class="hero">
@@ -83,8 +163,8 @@
 
         <!-- ====== الأزرار ====== -->
         <div class="hero-buttons">
-          <a href="../Products/Products.html" class="btn primary">تسوق الآن</a>
-          <a href="../Inquiry About Medication/Inquiry About Medication.html" class="btn secondary">الآستفسار عن دواء</a>
+          <a  class="btn primary login ">تسوق الآن</a>
+          <a  class="btn secondary login ">الآستفسار عن دواء</a>
         </div>
       </div>
     </section>
@@ -119,12 +199,12 @@
               <div class="card__price">99.99 ج.م</div>
 
               <div class="buttons">
-                <button class="card__button">
-                  <i class="fa-solid fa-cart-shopping"></i>
+                <button class="card__button login ">
+                  <i class="fa-solid fa-cart-shopping  "></i>
                 </button>
 
-                <button class="card__button">
-                  <i class="fa-solid fa-heart"></i>
+                <button class="card__button login ">
+                  <i class="fa-solid fa-heart  "  ></i>
                 </button>
               </div>
             </div>
@@ -147,12 +227,12 @@
               <div class="card__price">95.99 ج.م</div>
 
               <div class="buttons">
-                <button class="card__button">
-                  <i class="fa-solid fa-cart-shopping"></i>
+                <button class="card__button login ">
+                  <i class="fa-solid fa-cart-shopping  "></i>
                 </button>
 
-                <button class="card__button">
-                  <i class="fa-solid fa-heart"></i>
+                <button class="card__button login ">
+                  <i class="fa-solid fa-heart  "></i>
                 </button>
               </div>
             </div>
@@ -175,11 +255,11 @@
               <div class="card__price">99.99 ج.م</div>
 
               <div class="buttons">
-                <button class="card__button">
+                <button class="card__button login ">
                   <i class="fa-solid fa-cart-shopping"></i>
                 </button>
 
-                <button class="card__button">
+                <button class="card__button login ">
                   <i class="fa-solid fa-heart"></i>
                 </button>
               </div>
@@ -203,11 +283,11 @@
               <div class="card__price">99.99 ج.م</div>
 
               <div class="buttons">
-                <button class="card__button">
+                <button class="card__button login ">
                   <i class="fa-solid fa-cart-shopping"></i>
                 </button>
 
-                <button class="card__button">
+                <button class="card__button login ">
                   <i class="fa-solid fa-heart"></i>
                 </button>
               </div>
@@ -217,7 +297,7 @@
       </div>
 
       <div class="offers-footer">
-        <a href="../Products/Products.html"><button class="view-all-btn">عرض جميع العروض</button></a>
+        <a ><button class="view-all-btn login ">عرض جميع العروض</button></a>
       </div>
       <!-- End Cards -->
 
@@ -275,7 +355,7 @@
         <p>تحدث مع أطبائنا المتخصصين واحصل على استشارة فورية</p>
 
         <div class="cta-buttons">
-          <a href="../Ask a Doctor/Ask a Doctor.html" class="btn-primary">اسأل طبيب الآن</a>
+          <a  class="btn-primary login ">اسأل طبيب الآن</a>
         </div>
       </section>
       <!-- End Call To Action -->
@@ -298,15 +378,12 @@
           <h3>روابط سريعة</h3>
           <ul>
             <li><a href="../Home/index.html">الرئيسية</a></li>
-            <li><a href="../About Us/About Us.html">نبذة عنا</a></li>
-            <li><a href="../Products/Products.html">المنتجات</a></li>
-            <li><a href="../Health tips/Health Tips.html">نصائح صحية</a></li>
-            <li><a href="../Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+            <li><a class="login">نبذة عنا</a></li>
+            <li><a class="login" >المنتجات</a></li>
+            <li><a class="login" >نصائح صحية</a></li>
+            <li><a class="login">اسأل طبيب</a></li>
             <li>
-              <a
-                href="../Inquiry About Medication/Inquiry About Medication.html"
-                >الاستفسار عن دواء</a
-              >
+              <a class="login" >الاستفسار عن دواء</a>
             </li>
           </ul>
         </div>
@@ -348,5 +425,7 @@
     <button id="scrollToTopBtn" title="Go to top"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
 
     <script src="../Home/index.js"></script>
+    <script src="login and signup/login.js" ></script>
+    <script src="login and signup/signup.js"></script>
   </body>
 </html>
