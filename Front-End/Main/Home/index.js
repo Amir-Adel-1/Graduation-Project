@@ -56,6 +56,9 @@ let fav_clr = document.getElementById("fav_clr");
       navbar.classList.add('scrolled');
       cart_clr.style.color = "white";
       fav_clr.style.color = "white";
+      document.querySelectorAll('.a').forEach(el => {
+  el.style.color = "white";
+});
     } else {
       navbar.classList.remove('scrolled');
       cart_clr.style.color = "white";

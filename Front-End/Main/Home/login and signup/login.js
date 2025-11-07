@@ -1,7 +1,6 @@
 const openButtons = document.querySelectorAll('.login');
 const overlay = document.getElementById('overlay');
 const closePopup = document.getElementById('closePopup');
-
 // لما المستخدم يضغط على أي زر عنده الكلاس "open-login"
 openButtons.forEach(btn => {
   btn.addEventListener('click', () => {
