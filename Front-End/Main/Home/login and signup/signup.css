@@ -108,8 +108,8 @@
 .close-btn {
   position: absolute;
   top: 12px;
-  left: 15px;
-  font-size: 22px;
+  right: 25px;
+  font-size: 30px;
   color: #fff;
   background: none;
   border: none;

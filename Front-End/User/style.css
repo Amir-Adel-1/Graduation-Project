@@ -1,0 +1,351 @@
+body {
+  font-family: "Cairo", sans-serif;
+  direction: rtl;
+  background: #fffefe;
+  color: #fff;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+  height: 100vh;
+  padding: 50px;
+}
+
+/* زر فتح التسجيل */
+.open-register {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+.open-register:hover {
+  background: #0099ff;
+}
+
+/* الخلفية الشفافة */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* نافذة التسجيل */
+.popup {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 30px;
+  border-radius: 15px;
+  width: 850px;
+  max-width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.581);
+  animation: popupFade 0.4s ease;
+  position: relative;
+}
+
+.popup h2 {
+    color:  #0099ff;
+  text-shadow:
+    0 0 6px #00e0ff,
+    0 0 12px #00e0ff,
+    0 0 24px #00e0ff;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  font-weight: 600;
+  color: white;
+  font-size: 30px;
+}
+
+/* زر الإغلاق */
+.close-popup {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 35px;
+  color: #bbb;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close-popup:hover {
+  color: #fff;
+  transform: scale(1.1); /* يكبر بنسبة 10% */
+}
+
+/* مجموعات الإدخال */
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.input-group input,
+.input-group select,
+textarea {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #2a2a2a;
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+/* القايمة المنسدلة (الخيارات) */
+select option {
+  background-color: #0b1220; /* لون خلفية القايمة */
+  color: #00ffcc;            /* لون النص */
+}
+
+
+textarea {
+  width: 100%;
+  resize: none;
+}
+
+/* زر التسجيل */
+.submit-btn {
+  width: 80%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0099ff, #00ffcc);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 16px;
+  text-shadow:
+    0 0 6px #00e0ff,
+    0 0 12px #00e0ff,
+    0 0 24px #00e0ff;
+  transition: all 0.3s ease;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 154, 215, 0.5);
+}
+
+/* رابط تسجيل الدخول */
+.login-link {
+  margin-top: 15px;
+  font-size: 14px;
+}
+.login-link a {
+    color:  #0099ff;
+  text-shadow:
+    0 0 6px #00e0ff,
+    0 0 12px #00e0ff,
+    0 0 24px #00e0ff;
+  text-decoration: none;
+}
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* الأنيميشن */
+@keyframes popupFade {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===================== NEBULA INPUT STYLE ===================== */
+.nebula-input {
+  position: relative;
+  margin: 10px 0;
+  direction: rtl;
+  text-align: right;
+}
+
+.nebula-input label {
+  right: 15px;
+  left: auto;
+  transform-origin: right;
+}
+
+.nebula-input .input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #2a2a3a;
+  background: #00000f;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  border-radius: 8px;
+  transition: all 0.4s ease-out;
+  box-sizing: border-box;
+}
+
+/* textarea بنفس شكل input */
+.nebula-input textarea.input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #2a2a3a;
+  background: #00000f;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  border-radius: 8px;
+  transition: all 0.4s ease-out;
+  resize: none;
+}
+
+/* تأثير الفوكس */
+.nebula-input textarea.input:focus {
+  border-color: #113543;
+  box-shadow:
+  0 5px 15px #00e0ff,   /* ظل لتحت */
+  5px 0 15px #00e0ff,   /* ظل ناحية اليمين */
+  -5px 0 15px #00ffcc;  /* ظل ناحية الشمال */
+  background: linear-gradient(135deg, #0099ff, #00ffcc);
+background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+
+.nebula-input .user-label {
+  position: absolute;
+  left: 15px;
+  top: 5px;
+  pointer-events: none;
+  color: white;
+  transition: all 0.4s ease-out;
+  background: transparent;
+  padding: 6px 5px;
+}
+
+.nebula-input .color {
+    color: white;
+}
+
+.nebula-input .input:focus {
+  border-color: #113543;
+  box-shadow:
+  0 5px 15px #00e0ff,   /* ظل لتحت */
+  5px 0 15px #00e0ff,   /* ظل ناحية اليمين */
+  -5px 0 15px #00ffcc;  /* ظل ناحية الشمال */
+  background: linear-gradient(135deg, #0099ff, #00ffcc);
+background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nebula-input .input:focus ~ .user-label,
+.nebula-input .input:valid ~ .user-label {
+  transform: translateY(-25px);
+  font-size: 12px;
+  color: white;
+  left: 10px;
+  padding-top: 1px;
+  font-size: 13px;
+}
+
+.nebula-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  top: 50%;
+  right: 10px;
+  filter: blur(0.8px);
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+}
+
+.nebula-input .input:focus ~ .nebula-particle {
+  animation: nebula-float 2s forwards ease-out;
+}
+
+@keyframes nebula-float {
+  0% {
+    transform: translate(0, -50%) scale(0.8);
+    opacity: 0;
+    background: #009ad7;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(calc(var(--x) * -140px), calc(var(--y) * 35px)) scale(1.1);
+    opacity: 0;
+    background: #6df2ff;
+  }
+}
+
+/* ===================== GRID SYSTEM (3 INPUTS PER ROW) ===================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 أعمدة مرنة */
+  justify-content: center; /* توسيط الشبكة أفقيًا */
+  align-items: start;
+  gap: 20px;
+  margin: 0 auto;
+  max-width: 800px; /* عرض مناسب للفورم */
+}
+
+/* كل عنصر nebula-input */
+.form-grid .nebula-input {
+  width: 100%;
+}
+
+/* textarea أو الحقول اللي تاخد الصف بالكامل */
+.form-grid .full-width {
+  grid-column: span 3;
+}
+
+/* لو عندك اتنين textarea جنب بعض */
+.form-grid .half-width {
+  grid-column: span 1;
+}
+
+/* نخلي الصف ده فيه عمودين بس لما نستخدمه للـ textarea */
+.form-grid.two-textareas {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* استجابة للشاشات المتوسطة */
+@media (max-width: 992px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 95%;
+  }
+  .form-grid .full-width {
+    grid-column: span 2;
+  }
+}
+
+/* استجابة للموبايل */
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-grid .full-width,
+  .form-grid .half-width {
+    grid-column: span 1;
+  }
+}

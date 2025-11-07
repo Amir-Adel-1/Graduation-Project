@@ -1,150 +1,211 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>تسجيل الدخول</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: "Cairo", sans-serif;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      background: url('https://images.unsplash.com/photo-1580281657521-55729d08b2b9?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(5px);
-    }
-
-    .login-container {
-      background: rgba(207, 6, 6, 0.418);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 20px;
-      padding: 40px 35px;
-      width: 360px;
-      color: #fff;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 25px;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .input-field {
-      position: relative;
-      margin-bottom: 25px;
-    }
-
-    .input-field input {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-bottom: 2px solid #fff;
-      background: transparent;
-      color: #fff;
-      font-size: 1rem;
-      outline: none;
-    }
-
-    .input-field label {
-      position: absolute;
-      top: 12px;
-      right: 10px;
-      color: #ddd;
-      font-size: 0.95rem;
-      transition: 0.3s;
-      pointer-events: none;
-    }
-
-    .input-field input:focus + label,
-    .input-field input:valid + label {
-      top: -10px;
-      right: 0;
-      font-size: 0.8rem;
-      color: #00bcd4;
-    }
-
-    .options {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      font-size: 0.9rem;
-    }
-
-    .options a {
-      color: #00bcd4;
-      text-decoration: none;
-    }
-
-    .options a:hover {
-      text-decoration: underline;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 25px;
-      background: linear-gradient(135deg, #00bcd4, #0097a7);
-      color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: linear-gradient(135deg, #0097a7, #00796b);
-      transform: translateY(-2px);
-    }
-
-    .register {
-      margin-top: 20px;
-      font-size: 0.9rem;
-    }
-
-    .register a {
-      color: #00bcd4;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .register a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب جديد</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="login-container">
-    <h2>تسجيل الدخول</h2>
-    <form>
-      <div class="input-field">
-        <input type="email" id="email" required />
-        <label for="email">أدخل بريدك الإلكتروني</label>
-      </div>
-      <div class="input-field">
-        <input type="password" id="password" required />
-        <label for="password">أدخل كلمة المرور</label>
-      </div>
-      <div class="options">
-        <label><input type="checkbox" /> تذكرني</label>
-        <a href="#">هل نسيت كلمة المرور؟</a>
-      </div>
-      <button type="submit">تسجيل الدخول</button>
-      <div class="register">
-        ليس لديك حساب؟ <a href="#">سجّل الآن</a>
-      </div>
-    </form>
+  <!-- زر فتح النافذة -->
+  <button class="open-register">إنشاء حساب</button>
+
+
+
+
+
+  <!-- ✅ Start SIGNUP POPUP -->
+  <div class="overlay">
+    <div class="popup">
+      <span class="close-popup">&times;</span>
+      <h2> • إنشاء حساب جديد • </h2>
+
+      <form class="register-form">
+        <div class="form-grid">
+          <div class="nebula-input">
+  <input required type="text" name="F_Name" autocomplete="off" class="input" />
+  <label class="user-label">الأسم الأول</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+          <div class="nebula-input">
+  <input required type="text" name="L_Name" autocomplete="off" class="input" />
+  <label class="user-label">الأسم الأخير</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+          <div class="nebula-input">
+  <select class="input  color" required>
+    <option value="" disabled selected>اختر الجنس</option>
+    <option value="male">ذكر</option>
+    <option value="female">أنثى</option>
+  </select>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="nebula-input">
+  <input required type="email" name="Email" autocomplete="off" class="input" />
+  <label class="user-label">البريد الإلكتروني</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+          <div class="nebula-input">
+  <input required type="password" name="Password" autocomplete="off" class="input" />
+  <label class="user-label">كلمة المرور</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+          <div class="nebula-input">
+  <input required type="text" name="Phone" autocomplete="off" class="input" />
+  <label class="user-label">رقم الهاتف</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="nebula-input">
+  <input required type="text" name="Address" autocomplete="off" class="input" />
+  <label class="user-label">العنوان</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+          <div class="nebula-input">
+  <input required type="date" name="Weight" autocomplete="off" class="input color" />
+  <label class="user-label">تاريخ الميلاد</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+          <div class="nebula-input">
+  <select class="input  color" required>
+    <option value="" disabled selected>اختر فصيلة الدم</option>
+    <option value="A+">A+</option>
+    <option value="A-">A-</option>
+    <option value="B+">B+</option>
+    <option value="B-">B-</option>
+    <option value="O+">O+</option>
+    <option value="O-">O-</option>
+    <option value="AB+">AB+</option>
+    <option value="AB-">AB-</option>
+  </select>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="nebula-input">
+  <input required type="number" name="Height" autocomplete="off" class="input" />
+  <label class="user-label">الطول (سم)</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+          <div class="nebula-input">
+  <input required type="number" name="Weight" autocomplete="off" class="input" />
+  <label class="user-label">الوزن (كجم)</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+          <div class="nebula-input">
+  <select class="input  color" required>
+    <option value="" disabled selected>اختر حالتك الصحية</option>
+    <option value="non-smoker">غير مدخن</option>
+    <option value="smoker">مدخن</option>
+    <option value="former-smoker">مدخن سابق</option>
+    <option value="alcohol">يتناول كحول</option>
+    <option value="healthy">لا يعاني من أي مشاكل صحية</option>
+    <option value="chronic">يعاني من أمراض مزمنة</option>
+    <option value="under-treatment">يتلقى علاج حاليًا</option>
+  </select>
+    <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+        </div>
+
+        <div class="form-grid two-textareas">
+<!-- الأمراض المزمنة -->
+          <div class="nebula-input">
+  <textarea class="input" required placeholder=" "></textarea>
+  <label class="user-label">الأمراض المزمنة</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+          <!-- الحساسية -->
+          <div class="nebula-input">
+  <textarea class="input" required placeholder=" "></textarea>
+  <label class="user-label">الحساسية إن وجدت</label>
+  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+        </div>
+
+
+        <button type="submit" class="submit-btn">تـسـجـيـل</button>
+        <p class="login-link">هل لديك حساب بالفعل؟ <a href="#">تسجيل الدخول</a></p>
+      </form>
+    </div>
   </div>
+  <!-- ✅ End SIGNUP POPUP -->
+
+  <script src="script.js"></script>
 </body>
 </html>
