@@ -9,7 +9,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #e0f7fa; /* سماوي فاتح */
+  background: #00ffcc; /* سماوي فاتح */
   border-radius: 10px;
 }
 
@@ -20,5 +20,14 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #006064; /* أغمق */
+    border-color: #113543;
+  box-shadow:
+  0 5px 15px #00e0ff,   /* ظل لتحت */
+  5px 0 15px #00e0ff,   /* ظل ناحية اليمين */
+  -5px 0 15px #00ffcc;  /* ظل ناحية الشمال */
+  background: linear-gradient(135deg, #0099ff, #00ffcc);
+background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 /* End Scrollbar */

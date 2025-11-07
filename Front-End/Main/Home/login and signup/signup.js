@@ -1,33 +1,30 @@
-const signupButtons = document.querySelectorAll('.signup');
-const signupOverlay = document.getElementById('signupOverlay');
-const closeSignup = document.getElementById('closeSignup');
-const switchToLogin = document.getElementById('switchToLogin');
-const loginOverlay = document.getElementById('overlay'); // login popup
+// عناصر صفحة إنشاء الحساب
+const openSignupButtons = document.querySelectorAll('.open-signup');
+const signupOverlay = document.querySelector('.overlay-signup');
+const closeSignupPopup = document.querySelector('.close-popup-signup');
 
-// فتح نافذة التسجيل
-signupButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    signupOverlay.style.display = 'flex';
+
+const conteiner_hide = document.querySelector('.overlay-login');
+
+
+// تأكد إن العناصر موجودة قبل تشغيل الكود
+if (signupOverlay && closeSignupPopup && openSignupButtons.length > 0) {
+
+  // فتح النافذة عند الضغط على أي زر من نفس الكلاس
+  openSignupButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      signupOverlay.style.display = 'flex';
+      conteiner_hide.style.display = 'none';
+    });
   });
-});
 
-// غلق نافذة التسجيل
-closeSignup.addEventListener('click', () => {
-  signupOverlay.style.display = 'none';
-});
-
-// لو ضغط برة النافذة
-signupOverlay.addEventListener('click', (e) => {
-  if (e.target === signupOverlay) {
+  // غلق النافذة بزر الإغلاق
+  closeSignupPopup.addEventListener('click', () => {
     signupOverlay.style.display = 'none';
-  }
-});
+  });
 
-// التحويل من signup إلى login
-if (switchToLogin) {
-  switchToLogin.addEventListener('click', (e) => {
-    e.preventDefault();
-    signupOverlay.style.display = 'none';
-    if (loginOverlay) loginOverlay.style.display = 'flex';
+  // غلق النافذة عند الضغط على الخلفية
+  signupOverlay.addEventListener('click', (e) => {
+    if (e.target === signupOverlay) signupOverlay.style.display = 'none';
   });
 }

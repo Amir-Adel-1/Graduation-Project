@@ -25,6 +25,7 @@
   </head>
 
   <body>
+
     <!--  Start NavBar -->
     <nav class="navbar" id="navbar">
       <div class="logo">
@@ -34,153 +35,180 @@
 
       <ul class="nav-links">
         <li>  <a class="a active " >الرئيسية</a></li>
-        <li><a class="login a ">نبذة عنا</a></li>
-        <li><a class="login a " >المنتجات</a></li>
-        <li><a class="login a " >نصائح صحية</a></li>
-        <li><a class="login a " >اسأل طبيب</a></li>
-        <li><a class="login a " >الآستفسار عن دواء</a></li>
-        <li><a class="login a " >طلبات الأدوية الناقصة</a></li>
+        <li><a class="a  open-login">نبذة عنا</a></li>
+        <li><a class="a  open-login" >المنتجات</a></li>
+        <li><a class="a  open-login" >نصائح صحية</a></li>
+        <li><a class="a  open-login" >اسأل طبيب</a></li>
+        <li><a class="a  open-login" >الآستفسار عن دواء</a></li>
+        <li><a class="a  open-login" >طلبات الأدوية الناقصة</a></li>
       </ul>
 
       <div class="actions">
         <div class="icons">
           <div class="icon">
-            <a><i class="fa-solid fa-cart-shopping login"></i></a>
+            <a><i class="fa-solid fa-cart-shopping  open-login"></i></a>
             <span class="count green" id="cart_clr">0</span>
           </div>
           <div class="icon">
-            <a><i class="fa-solid fa-heart login"></i></a>
+            <a><i class="fa-solid fa-heart  open-login"></i></a>
             <span class="count" id="fav_clr">0</span>
           </div>
         </div>
         <div class="auth-buttons">
-          <button class="btn login">تسجيل الدخول</button>
-          <button class="btn register signup">إنشاء حساب</button>
+          <button class="btn open-login">تسجيل الدخول</button>
+          <button class="btn open-signup ">إنشاء حساب</button>
         </div>
       </div>
     </nav>
     <!--  End NavBar -->
 
-    <!--  start login -->
-    <div class="overlay" id="overlay">
-      <div class="popup">
-        <span class="close-btn" id="closePopup">&times;</span>
-        <h2>تسجيل الدخول</h2>
-        <input type="email" placeholder="أدخل بريدك الإلكتروني" />
-        <input type="password" placeholder="أدخل كلمة المرور" />
-        <div class="remember-forgot">
-          <label><input type="checkbox"/>تذكرني</label>
-          <a href="#" style="color: #fff">هل نسيت كلمة المرور؟</a>
-        </div>
-        <button>تسجيل الدخول</button>
-        <div class="footer">
-          ليس لديك حساب؟ <a href="#" id="switchToSignup">سجّل الآن</a>
-        </div>
-      </div>
-    </div>
-    <!--  End login -->
 
+
+  <!-- ✅ Start LOGIN POPUP -->
+  <div class="overlay-login">
+    <div class="popup-login">
+      <span class="close-popup-login">&times;</span>
+      <h2>• تسجيل الدخول •</h2>
+
+      <form class="login-form">
+        <div class="form-grid-login">
+          <!-- البريد الإلكتروني -->
+          <div class="nebula-input-login">
+            <input required type="email" name="Email" autocomplete="off" class="input" />
+            <label class="user-label-login">البريد الإلكتروني</label>
+  <div class="nebula-particle-login" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-login" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-login" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-login" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-login" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-login" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+
+          <!-- كلمة المرور -->
+          <div class="nebula-input-login">
+            <input required type="password" name="Password" autocomplete="off" class="input" />
+            <label class="user-label-login">كلمة المرور</label>
+  <div class="nebula-particle-login" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-login" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-login" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-login" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-login" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-login" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+          </div>
+        </div>
+
+        <div class="remember-forgot">
+          <label><input type="checkbox" /> تذكرني</label>
+          <a href="#">نسيت كلمة المرور؟</a>
+        </div>
+
+        <button type="submit" class="submit-btn-login">تسجيل الدخول</button>
+        <p class="login-link">ليس لديك حساب؟ <a href="#">سجّل الآن</a></p>
+      </form>
+    </div>
+  </div>
+  <!-- ✅ End LOGIN POPUP -->
 
 
 
   <!-- ✅ Start SIGNUP POPUP -->
-  <div class="overlay">
-    <div class="popup">
-      <span class="close-popup">&times;</span>
+  <div class="overlay-signup">
+    <div class="popup-signup">
+      <span class="close-popup-signup">&times;</span>
       <h2> • إنشاء حساب جديد • </h2>
 
-      <form class="register-form">
-        <div class="form-grid">
-          <div class="nebula-input">
+      <form class="form-signup">
+        <div class="form-grid-signup">
+          <div class="nebula-input-signup">
   <input required type="text" name="F_Name" autocomplete="off" class="input" />
-  <label class="user-label">الأسم الأول</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">الأسم الأول</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <input required type="text" name="L_Name" autocomplete="off" class="input" />
-  <label class="user-label">الأسم الأخير</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">الأسم الأخير</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <select class="input  color" required>
     <option value="" disabled selected>اختر الجنس</option>
     <option value="male">ذكر</option>
     <option value="female">أنثى</option>
   </select>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
         </div>
 
-        <div class="form-grid">
-          <div class="nebula-input">
+        <div class="form-grid-signup">
+          <div class="nebula-input-signup">
   <input required type="email" name="Email" autocomplete="off" class="input" />
-  <label class="user-label">البريد الإلكتروني</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">البريد الإلكتروني</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <input required type="password" name="Password" autocomplete="off" class="input" />
-  <label class="user-label">كلمة المرور</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">كلمة المرور</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <input required type="text" name="Phone" autocomplete="off" class="input" />
-  <label class="user-label">رقم الهاتف</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">رقم الهاتف</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
         </div>
 
-        <div class="form-grid">
-          <div class="nebula-input">
+        <div class="form-grid-signup">
+          <div class="nebula-input-signup">
   <input required type="text" name="Address" autocomplete="off" class="input" />
-  <label class="user-label">العنوان</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">العنوان</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <input required type="date" name="Weight" autocomplete="off" class="input color" />
-  <label class="user-label">تاريخ الميلاد</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">تاريخ الميلاد</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <select class="input  color" required>
     <option value="" disabled selected>اختر فصيلة الدم</option>
     <option value="A+">A+</option>
@@ -192,37 +220,37 @@
     <option value="AB+">AB+</option>
     <option value="AB-">AB-</option>
   </select>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
         </div>
 
-        <div class="form-grid">
-          <div class="nebula-input">
+        <div class="form-grid-signup">
+          <div class="nebula-input-signup">
   <input required type="number" name="Height" autocomplete="off" class="input" />
-  <label class="user-label">الطول (سم)</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">الطول (سم)</label>
+  <div class="nebula-particl-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particl-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particl-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particl-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particl-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particl-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <input required type="number" name="Weight" autocomplete="off" class="input" />
-  <label class="user-label">الوزن (كجم)</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">الوزن (كجم)</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <select class="input  color" required>
     <option value="" disabled selected>اختر حالتك الصحية</option>
     <option value="non-smoker">غير مدخن</option>
@@ -233,43 +261,43 @@
     <option value="chronic">يعاني من أمراض مزمنة</option>
     <option value="under-treatment">يتلقى علاج حاليًا</option>
   </select>
-    <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+    <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
         </div>
 
-        <div class="form-grid two-textareas">
+        <div class="form-grid-signup two-textareas">
 <!-- الأمراض المزمنة -->
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <textarea class="input" required placeholder=" "></textarea>
-  <label class="user-label">الأمراض المزمنة</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">الأمراض المزمنة</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
           <!-- الحساسية -->
-          <div class="nebula-input">
+          <div class="nebula-input-signup">
   <textarea class="input" required placeholder=" "></textarea>
-  <label class="user-label">الحساسية إن وجدت</label>
-  <div class="nebula-particle" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
-  <div class="nebula-particle" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
-  <div class="nebula-particle" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
-  <div class="nebula-particle" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
-  <div class="nebula-particle" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
-  <div class="nebula-particle" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+  <label class="user-label-signup">الحساسية إن وجدت</label>
+  <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-signup" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-signup" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-signup" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
         </div>
 
 
-        <button type="submit" class="submit-btn">تـسـجـيـل</button>
-        <p class="login-link">هل لديك حساب بالفعل؟ <a href="#">تسجيل الدخول</a></p>
+        <button type="submit" class="submit-btn-signup">تـسـجـيـل</button>
+        <p class="signup-link">هل لديك حساب بالفعل؟ <a href="#">تسجيل الدخول</a></p>
       </form>
     </div>
   </div>
@@ -301,8 +329,8 @@
 
         <!-- ====== الأزرار ====== -->
         <div class="hero-buttons">
-          <a class="btn primary login">تسوق الآن</a>
-          <a class="btn secondary login">الآستفسار عن دواء</a>
+          <a class="btn primary  open-login">تسوق الآن</a>
+          <a class="btn secondary  open-login">الآستفسار عن دواء</a>
         </div>
       </div>
     </section>
@@ -336,12 +364,12 @@
                 <div class="card__price">99.99 ج.م</div>
 
                 <div class="buttons">
-                  <button class="card__button login">
-                    <i class="fa-solid fa-cart-shopping"></i>
+                  <button class="card__button">
+                    <i class="fa-solid fa-cart-shopping  open-login"></i>
                   </button>
 
-                  <button class="card__button login">
-                    <i class="fa-solid fa-heart"></i>
+                  <button class="card__button">
+                    <i class="fa-solid fa-heart  open-login"></i>
                   </button>
                 </div>
               </div>
@@ -364,12 +392,12 @@
                 <div class="card__price">95.99 ج.م</div>
 
                 <div class="buttons">
-                  <button class="card__button login">
-                    <i class="fa-solid fa-cart-shopping"></i>
+                  <button class="card__button">
+                    <i class="fa-solid fa-cart-shopping  open-login"></i>
                   </button>
 
-                  <button class="card__button login">
-                    <i class="fa-solid fa-heart"></i>
+                  <button class="card__button">
+                    <i class="fa-solid fa-heart  open-login"></i>
                   </button>
                 </div>
               </div>
@@ -392,12 +420,12 @@
                 <div class="card__price">99.99 ج.م</div>
 
                 <div class="buttons">
-                  <button class="card__button login">
-                    <i class="fa-solid fa-cart-shopping"></i>
+                  <button class="card__button">
+                    <i class="fa-solid fa-cart-shopping  open-login"></i>
                   </button>
 
-                  <button class="card__button login">
-                    <i class="fa-solid fa-heart"></i>
+                  <button class="card__button">
+                    <i class="fa-solid fa-heart  open-login"></i>
                   </button>
                 </div>
               </div>
@@ -420,12 +448,12 @@
                 <div class="card__price">99.99 ج.م</div>
 
                 <div class="buttons">
-                  <button class="card__button login">
-                    <i class="fa-solid fa-cart-shopping"></i>
+                  <button class="card__button">
+                    <i class="fa-solid fa-cart-shopping  open-login"></i>
                   </button>
 
-                  <button class="card__button login">
-                    <i class="fa-solid fa-heart"></i>
+                  <button class="card__button">
+                    <i class="fa-solid fa-heart  open-login"></i>
                   </button>
                 </div>
               </div>
@@ -433,7 +461,7 @@
           </div>
         </div>
         <div class="offers-footer">
-          <a class="login"><button class="view-all-btn">عرض جميع العروض</button></a>
+          <a><button class="view-all-btn  open-login">عرض جميع العروض</button></a>
         </div>
   </section>
 <!-- End Card Section -->
@@ -492,7 +520,7 @@
         <p>تحدث مع أطبائنا المتخصصين واحصل على استشارة فورية</p>
 
         <div class="cta-buttons">
-          <a class="btn-primary login">اسأل طبيب الآن</a>
+          <a class="btn-primary  open-login">اسأل طبيب الآن</a>
         </div>
   </section>
 <!-- End Call To Action -->
@@ -516,11 +544,11 @@
           <h3>روابط سريعة</h3>
           <ul>
             <li><a href="../Home/index.html">الرئيسية</a></li>
-            <li><a class="login">نبذة عنا</a></li>
-            <li><a class="login">المنتجات</a></li>
-            <li><a class="login">نصائح صحية</a></li>
-            <li><a class="login">اسأل طبيب</a></li>
-            <li><a class="login">الاستفسار عن دواء</a></li>
+            <li><a class="open-login">نبذة عنا</a></li>
+            <li><a class="open-login">المنتجات</a></li>
+            <li><a class="open-login">نصائح صحية</a></li>
+            <li><a class="open-login">اسأل طبيب</a></li>
+            <li><a class="open-login">الاستفسار عن دواء</a></li>
           </ul>
         </div>
 
@@ -557,11 +585,14 @@
     <!-- End Footer -->
 
 
+
     <!-- Start scroll To Top Btn -->
     <button id="scrollToTopBtn" title="Go to top">
       <i class="fa-solid fa-arrow-up-from-bracket"></i>
     </button>
     <!-- End scroll To Top Btn -->
+
+
 
     <script src="../Home/index.js"></script>
     <script src="login and signup/login.js"></script>
