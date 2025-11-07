@@ -5,15 +5,17 @@
     <!-- Responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- <title>Se7ty - Home</title> --> <!-- EN -->
-    <title>Se7ty - الصفحة الرئيسية</title> <!-- AR -->
+    <!-- <title>Se7ty - Home</title> -->
+    <!-- EN -->
+    <title>Se7ty - الصفحة الرئيسية</title>
+    <!-- AR -->
 
     <!-- Logo Website -->
     <link rel="icon" href="" type="png" />
     <!-- Main Template CSS File -->
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="login and signup/login.css">
-    <link rel="stylesheet" href="login and signup/signup.css">
+    <link rel="stylesheet" href="login and signup/login.css" />
+    <link rel="stylesheet" href="login and signup/signup.css" />
     <!-- Bootstrap -->
     <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
     <!-- Font Awsome -->
@@ -23,127 +25,117 @@
   </head>
 
   <body>
-    
     <!--  Start NavBar -->
     <nav class="navbar" id="navbar">
       <div class="logo">
-        <i class="fa-solid fa-heart-pulse  gradient-color  glowing-text"></i>
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
         <span class="glowing-text">Se7ty</span>
       </div>
 
       <ul class="nav-links">
-<<<<<<< HEAD
-
         <li>  <a class="a active " >الرئيسية</a></li>
-              <li><a class="login a ">نبذة عنا</a></li>
+        <li><a class="login a ">نبذة عنا</a></li>
         <li><a class="login a " >المنتجات</a></li>
         <li><a class="login a " >نصائح صحية</a></li>
         <li><a class="login a " >اسأل طبيب</a></li>
         <li><a class="login a " >الآستفسار عن دواء</a></li>
         <li><a class="login a " >طلبات الأدوية الناقصة</a></li>
-
       </ul>
 
       <div class="actions">
         <div class="icons">
           <div class="icon">
-            <a><i class="fa-solid fa-cart-shopping login "></i></a>
+            <a><i class="fa-solid fa-cart-shopping login"></i></a>
             <span class="count green" id="cart_clr">0</span>
           </div>
           <div class="icon">
-            <a><i class="fa-solid fa-heart login "></i></a>
+            <a><i class="fa-solid fa-heart login"></i></a>
             <span class="count red" id="fav_clr">0</span>
           </div>
         </div>
         <div class="auth-buttons">
-
-          <button class="btn login" >تسجيل الدخول</button>
-          <button class="btn register signup ">إنشاء حساب</button>
-
+          <button class="btn login">تسجيل الدخول</button>
+          <button class="btn register signup">إنشاء حساب</button>
         </div>
-
       </div>
     </nav>
     <!--  End NavBar -->
 
-
-
-<!--  start login -->
-  <div class="overlay" id="overlay">
-    <div class="popup">
-      <span class="close-btn" id="closePopup">&times;</span>
-      <h2>Login Form</h2>
-      <input type="email" placeholder="Enter your email">
-      <input type="password" placeholder="Enter your password">
-      <div class="remember-forgot">
-        <label><input type="checkbox"> Remember me</label>
-        <a href="#" style="color:#fff;">Forgot password?</a>
+    <!--  start login -->
+    <div class="overlay" id="overlay">
+      <div class="popup">
+        <span class="close-btn" id="closePopup">&times;</span>
+        <h2>تسجيل الدخول</h2>
+        <input type="email" placeholder="أدخل بريدك الإلكتروني" />
+        <input type="password" placeholder="أدخل كلمة المرور" />
+        <div class="remember-forgot">
+          <label><input type="checkbox"/>تذكرني</label>
+          <a href="#" style="color: #fff">هل نسيت كلمة المرور؟</a>
+        </div>
+        <button>تسجيل الدخول</button>
+        <div class="footer">
+          ليس لديك حساب؟ <a href="#" id="switchToSignup">سجّل الآن</a>
+        </div>
       </div>
-      <button>Log In</button>
-      <div class="footer">
-        Don’t have an account? <a href="#" id="switchToSignup" >Register</a>
+    </div>
+    <!--  End login -->
+
+    <!-- ✅ SIGNUP POPUP -->
+    <div class="overlay" id="signupOverlay">
+      <div class="popup signup-popup">
+        <span class="close-btn" id="closeSignup">&times;</span>
+        <h2>إنشاء حساب جديد</h2>
+        <p class="subtitle">إنه سريع وسهل.</p>
+
+        <div class="name-fields">
+          <input type="text" placeholder="الاسم الأول" />
+          <input type="text" placeholder="اللقب" />
+        </div>
+
+        <input type="text" placeholder="البريد الإلكتروني أو رقم الهاتف" />
+        <input type="password" placeholder="كلمة المرور الجديدة" />
+
+        <label class="label">تاريخ الميلاد</label>
+        <div class="birthday">
+          <select>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+          </select>
+          <select>
+            <option>يناير</option>
+            <option>فبراير</option>
+            <option>مارس</option>
+          </select>
+          <select>
+            <option>2025</option>
+            <option>2024</option>
+            <option>2023</option>
+          </select>
+        </div>
+
+        <label class="label">النوع</label>
+        <div class="gender">
+          <label><input type="radio" name="gender" /> ذكر</label>
+          <label><input type="radio" name="gender" /> أنثى</label>
+        </div>
+
+        <button class="create-btn">إنشاء حساب</button>
+
+        <p class="terms">
+          بالتسجيل، أنت توافق على <a href="#">الشروط</a> و
+          <a href="#">سياسة الخصوصية</a>.
+        </p>
+
+        <div class="have-account">
+          <p>
+            هل لديك حساب بالفعل؟ <a href="#" id="switchToLogin">تسجيل الدخول</a>
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-<!--  End login -->
 
-
-
-<!-- ✅ SIGNUP POPUP -->
-<div class="overlay" id="signupOverlay">
-  <div class="popup signup-popup">
-    <span class="close-btn" id="closeSignup">&times;</span>
-    <h2>إنشاء حساب جديد</h2>
-    <p class="subtitle">إنه سريع وسهل.</p>
-
-    <div class="name-fields">
-      <input type="text" placeholder="الاسم الأول" />
-      <input type="text" placeholder="اللقب" />
-    </div>
-
-    <input type="text" placeholder="البريد الإلكتروني أو رقم الهاتف" />
-    <input type="password" placeholder="كلمة المرور الجديدة" />
-
-    <label class="label">تاريخ الميلاد</label>
-    <div class="birthday">
-      <select>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-      </select>
-      <select>
-        <option>يناير</option>
-        <option>فبراير</option>
-        <option>مارس</option>
-      </select>
-      <select>
-        <option>2025</option>
-        <option>2024</option>
-        <option>2023</option>
-      </select>
-    </div>
-
-    <label class="label">النوع</label>
-    <div class="gender">
-      <label><input type="radio" name="gender" /> ذكر</label>
-      <label><input type="radio" name="gender" /> أنثى</label>
-    </div>
-
-    <button class="create-btn">إنشاء حساب</button>
-
-    <p class="terms">
-      بالتسجيل، أنت توافق على <a href="#">الشروط</a> و
-      <a href="#">سياسة الخصوصية</a>.
-    </p>
-
-    <div class="have-account">
-      <p>هل لديك حساب بالفعل؟ <a href="#" id="switchToLogin">تسجيل الدخول</a></p>
-    </div>
-  </div>
-</div>
-
-
-  <!-- Start Bannar -->
+    <!-- Start Bannar -->
     <section class="hero">
       <div class="overlay"></div>
 
@@ -167,145 +159,142 @@
 
         <!-- ====== الأزرار ====== -->
         <div class="hero-buttons">
-          <a  class="btn primary login ">تسوق الآن</a>
-          <a  class="btn secondary login ">الآستفسار عن دواء</a>
+          <a class="btn primary login">تسوق الآن</a>
+          <a class="btn secondary login">الآستفسار عن دواء</a>
         </div>
       </div>
     </section>
-  <!-- End Bannar -->
+    <!-- End Bannar -->
 
-  
+
 
 <!-- Start Content -->
   <main class="content">
 <!-- Start Card Section -->
   <section class="offers-cards-section">
-    <div class="offers-header">
-    <h2>عروض وخصومات حصرية</h2>
-    <p>وفر على أدويتك المفضلة مع عروضنا الحصرية</p>
-    </div>
-    <div class="cards-container">
-        <!-- Card 1 -->
-        <div class="card">
-          <div class="card__shine"></div>
-          <div class="card__glow"></div>
-          <div class="card__content">
-            <div class="card__badge">NEW</div>
-            <div style="--bg-color: #a78bfa" class="card__image">
-              <img src="images/1.jpg" alt="" />
-            </div>
-            <div class="card__text">
-              <p class="card__title">أوميجا 3</p>
-              <p class="card__description">مكمل غذائي</p>
-            </div>
-            <div class="card__footer">
-              <div class="card__price">99.99 ج.م</div>
+        <div class="offers-header">
+          <h2>عروض وخصومات حصرية</h2>
+          <p>وفر على أدويتك المفضلة مع عروضنا الحصرية</p>
+        </div>
+        <div class="cards-container">
+          <!-- Card 1 -->
+          <div class="card">
+            <div class="card__shine"></div>
+            <div class="card__glow"></div>
+            <div class="card__content">
+              <div class="card__badge">NEW</div>
+              <div style="--bg-color: #a78bfa" class="card__image">
+                <img src="images/1.jpg" alt="" />
+              </div>
+              <div class="card__text">
+                <p class="card__title">أوميجا 3</p>
+                <p class="card__description">مكمل غذائي</p>
+              </div>
+              <div class="card__footer">
+                <div class="card__price">99.99 ج.م</div>
 
-              <div class="buttons">
-                <button class="card__button login ">
-                  <i class="fa-solid fa-cart-shopping  "></i>
-                </button>
+                <div class="buttons">
+                  <button class="card__button login">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                  </button>
 
-                <button class="card__button login ">
-                  <i class="fa-solid fa-heart  "  ></i>
-                </button>
+                  <button class="card__button login">
+                    <i class="fa-solid fa-heart"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Card 2 -->
+          <div class="card">
+            <div class="card__shine"></div>
+            <div class="card__glow"></div>
+            <div class="card__content">
+              <div class="card__badge">NEW</div>
+              <div style="--bg-color: #a78bfa" class="card__image">
+                <img src="images/2.jpg" alt="" />
+              </div>
+              <div class="card__text">
+                <p class="card__title">أسبرين كارديو</p>
+                <p class="card__description">Bayer</p>
+              </div>
+              <div class="card__footer">
+                <div class="card__price">95.99 ج.م</div>
+
+                <div class="buttons">
+                  <button class="card__button login">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                  </button>
+
+                  <button class="card__button login">
+                    <i class="fa-solid fa-heart"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div class="card">
+            <div class="card__shine"></div>
+            <div class="card__glow"></div>
+            <div class="card__content">
+              <div class="card__badge">NEW</div>
+              <div style="--bg-color: #a78bfa" class="card__image">
+                <img src="images/3.jpg" alt="" />
+              </div>
+              <div class="card__text">
+                <p class="card__title">فيتامين د 3000</p>
+                <p class="card__description">Nature Made</p>
+              </div>
+              <div class="card__footer">
+                <div class="card__price">99.99 ج.م</div>
+
+                <div class="buttons">
+                  <button class="card__button login">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                  </button>
+
+                  <button class="card__button login">
+                    <i class="fa-solid fa-heart"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Card 4 -->
+          <div class="card">
+            <div class="card__shine"></div>
+            <div class="card__glow"></div>
+            <div class="card__content">
+              <div class="card__badge">NEW</div>
+              <div style="--bg-color: #a78bfa" class="card__image">
+                <img src="images/4.jpg" alt="" />
+              </div>
+              <div class="card__text">
+                <p class="card__title">بانادول إكسترا</p>
+                <p class="card__description">GSK</p>
+              </div>
+              <div class="card__footer">
+                <div class="card__price">99.99 ج.م</div>
+
+                <div class="buttons">
+                  <button class="card__button login">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                  </button>
+
+                  <button class="card__button login">
+                    <i class="fa-solid fa-heart"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      <!-- Card 2 -->
-        <div class="card">
-          <div class="card__shine"></div>
-          <div class="card__glow"></div>
-          <div class="card__content">
-            <div class="card__badge">NEW</div>
-            <div style="--bg-color: #a78bfa" class="card__image">
-              <img src="images/2.jpg" alt="" />
-            </div>
-            <div class="card__text">
-              <p class="card__title">أسبرين كارديو</p>
-              <p class="card__description">Bayer</p>
-            </div>
-            <div class="card__footer">
-              <div class="card__price">95.99 ج.م</div>
-
-              <div class="buttons">
-                <button class="card__button login ">
-                  <i class="fa-solid fa-cart-shopping  "></i>
-                </button>
-
-                <button class="card__button login ">
-                  <i class="fa-solid fa-heart  "></i>
-                </button>
-              </div>
-            </div>
-          </div>
+        <div class="offers-footer">
+          <a href="../Products/Products.html"><button class="view-all-btn">عرض جميع العروض</button></a>
         </div>
-      <!-- Card 3 -->
-        <div class="card">
-          <div class="card__shine"></div>
-          <div class="card__glow"></div>
-          <div class="card__content">
-            <div class="card__badge">NEW</div>
-            <div style="--bg-color: #a78bfa" class="card__image">
-              <img src="images/3.jpg" alt="" />
-            </div>
-            <div class="card__text">
-              <p class="card__title">فيتامين د 3000</p>
-              <p class="card__description">Nature Made</p>
-            </div>
-            <div class="card__footer">
-              <div class="card__price">99.99 ج.م</div>
-
-              <div class="buttons">
-                <button class="card__button login ">
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </button>
-
-                <button class="card__button login ">
-                  <i class="fa-solid fa-heart"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      <!-- Card 4 -->
-        <div class="card">
-          <div class="card__shine"></div>
-          <div class="card__glow"></div>
-          <div class="card__content">
-            <div class="card__badge">NEW</div>
-            <div style="--bg-color: #a78bfa" class="card__image">
-              <img src="images/4.jpg" alt="" />
-            </div>
-            <div class="card__text">
-              <p class="card__title">بانادول إكسترا</p>
-              <p class="card__description">GSK</p>
-            </div>
-            <div class="card__footer">
-              <div class="card__price">99.99 ج.م</div>
-
-              <div class="buttons">
-                <button class="card__button login ">
-                  <i class="fa-solid fa-cart-shopping"></i>
-                </button>
-
-                <button class="card__button login ">
-                  <i class="fa-solid fa-heart"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-    </div>
-    <div class="offers-footer">
-    <a><button class="view-all-btn login ">عرض جميع العروض</button></a>
-    </div>
   </section>
 <!-- End Card Section -->
-
-
-
 
 <!-- Start Testimonials Section -->
   <section class="testimonials">
@@ -355,15 +344,13 @@
   </section>
 <!-- End Testimonials Section -->
 
-  
-
 <!-- Start Call To Action -->
   <section class="cta-section">
         <h2>هل تحتاج استشارة طبية؟</h2>
         <p>تحدث مع أطبائنا المتخصصين واحصل على استشارة فورية</p>
 
         <div class="cta-buttons">
-          <a  class="btn-primary login ">اسأل طبيب الآن</a>
+          <a class="btn-primary login">اسأل طبيب الآن</a>
         </div>
   </section>
 <!-- End Call To Action -->
@@ -377,7 +364,7 @@
       <div class="footer-content">
         <div class="footer-section about">
           <div class="logo">
-            <i class="fa-solid fa-heart-pulse  gradient-color  glowing-text"></i>
+            <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
             <span class="glowing-text">Se7ty</span>
           </div>
           <p>صيدليتك الموثوقة لجميع الأدوية والمنتجات الصحية عالية الجودة</p>
@@ -388,12 +375,10 @@
           <ul>
             <li><a href="../Home/index.html">الرئيسية</a></li>
             <li><a class="login">نبذة عنا</a></li>
-            <li><a class="login" >المنتجات</a></li>
-            <li><a class="login" >نصائح صحية</a></li>
+            <li><a class="login">المنتجات</a></li>
+            <li><a class="login">نصائح صحية</a></li>
             <li><a class="login">اسأل طبيب</a></li>
-            <li>
-              <a class="login" >الاستفسار عن دواء</a>
-            </li>
+            <li><a class="login">الاستفسار عن دواء</a></li>
           </ul>
         </div>
 
@@ -430,11 +415,14 @@
     <!-- End Footer -->
 
 
-    <!-- scroll To Top Btn -->
-    <button id="scrollToTopBtn" title="Go to top"><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
+    <!-- Start scroll To Top Btn -->
+    <button id="scrollToTopBtn" title="Go to top">
+      <i class="fa-solid fa-arrow-up-from-bracket"></i>
+    </button>
+    <!-- End scroll To Top Btn -->
 
     <script src="../Home/index.js"></script>
-    <script src="login and signup/login.js" ></script>
+    <script src="login and signup/login.js"></script>
     <script src="login and signup/signup.js"></script>
   </body>
 </html>

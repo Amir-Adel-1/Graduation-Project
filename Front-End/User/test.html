@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Cairo", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1580281657521-55729d08b2b9?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .login-container {
+      background: rgba(207, 6, 6, 0.418);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      padding: 40px 35px;
+      width: 360px;
+      color: #fff;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .input-field {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .input-field input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-bottom: 2px solid #fff;
+      background: transparent;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .input-field label {
+      position: absolute;
+      top: 12px;
+      right: 10px;
+      color: #ddd;
+      font-size: 0.95rem;
+      transition: 0.3s;
+      pointer-events: none;
+    }
+
+    .input-field input:focus + label,
+    .input-field input:valid + label {
+      top: -10px;
+      right: 0;
+      font-size: 0.8rem;
+      color: #00bcd4;
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      font-size: 0.9rem;
+    }
+
+    .options a {
+      color: #00bcd4;
+      text-decoration: none;
+    }
+
+    .options a:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #00bcd4, #0097a7);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #0097a7, #00796b);
+      transform: translateY(-2px);
+    }
+
+    .register {
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    .register a {
+      color: #00bcd4;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .register a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>تسجيل الدخول</h2>
+    <form>
+      <div class="input-field">
+        <input type="email" id="email" required />
+        <label for="email">أدخل بريدك الإلكتروني</label>
+      </div>
+      <div class="input-field">
+        <input type="password" id="password" required />
+        <label for="password">أدخل كلمة المرور</label>
+      </div>
+      <div class="options">
+        <label><input type="checkbox" /> تذكرني</label>
+        <a href="#">هل نسيت كلمة المرور؟</a>
+      </div>
+      <button type="submit">تسجيل الدخول</button>
+      <div class="register">
+        ليس لديك حساب؟ <a href="#">سجّل الآن</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
