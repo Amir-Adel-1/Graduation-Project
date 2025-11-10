@@ -23,6 +23,30 @@ body {
   color: #ffffff;
 }
 
+
+
+/* Start Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f1923; /* سماوي فاتح */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5afaff;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #009ad7;
+}
+/* End Scrollbar */
+
+
+
 /* ------------------- 🔵 Navbar Base ------------------- */
 .navbar {
   position: fixed;
