@@ -292,24 +292,4 @@ background-clip: text;
 
 
 
-/* استجابة للشاشات المتوسطة */
-@media (max-width: 992px) {
-  .form-grid-signup {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 95%;
-  }
-  .form-grid-signup .full-width {
-    grid-column: span 2;
-  }
-}
 
-/* استجابة للموبايل */
-@media (max-width: 600px) {
-  .form-grid-signup {
-    grid-template-columns: 1fr;
-  }
-  .form-grid-signup .full-width,
-  .form-grid-signup .half-width {
-    grid-column: span 1;
-  }
-}

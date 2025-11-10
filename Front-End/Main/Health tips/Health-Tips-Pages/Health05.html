@@ -20,108 +20,48 @@
 </head>
 <body>
 
-  <!--  Start NavBar -->
-  <nav class="navbar">
-    <div class="logo">
-      <i class="fa-solid fa-prescription-bottle-medical"></i>
-      <span>Se7ty</span>
-    </div>
+    <!--  Start NavBar -->
+    <nav class="navbar" id="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+        <span class="text-logo">Se7ty</span>
+      </div>
 
-    <ul class="nav-links">
-      <li><a href="../../Home/index.html">الرئيسية</a></li>
-      <li><a href="../../About Us/About Us.html">نبذة عنا</a></li>
-      <li><a href="../../Products/Products.html">المنتجات</a></li>
-      <li><a href="../../Health tips/Health Tips.html">نصائح صحية</a></li>
-      <li><a href="../../Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
-      <li><a href="../../Inquiry About Medication/Inquiry About Medication.html">الآستفسار عن دواء</a></li>
-    </ul>
+      <ul class="nav-links">
+        <li><a href="../../../User/Home/index.html">الرئيسية</a></li>
+        <li><a href="../../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../../Main/Products/Products.html">المنتجات</a></li>
+        <li><a href="../../../Main/Health tips/Health Tips.html"  class="active">نصائح صحية</a></li>
+        <li><a href="../../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+        <li><a href="../../../Main/Inquiry About Medication/Inquiry About Medication.html">الآستفسار عن دواء</a></li>
+        <li><a href="../../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
+      </ul>
 
-  <!-- Start Dark Mode Button -->
-  <div class="dark-mode">
-    <label class="switch">
-  <input id="input" type="checkbox" checked="darkTheme" />
-  <div class="slider round">
-    <div class="sun-moon">
-      <svg id="moon-dot-1" class="moon-dot" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="moon-dot-2" class="moon-dot" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="moon-dot-3" class="moon-dot" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="light-ray-1" class="light-ray" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="light-ray-2" class="light-ray" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="light-ray-3" class="light-ray" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-
-      <svg id="cloud-1" class="cloud-dark" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="cloud-2" class="cloud-dark" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="cloud-3" class="cloud-dark" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="cloud-4" class="cloud-light" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="cloud-5" class="cloud-light" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-      <svg id="cloud-6" class="cloud-light" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="50"></circle>
-      </svg>
-    </div>
-    <div class="stars">
-      <svg id="star-1" class="star" viewBox="0 0 20 20">
-        <path
-          d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-        ></path>
-      </svg>
-      <svg id="star-2" class="star" viewBox="0 0 20 20">
-        <path
-          d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-        ></path>
-      </svg>
-      <svg id="star-3" class="star" viewBox="0 0 20 20">
-        <path
-          d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-        ></path>
-      </svg>
-      <svg id="star-4" class="star" viewBox="0 0 20 20">
-        <path
-          d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-        ></path>
-      </svg>
-    </div>
-  </div>
-</label>
-  </div>
-  <!-- Start Dark Mode Button -->
-
-    <div class="actions">
-      <div class="icons">
-        <div class="icon">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <span class="count green">0</span>
+      <div class="actions">
+        <div class="icons">
+          <div class="icon">
+            <a href="../../../Main/Shopping Cart/Shopping Cart.html"><i class="fa-solid fa-cart-shopping "></i></a>
+            <span class="count" id="cart_clr">0</span>
+          </div>
+          <div class="icon">
+            <a href="../../../Main/Favorites/Favorites.html"><i class="fa-solid fa-heart "></i></a>
+            <span class="count" id="fav_clr">0</span>
+          </div>
         </div>
-        <div class="icon">
-          <i class="fa-solid fa-heart"></i>
-          <span class="count red">0</span>
+        <div class="user-info" id="userInfo">
+          <span  id="userName" class="user-name"></span>
+        </div>
+        <!-- القائمة المنسدلة -->
+        <div class="user-menu" id="userMenu">
+          <ul>
+            <li><a href="../../../User/Home/User_Menu/User_Profile.html">👤 الملف الشخصي</a></li>
+            <li><a href="#">⚙️ الإعدادات</a></li>
+            <li><a id="exit">🚪 تسجيل الخروج</a></li>
+          </ul>
         </div>
       </div>
-      <button class="login-btn">تسجيل الدخول</button>
-    </div>
-  </nav>
-  <!--  End NavBar -->
+    </nav>
+    <!--  End NavBar -->
 
 
 <!-- Start tips-content -->
@@ -130,130 +70,100 @@
 
     <div class="tips-content">
       <div class="tips-image">
-        <img src="../images/5.jpg" alt="مستحضرات التجميل والحمل">
+        <img src="../images/5.jpg" style="width: 250px; height: 300px;" alt="مستحضرات التجميل والحمل">
       </div>
 
       <div class="tips-text">
-        <h5>هل تؤثر منتجات التجميل على الجنين؟ وكيف أتغلب على المشاكل التي تظهر أثناء الحمل وتؤثر على جمالي؟</h5>
-<ul>
-    <li>
-      هذه عينة من الأسئلة التي تدور في أذهان الكثير من السيدات عند ظهور نتيجة إيجابية لتحليل الحمل،
-      وقد لا يعلم الكثيرون عن مخاطر استخدام مستحضرات التجميل لما تحتويه من مواد فعالة وضارة.
-    </li>
-    <li>
-      تحدد خطورة المواد المستخدمة في مستحضرات التجميل، إذا كان لها قدرة عالية على الامتصاص عن طريق الجلد
-      وما إذا كانت لها تأثير سلبي على الجنين أو الأم الحامل.
-    </li>
-    <li>
-      ولذلك نحرص على التنويه عن كل المستحضرات الضارة بصحة الجنين والأم
-      ونسعى للإجابة عن أي أسئلة تدور في ذهنك عن سلامة أو خطورة استخدام مستحضرات التجميل،
-      استنادًا بأحدث الأبحاث والمراجع العلمية.
-    </li>
-    <li>
-      هل أمتنع عن استخدام منتج الحماية من الشمس أو كريم الترطيب الخاص بي؟
-      <br>
-      لا توجد أدنى مشكلة في استمرار استخدام واقي الشمس الخاص بك والمناسب لنوع بشرتك،
-      وذلك لعدم احتوائه على أي مواد فعالة تمتص مباشرة عن طريق الجلد.
-      فلا مانع من الاعتماد على واقي الشمس وبالأخص أثناء الحمل لتجنب اسمرار البشرة.
-    </li>
-    <li>
-      ما هي أهم المواد الفعالة المحظورة أثناء فترة الحمل؟
-      <br>
-      كل مستحضرات العناية بالبشرة آمنة إذا لم تحتوي على مشتقات فيتامين A
-      (<em>Isotretinoin – Retinoic Acid – Retinoides – Retinaldehyde – Retinylpalmitate</em>)
-      بالإضافة إلى المواد التي تساعد على تفتيح البشرة مثل مادتي الهيدروكينون
-      (<em>Hydroquinone</em>) والكوجيك أسيد (<em>Kojic Acid</em>)
-      ومقشرات البشرة (<em>Scrub</em>) التي تحتوي على <em>Glycolic acid</em>
-      وذلك لإمكانية امتصاص هذه المواد بكميات قد تؤثر على صحة الجنين.
-    </li>
-    <li>
-      أنا في شهور الحمل الأولى، ما أنسب المستحضرات الآمنة للحماية أو لعلاج علامات تمدد الجلد أثناء الحمل؟
-      <br>
-      كل المنتجات آمنة إذا ثبت خلوها من المواد السابق ذكرها وبالأخص مشتقات فيتامين A،
-      وذلك لاعتماد الكثير من منتجات علامات التمدد عليه لزيادة إنتاج الكولاجين والإيلاستين.
-      والحل هو الاعتماد على المنتجات التي تحتوي على مواد عالية الترطيب مثل زبدة الشيا،
-      الكاكاو، بالإضافة إلى فيتامين E و C، والكولاجين والإيلاستين كحماية شاملة من تلك المشكلة.
-    </li>
-    <li>
-      ما هي أنسب منتجات تفتيح البشرة أثناء الحمل؟
-      <br>
-      هي المنتجات الخالية من المادتين السابقتين، والتي تعتمد على فيتامين C ومادة الأربيوتين
-      وخلاصة العرقسوس (<em>Licorice Extract</em>)، وفيتامين B3 والصويا (<em>Soya Extract</em>)
-      مع التركيز على استخدام واقٍ من أشعة الشمس يتناسب مع نوع بشرتك لتجنب حساسية البشرة
-      أثناء التعرض لأشعة الشمس أو الحرارة.
-    </li>
-    <li>
-      ماذا أفعل مع بشرتي الدهنية وحبوب الشباب أثناء الحمل؟
-      <br>
-      الأساس هو استخدام غسول يحتوي على حمض الساليسيليك (<em>Salicylic Acid</em>)
-      لتنعيم سطح البشرة وإزالة الخلايا الميتة مع استخدام كريم غني ببعض مشتقات الزنك
-      (<em>Zinc gluconate</em>) لإعادة تنظيم الإفرازات الدهنية ومنع نمو البكتيريا المسببة لحبوب الشباب.
-    </li>
-    <li>
-      في العدد القادم سنستكمل الإجابة على المزيد من الأسئلة المتعلقة بمشاكل التجميل ومنتجات التجميل والحمل. انتظرونا……
-    </li>
-  </ul>
+        <ol>
+          <li>تختلف خطورة مستحضرات التجميل حسب مكوّناتها، فبعضها قد يُمتص عبر الجلد ويؤثر على الجنين.</li>
+          <li>يمكن للحامل استخدام واقي الشمس وكريمات الترطيب بشرط خلوها من المواد الضارة.</li>
+          <li>تجنّبي المستحضرات التي تحتوي على مشتقات فيتامين A أو مواد تفتيح مثل الهيدروكينون والكوجيك أسيد.</li>
+          <li>لعلاج تمدد الجلد استخدمي منتجات تحتوي على زبدة الشيا والكاكاو وفيتامين E وC.</li>
+          <li>للبشرة الدهنية استخدمي غسولًا بحمض الساليسيليك وكريمات تحتوي على الزنك.</li>
+          <li>اختاري منتجات تفتيح تعتمد على فيتامين C أو خلاصة العرقسوس مع واقٍ من الشمس يوميًا.</li>
+        </ol>
       </div>
     </div>
     </section>
 <!-- End tips-content -->
 
 
-  <!-- Start Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-section about">
-        <div class="logo">
-          <i class="fa-solid fa-prescription-bottle-medical"></i>
-          <span>Se7ty</span>
+
+<!-- Start Navigation Button -->
+<div class="tips-navigation">
+  <a href="../../Health tips/Health-Tips-Pages/Health04.html" class="go-right"  data-tooltip="نصائح لمرضي السكر" ><i class="fa-solid fa-angles-right"></i></a> <!-- سهم يمين -->
+  <a href="../../Health tips/Health-Tips-Pages/Health06.html" class="go-left"  data-tooltip="فوائد الشاي الأخضر" ><i class="fa-solid fa-angles-left"></i></a> <!-- سهم شمال -->
+</div>
+<!-- End Navigation Button -->
+
+
+
+    <!-- Start Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section about">
+          <div class="logo">
+            <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+            <span class="text-logo">Se7ty</span>
+          </div>
+          <p>صيدليتك الموثوقة لجميع الأدوية والمنتجات الصحية عالية الجودة</p>
         </div>
-        <p>صيدليتك الموثوقة لجميع الأدوية والمنتجات الصحية عالية الجودة</p>
-      </div>
 
-      <div class="footer-section links">
-        <h3>روابط سريعة</h3>
-        <ul>
-            <li> <a href="../../Home/index.html">الرئيسية</a> </li>
-            <li> <a href="../../About Us/About Us.html">نبذة عنا</a> </li>
-            <li> <a href="../../Products/Products.html">المنتجات</a> </li>
-            <li> <a href="../../Health tips/Health Tips.html">نصائح صحية</a> </li>
-            <li> <a href="../../Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a> </li>
-            <li> <a href="../../Inquiry About Medication/Inquiry About Medication.html">الاستفسار عن دواء</a> </li>
-        </ul>
-      </div>
+        <div class="footer-section links">
+          <h3>روابط سريعة</h3>
+          <ul>
+            <li><a href="../../../User/Home/index.html">الرئيسية</a></li>
+            <li><a href="../../../Main/About Us/About Us.html">نبذة عنا</a></li>
+            <li><a href="../../../Main/Products/Products.html">المنتجات</a></li>
+            <li><a href="../../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+            <li><a href="../../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+            <li><a href="../../../Main/Inquiry About Medication/Inquiry About Medication.html">الاستفسار عن دواء</a></li>
+            <li><a href="../../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
 
-      <div class="footer-section contact">
-        <h3>تواصل معنا</h3>
-        <p><i class="fa-solid fa-envelope"></i>info@Se7ty.com</p>
-        <p><i class="fa-solid fa-phone"></i>4455 888 02</p>
-      </div>
+          </ul>
+        </div>
 
-      <div class="footer-section social">
-        <h3>تابعنا</h3>
-        <div class="social-icons">
-          <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands fa-twitter"></i></a>
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <div class="footer-section contact">
+          <h3>تواصل معنا</h3>
+          <p><i class="fa-solid fa-envelope"></i>info@Se7ty.com</p>
+          <p><i class="fa-solid fa-phone"></i>4455 888 02</p>
+        </div>
+
+        <div class="footer-section social">
+          <h3>تابعنا</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <hr>
+      <hr />
 
-    <div class="footer-bottom">
-      <div class="rights">
-        <p>© 2026 <bdi>Se7ty</bdi>. جميع الحقوق محفوظة.</p>  <!-- يعني بيخلي الكلمة الإنجليزية تبقى معزولة عن اتجاه النص العربي (bdi) -->
+      <div class="footer-bottom">
+        <div class="rights">
+          <p>© 2026 <bdi>Se7ty</bdi>. جميع الحقوق محفوظة.</p>
+          <!-- يعني بيخلي الكلمة الإنجليزية تبقى معزولة عن اتجاه النص العربي (bdi) -->
+        </div>
+        <div class="policy">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+        </div>
       </div>
-      <div class="policy">
-        <a href="#">سياسة الخصوصية</a>
-        <a href="#">الشروط والأحكام</a>
-      </div>
-    </div>
-  </footer>
-  <!-- End Footer -->
+    </footer>
+    <!-- End Footer -->
 
 
 
+<!-- Start scroll To Top Btn -->
+  <button id="scrollToTopBtn" title="Go to top">
+  <i class="fa-solid fa-arrow-up-from-bracket"></i>
+  </button>
+<!-- End scroll To Top Btn -->
+
+
+<script src="script.js"></script>
 </body>
 </html>

@@ -57,3 +57,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+
+
+
+
+
+// Srart card flipped image
+const cards = document.querySelectorAll('.card-image');
+
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    card.classList.toggle('flipped');
+  });
+});
+// End card flipped image

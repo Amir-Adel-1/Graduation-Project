@@ -21,6 +21,29 @@ body {
   color: #ffffff;
 }
 
+
+
+/* Start Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f1923; /* سماوي فاتح */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5afaff;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #009ad7;
+}
+/* End Scrollbar */
+
+
 /* ------------------- 🔵 Navbar Base ------------------- */
 .navbar {
   position: fixed;
@@ -102,26 +125,28 @@ body {
     0 0 40px #009ad7,
     0 0 80px #00e0ff,
     0 0 120px #00e0ff;
-  animation: glowMove 2s ease-in-out infinite alternate;
+  animation: pulse 2s ease-in-out infinite alternate;
 }
 
-@keyframes glowMove {
-  0% {
-    text-shadow:
-      0 0 5px #009ad7,
-      0 0 10px #009ad7,
-      0 0 20px #009ad7,
-      0 0 40px #00e0ff;
-  }
-  100% {
-    text-shadow:
-      0 0 20px #00e0ff,
-      0 0 40px #00e0ff,
-      0 0 60px #009ad7,
-      0 0 80px #009ad7;
-  }
+.text-logo {
+    color: #9bc4d4;
+  font-size: 45px;
+  font-weight: bold;
+  text-shadow:
+    0 0 10px #009ad7,
+    0 0 20px #009ad7,
+    0 0 40px #009ad7,
+    0 0 80px #00e0ff,
+    0 0 120px #00e0ff;
 }
 
+
+/* 💫 تأثير توهج بسيط للوجو */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
 
 /* ------------------- 🟡 Nav Links ------------------- */
 .nav-links {
@@ -540,77 +565,48 @@ body {
 
 
 
+
+
 /* ------------------- Start Content Area ------------- */
-/* ===========================
-   🩺 Offers Section
-=========================== */
-.offers-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* توسيط عمودي */
-  align-items: center;     /* توسيط أفقي */
-  padding: 80px 20px 60px;
-  background: radial-gradient(circle, #e6f8ff, #ffffff);
-  direction: rtl;
-  font-family: "Cairo", sans-serif;
+
+/* Start Card Section */
+
+/* 🔵 قسم العروض والخصومات */
+.offers-cards-section {
+  padding: 60px 20px;
   text-align: center;
+  background: radial-gradient(circle, #009ad755, #ffffff);
+  color: #333;
+  font-family: "Cairo", sans-serif;
 }
 
-/* ===== Header ===== */
-.offers-header {
-    padding: 20px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 40px;
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeSlideUp 1s ease forwards;
-}
-
+/* العنوان */
 .offers-header h2 {
-  font-size: 2.4rem;
+  font-size: 2.1em;
   color: black;
-  font-weight: 800;
   margin-bottom: 10px;
-  text-shadow: 0 0 10px rgba(0, 154, 215, 0.15);
 }
 
 .offers-header p {
-  color: black;
-  font-size: 1.1rem;
-  margin: 0;
-  animation-delay: 0.2s;
+  font-size: 1.1em;
+  color: #555;
+  margin-bottom: 40px;
 }
 
-/* 🎬 Animation */
-@keyframes fadeSlideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===========================
-   💊 Cards Section
-=========================== */
-.cards-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+/* الحاوية الأساسية للكروت */
+.container-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* الشكل يكون ذكي ويتأقلم مع المقاس بدل ما يبوظ في الشاشات الصغيرة */
   gap: 25px;
-  flex-wrap: wrap;
-  margin: 0 auto 40px;
+  justify-items: center;
+  align-items: start;
+  padding: 10px 200px;
+  box-sizing: border-box;
 }
 
 /* ===== Single Card ===== */
 .card {
-  width: 280px;
+  width: auto;
   background: #ffffff;
   border-radius: 20px;
   position: relative;
@@ -625,8 +621,8 @@ body {
   font-weight: bold;
 }
 
-.card__content {
-  padding: 1.25em;
+.card-content {
+  padding: 1.15em;
   display: flex;
   flex-direction: column;
   gap: 0.75em;
@@ -634,54 +630,107 @@ body {
   z-index: 2;
 }
 
-/* ===== Image ===== */
-.card__image {
+/* ===========================
+   🖼️ الصورة مع الانقلاب
+=========================== */
+.card-image {
   width: 100%;
-  border-radius: 15px;
-  overflow: hidden;
-  background: linear-gradient(45deg, #009ad7, #00b6f1);
-  box-shadow: 0 4px 8px rgba(0, 154, 215, 0.3);
-  transition: all 0.4s ease;
+  height: 150px;
+  position: relative;
+  perspective: 1000px;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
-.card__image img {
+/* الوجه الأمامي والخلفي */
+.card-image-front,
+.card-image-back {
+  position: absolute;
   width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  overflow: hidden;
+  transition: transform 0.8s ease;
+}
+
+/* ✅ الوجه الأمامي المعدل */
+.card-image-front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff; /* خلفية بيضا خفيفة عشان شكل الصورة يبقى أنضف */
+}
+
+.card-image-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* ✅ الصورة كاملة بدون قص */
+  object-position: center; /* الصورة تتوسط المربع */
+  border-radius: 10px;
   transition: transform 0.4s ease;
 }
 
-/* ===== Text ===== */
+/* الوجه الخلفي */
+.card-image-back {
+  background: linear-gradient(135deg, #009ad7, #00b6f1);
+  color: #fff;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  text-align: center;
+}
+
+.card-image-back h4 {
+  color: black;
+  padding-bottom: 5px;
+}
+
+/* حالة الانقلاب */
+.card-image.flipped .card-image-front {
+  transform: rotateY(180deg);
+}
+
+.card-image.flipped .card-image-back {
+  transform: rotateY(360deg);
+}
+
+/* ===========================
+   🧾 النصوص
+=========================== */
 .card__title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #009ad7;
   margin: 5px 0 0;
+  line-height: 1.4;
 }
 
-.card__description {
-  font-size: 0.9rem;
-  color: #555;
-}
-
-/* ===== Price & Buttons ===== */
-.card__price {
-  color: #009ad7;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.card__footer {
+/* ===========================
+   💰 السعر والأزرار
+=========================== */
+.card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
 }
 
-.card__footer .buttons {
+.card__price {
+  color: #009ad7;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.card-footer .buttons {
   display: flex;
   gap: 15px;
 }
 
-.card__button {
+.card-button {
   width: 36px;
   height: 36px;
   background: linear-gradient(135deg, #009ad7, #00b6f1);
@@ -695,33 +744,49 @@ body {
   border: none;
 }
 
-.card__button i {
+.card-button i {
   color: #fff;
   font-size: 15px;
 }
 
-.card__button:hover {
+.card-button:hover {
   transform: scale(1.1);
   box-shadow: 0 0 15px rgba(0, 192, 255, 0.6);
 }
 
-/* ===== Hover Effects ===== */
+/* ===========================
+   ✨ تأثير الهوفر للكارت
+=========================== */
 .card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 10px 25px rgba(0, 154, 215, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 192, 255, 0.6);
+
+  transition: all 0.3s ease;
 }
 
 .card:hover img {
   transform: scale(1.05);
 }
 
-/* ===========================
-   🩵 View All Button
-=========================== */
+
+/* ===== Hover Text Color ===== */
+.card:hover .card__title {
+  color: #00e0ff; /* لون جديد لما تهوف */
+  transition: color 0.3s ease;
+
+}
+
+.card:hover .card__price {
+  color: #00e0ff; /* لون تاني مختلف */
+  transition: color 0.3s ease;
+}
+
+
+/* زر عرض جميع العروض */
 .offers-footer {
   display: flex;
   justify-content: center;
-  margin: 50px 0;
+  margin-top: 40px;
 }
 
 .view-all-btn {
@@ -744,9 +809,19 @@ body {
   box-shadow: 0 0 20px rgba(0, 192, 255, 0.8);
 }
 
-/* ===========================
-   💬 Testimonials Section
-=========================== */
+/* End Card Section */
+
+
+
+
+
+
+
+
+
+
+/* 💬 Start Testimonials Section */
+
 .testimonials {
   text-align: center;
   background-color: #f8f9fb;
@@ -814,9 +889,19 @@ body {
   font-size: 0.95rem;
 }
 
-/* ===========================
-   💬 Call To Action Section
-=========================== */
+/* 💬 End Testimonials Section */
+
+
+
+
+
+
+
+
+
+
+/* 💬 Start Call To Action Section */
+
 .cta-section {
   background: radial-gradient(circle, #009ad755, #ffffff);
   color: black;
@@ -865,6 +950,8 @@ body {
   transform: scale(1.08);
   box-shadow: 0 0 15px rgba(0, 192, 255, 0.8);
 }
+
+/* 💬 End Call To Action Section */
 
 /* ------------------- End Content Area ------------- */
 
@@ -1045,18 +1132,6 @@ body {
   color: #009ad7;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .footer-bottom {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
 /* ==================== End Footer ================== */
 
 
@@ -1147,22 +1222,3 @@ body {
 
 
 
-/* Start Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0f1923; /* سماوي فاتح */
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #5afaff;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #009ad7;
-}
-/* End Scrollbar */
