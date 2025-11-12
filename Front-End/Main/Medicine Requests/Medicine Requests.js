@@ -1,5 +1,4 @@
 
-
 // ==========================================================
 // 📌  الجزء الأول: إعداد الـ NavBar وسلوك الصفحة أثناء التمرير
 // ==========================================================
@@ -100,33 +99,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+// ------------------ Start Menu Button ------------------
+
+// الزرار والمنيو الجديدة
+const menuBtn = document.getElementById("menuBtn");
+const menuOptions = document.getElementById("menuOptions");
+
+// فتح وغلق المنيو
+menuBtn.addEventListener("click", () => {
+  const isActive = menuBtn.classList.toggle("active");
+  menuOptions.style.display = isActive ? "block" : "none";
+});
+
+// غلق المنيو عند الضغط خارجها
+document.addEventListener("click", (e) => {
+  if (!menuBtn.contains(e.target) && !menuOptions.contains(e.target)) {
+    menuBtn.classList.remove("active");
+    menuOptions.style.display = "none";
+  }
+});
+
+document.getElementById("newChat").addEventListener("click", () => {
+  // مسح كل الرسائل القديمة
+  const chatBody = document.getElementById("chatBody");
+  chatBody.innerHTML = "";
+
+  // إضافة رسالة ترحيبية من البوت
+  addMessage("🩺 تم بدء محادثة جديدة! كيف يمكنني مساعدتك اليوم؟", "bot");
+
+  // إغلاق القائمة
+  menuBtn.classList.remove("active");
+  menuOptions.style.display = "none";
+});
 
 
+// ------------------ التحكم في قائمة الشاتات ------------------
+const chatItems = document.querySelectorAll(".chat-history ul li");
 
+chatItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    // إزالة التحديد من الكل
+    chatItems.forEach((li) => li.classList.remove("active"));
+    // تفعيل الشات الحالي
+    item.classList.add("active");
 
+    // إضافة رسالة داخل الشات
+    addMessage(`تم فتح ${item.textContent} 💬`, "bot");
 
-
-
-
-
-
-
-
-
-// 🖼️ عرض الصورة بعد الرفع
-  const fileInput = document.getElementById("drugFileInput");
-  const previewImage = document.getElementById("previewImage");
-  const uploadArea = document.getElementById("uploadArea");
-
-  fileInput.addEventListener("change", (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        previewImage.src = e.target.result;
-        previewImage.style.display = "block";
-        uploadArea.classList.add("has-image");
-      };
-      reader.readAsDataURL(file);
-    }
+    // ممكن تقفل المنيو بعد الاختيار (اختياري)
+    menuBtn.classList.remove("active");
+    menuOptions.style.display = "none";
   });
+});
+
+// ------------------ End Menu Button ------------------

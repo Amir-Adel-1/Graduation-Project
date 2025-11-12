@@ -33,7 +33,6 @@
   box-shadow: 0 0 25px rgba(255, 255, 255, 0.581);
   animation: popupFade 0.4s ease;
   position: relative;
-
 }
 
 /* العنوان */
@@ -126,10 +125,11 @@
   5px 0 15px #00e0ff,   /* ظل ناحية اليمين */
   -5px 0 15px #00ffcc;  /* ظل ناحية الشمال */
   background: linear-gradient(135deg, #0099ff, #00ffcc);
-background-clip: text;
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
 
 .nebula-input-login .input:focus ~ .user-label-login,
 .nebula-input-login .input:valid ~ .user-label-login {
@@ -185,7 +185,6 @@ background-clip: text;
   font-size: 16px;
   cursor: pointer;
   margin: 25px 0;
-
   transition: 0.3s;
 }
 

@@ -21,78 +21,161 @@
 </head>
 <body>
 
-<!-- مكان عرض الداتا (الرسائل) -->
-  <div class="data-box" id="dataBox">
-    <div class="data-item system-message">مرحبًا بك 👋 في نظام المحادثة!</div>
+
+    <!--  Start NavBar -->
+    <nav class="navbar" id="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+        <span class="text-logo">Se7ty</span>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="../../User/Home/User.html">الرئيسية</a></li>
+        <li><a href="../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../Main/Products/Products.html">المنتجات</a></li>
+        <li><a href="../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+        <li><a href="../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+        <li><a href="../../Main/Inquiry About Medication/Inquiry About Medication.html" class="active">الآستفسار عن دواء</a></li>
+        <li><a href="../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
+      </ul>
+
+      <div class="actions">
+        <div class="icons">
+          <div class="icon">
+            <a href="../../Main/Shopping Cart/Shopping Cart.html"><i class="fa-solid fa-cart-shopping "></i></a>
+            <span class="count" id="cart_clr">0</span>
+          </div>
+          <div class="icon">
+            <a href="../../Main/Favorites/Favorites.html"><i class="fa-solid fa-heart "></i></a>
+            <span class="count" id="fav_clr">0</span>
+          </div>
+        </div>
+        <div class="user-info" id="userInfo">
+          <span  id="userName" class="user-name"></span>
+        </div>
+        <!-- القائمة المنسدلة -->
+        <div class="user-menu" id="userMenu">
+          <ul>
+            <li><a href="../../User/Home/User_Menu/User_Profile.html">👤 الملف الشخصي</a></li>
+            <li><a href="#">⚙️ الإعدادات</a></li>
+            <li><a id="exit">🚪 تسجيل الخروج</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!--  End NavBar -->
+
+
+
+
+    <!-- Start Content -->
+
+<!-- 🌿 Start Drug Inquiry Section -->
+<section class="drug-inquiry-container">
+  <div class="drug-header">
+    <p>💊 ارفع صورة أو اكتب اسم الدواء لمعرفة التفاصيل 💊</p>
   </div>
 
-  <!-- صندوق الشات -->
-  <div class="chat-container">
-    <div class="messageBox">
-      <div class="fileUploadWrapper">
-        <label for="file">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
-            <circle stroke-width="20" stroke="#6c6c6c" fill="none" r="158.5" cy="168.5" cx="168.5"></circle>
-            <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M167.759 79V259"></path>
-            <path stroke-linecap="round" stroke-width="25" stroke="#6c6c6c" d="M79 167.138H259"></path>
-          </svg>
-          <span class="tooltip">أضف صورة</span>
-        </label>
-        <input type="file" id="file" name="file" />
-      </div>
-      <input required placeholder="💬 اكتب رسالتك هنا..." type="text" id="messageInput" />
-      <button id="sendButton">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
-          <path stroke-linejoin="round" stroke-linecap="round" stroke-width="33.67" stroke="#fff"
-            d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888" />
-        </svg>
-      </button>
+  <!-- 🧾 نتيجة البحث / تفاصيل الدواء -->
+  <div class="drug-result" id="drugResult">
+    <div class="placeholder">
+      <img src="https://cdn-icons-png.flaticon.com/512/993/993928.png" alt="Search Icon">
+      <p>سيتم عرض تفاصيل الدواء هنا بعد البحث 👇</p>
     </div>
   </div>
 
+  <!-- 🖼️ رفع الصورة -->
+  <div class="drug-image-upload">
+    <label class="upload-area" for="drugFileInput">
+      <i class="fa-solid fa-image"></i>
+      <span>ارفع صورة الدواء</span>
+    </label>
+    <input type="file" id="drugFileInput" accept="image/*" hidden>
+  </div>
+
+  <!-- 💬 السيرش بأسلوب الشات بوت (لاصق تحت) -->
+  <div class="drug-chat-input">
+    <button id="attachDrugBtn" title="إضافة مرفق"><i class="fa-solid fa-plus"></i></button>
+    <input type="text" id="drugInput" placeholder="💊 اكتب اسم الدواء هنا...">
+    <button id="drugSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</section>
+<!-- 🌿 End Drug Inquiry Section -->
 
 
-  <!-- JavaScript -->
-  <script>
-    const input = document.getElementById("messageInput");
-    const sendBtn = document.getElementById("sendButton");
-    const dataBox = document.getElementById("dataBox");
 
-    // عند الضغط على زر الإرسال
-    sendBtn.addEventListener("click", sendMessage);
-    input.addEventListener("keypress", e => {
-      if (e.key === "Enter") sendMessage();
-    });
-
-    function sendMessage() {
-      const text = input.value.trim();
-      if (text) {
-        // رسالة المستخدم
-        const userMsg = document.createElement("div");
-        userMsg.classList.add("data-item", "user-message");
-        userMsg.textContent = text;
-        dataBox.appendChild(userMsg);
-        input.value = "";
-        dataBox.scrollTop = dataBox.scrollHeight;
-
-        // رد تلقائي من النظام
-        setTimeout(() => {
-          const systemMsg = document.createElement("div");
-          systemMsg.classList.add("data-item", "system-message");
-          systemMsg.textContent = "✅ تم استلام رسالتك، شكرًا لتواصلك معنا!";
-          dataBox.appendChild(systemMsg);
-          dataBox.scrollTop = dataBox.scrollHeight;
-        }, 800);
-      }
-    }
-  </script>
+    <!-- End Content -->
 
 
 
 
+    <!-- Start Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section about">
+          <div class="logo">
+            <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+            <span class="text-logo">Se7ty</span>
+          </div>
+          <p>صيدليتك الموثوقة لجميع الأدوية والمنتجات الصحية عالية الجودة</p>
+        </div>
+
+        <div class="footer-section links">
+          <h3>روابط سريعة</h3>
+          <ul>
+            <li><a href="../../User/Home/User.html">الرئيسية</a></li>
+            <li><a href="../../Main/About Us/About Us.html">نبذة عنا</a></li>
+            <li><a href="../../Main/Products/Products.html">المنتجات</a></li>
+            <li><a href="../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+            <li><a href="../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+            <li><a href="../../Main/Inquiry About Medication/Inquiry About Medication.html">الاستفسار عن دواء</a></li>
+            <li><a href="../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section contact">
+          <h3>تواصل معنا</h3>
+          <p><i class="fa-solid fa-envelope"></i>info@Se7ty.com</p>
+          <p><i class="fa-solid fa-phone"></i>4455 888 02</p>
+        </div>
+
+        <div class="footer-section social">
+          <h3>تابعنا</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="footer-bottom">
+        <div class="rights">
+          <p>© 2026 <bdi>Se7ty</bdi>. جميع الحقوق محفوظة.</p>
+          <!-- يعني بيخلي الكلمة الإنجليزية تبقى معزولة عن اتجاه النص العربي (bdi) -->
+        </div>
+        <div class="policy">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+
+
+    <!-- Start scroll To Top Btn -->
+    <button id="scrollToTopBtn" title="Go to top">
+      <i class="fa-solid fa-arrow-up-from-bracket"></i>
+    </button>
+    <!-- End scroll To Top Btn -->
 
 
 
 
+<script src="Inquiry About Medication.js"></script>
 </body>
 </html>

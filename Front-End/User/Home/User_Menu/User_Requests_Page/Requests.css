@@ -1,10 +1,12 @@
 
+
+
 /* ------------------- 🟢 Global Styles ------------------- */
 body {
   margin: 0;
   font-family: "Segoe UI", "Noto Sans Arabic", "Arial", sans-serif, "Cairo";
   direction: rtl;
-      background: radial-gradient(circle, #009ad755, #ffffff);
+  background-color: #113543;
   color: #ffffff;
     overflow-x: hidden;
 }
@@ -132,6 +134,23 @@ body {
     0 0 120px #00e0ff;
   animation: pulse 2s ease-in-out infinite alternate;
 }
+
+/* @keyframes glowMove {
+  0% {
+    text-shadow:
+      0 0 5px #009ad7,
+      0 0 10px #009ad7,
+      0 0 20px #009ad7,
+      0 0 40px #00e0ff;
+  }
+  100% {
+    text-shadow:
+      0 0 20px #00e0ff,
+      0 0 40px #00e0ff,
+      0 0 60px #009ad7,
+      0 0 80px #009ad7;
+  }
+} */
 
 
 .text-logo {
@@ -450,271 +469,272 @@ body {
 
 
 
-/* ------------------- Start Cards ------------------- */
 
-.glass-bg {
+
+
+
+/* ------------------- Start Content ------------------- */
+
+
+/* القسم الرئيسي */
+.my-requests-section {
   width: 90%;
-  margin: 150px auto;
-  padding: 40px;
+  max-width: 1200px;
+  min-height: 90vh;
+  padding: 40px 30px;
   border-radius: 25px;
-  background: rgba(255, 255, 255, 0.15); /* شفافية خفيفة */
-  backdrop-filter: blur(12px); /* البلور الزجاجي */
-  -webkit-backdrop-filter: blur(12px); /* دعم Safari */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-
-/* Start Name-Category */
-.name-category {
-  text-align: center;
-  margin: 30px 0;
-}
-
-.name-category h2 {
-  display: inline-block;
-  position: relative;
-  font-size: 28px;
-  color: #003366;
-}
-
-.name-category h2::after {
-  content: "";
-  position: absolute;
-  bottom: -20px; /* المسافة بين النص والخط */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px; /* عرض الخط بالنسبة للكلمة */
-  height: 2px;
-  background-color: #0099e6; /* لون الخط */
-  border-radius: 2px;
-}
-/* End Name-Category */
-
-
-
-/* ===========================
-  💊 Cards Section
-=========================== */
-.container-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* الشكل يكون ذكي ويتأقلم مع المقاس بدل ما يبوظ في الشاشات الصغيرة */
-  gap: 25px;
-  justify-items: center;
-  align-items: start;
-  padding: 40px;
-}
-
-/* ===== Single Card ===== */
-.card {
-  width: auto;
-  background: #ffffff;
-  border-radius: 20px;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s ease;
-  box-shadow: 0 5px 15px rgba(0, 154, 215, 0.15);
-  border: 1px solid rgba(0, 154, 215, 0.2);
-}
-
-
-.card-content {
-  padding: 1.15em;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75em;
-  position: relative;
-  z-index: 2;
-}
-
-/* ===========================
-   🖼️ الصورة مع الانقلاب
-=========================== */
-.card-image {
-  width: 100%;
-  height: 150px;
-  position: relative;
-  perspective: 1000px;
-  margin-bottom: 10px;
-  cursor: pointer;
-}
-
-/* الطبقتين الأمامية والخلفية */
-.card-image-front,
-.card-image-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  backface-visibility: hidden;
-  overflow: hidden;
-  transition: transform 0.8s ease;
-}
-
-/* الوجه الأمامي */
-.card-image-front img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* تخلي الصورة بالكامل داخل الإطار */
-  object-position: center; /* الصورة في النص */
-  background-color: #fff; /* يخلي الخلفية بيضاء لو الصورة فيها فراغ */
-  padding: 0px; /* عشان الصورة تبعد شوية عن الحواف */
-  border-radius: 15px;
-  transition: transform 0.4s ease;
-}
-
-/* الوجه الخلفي */
-.card-image-back {
-  background: linear-gradient(135deg, #009ad7, #00b6f1);
-  color: #fff;
-  transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 15px;
+  margin: 110px auto;
+  /* تأثير الزجاج */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 192, 255, 0.8);
+}
+
+/* العنوان */
+.my-requests-section h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
   text-align: center;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.card-image-back h4 {
-  color: black;
-  padding-bottom: 5px;
+/* حاوية الكروت */
+.requests-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 كروت في الصف */
+  gap: 25px;
+  width: 100%;
+  justify-items: center;
 }
 
-/* حالة الانقلاب */
-.card-image.flipped .card-image-front {
-  transform: rotateY(180deg);
+/* الكارت الواحد */
+.request-card {
+  width: 95%;
+  max-width: 360px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card-image.flipped .card-image-back {
-  transform: rotateY(360deg);
+.request-card:hover {
+transform: translateY(-7px);
+box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
 }
 
-/* ===========================
-   🧾 النصوص
-=========================== */
-.card__title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #009ad7;
-  margin: 5px 0 0;
-  line-height: 1.4;
+/* رقم الطلب */
+.request-card p:first-child {
+  font-size: 16px;
+  font-weight: bold;
+  color: #00bcd4;
+  margin-bottom: 10px;
 }
 
-/* ===========================
-   💰 السعر والأزرار
-=========================== */
-.card-footer {
+/* اسم الدواء */
+.request-card h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+/* نصوص التفاصيل */
+.request-card p {
+  font-size: 15px;
+  margin: 8px 0;
+}
+
+.request-card p strong {
+  color: #00c6ff;
+}
+
+/* لون مميز للكمية المطلوبة */
+.request-card p:nth-child(5) strong {
+  color: #43e97b;
+}
+
+/* الحالة */
+.status {
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.status.pending {
+  background: rgba(255, 193, 7, 0.3);
+  color: #ffc107;
+}
+
+.status.accepted {
+  background: rgba(40, 167, 69, 0.3);
+  color: #28a745;
+}
+
+.status.rejected {
+  background: rgba(220, 53, 69, 0.3);
+  color: #dc3545;
+}
+
+/* أزرار التحكم */
+.request-actions {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-.card__price {
-  color: #009ad7;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.card-footer .buttons {
-  display: flex;
-  gap: 15px;
-}
-
-.card-button {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, #009ad7, #00b6f1);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 154, 215, 0.3);
+.btn {
+  flex: 1;
+  padding: 10px 15px;
   border: none;
-}
-
-.card-button i {
-  color: #fff;
+  border-radius: 12px;
+  cursor: pointer;
   font-size: 15px;
-}
-
-.card-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 15px rgba(0, 192, 255, 0.6);
-}
-
-/* ===========================
-   ✨ تأثير الهوفر للكارت
-=========================== */
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 4px 12px rgba(0, 192, 255, 0.6);
-
+  font-weight: bold;
+  color: #fff;
   transition: all 0.3s ease;
 }
 
-.card:hover img {
-  transform: scale(1.05);
+.btn.edit {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+}
+
+.btn.edit:hover {
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+}
+
+.btn.delete {
+  background: linear-gradient(90deg, #ff4b2b, #ff416c);
+}
+
+.btn.delete:hover {
+  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+}
+
+.btn.view {
+  background: linear-gradient(90deg, #43e97b, #38f9d7);
+}
+
+.btn.view:hover {
+  background: linear-gradient(90deg, #38f9d7, #43e97b);
 }
 
 
-/* ===== Hover Text Color ===== */
-.card:hover .card__title {
-  color: #00e0ff; /* لون جديد لما تهوف */
-  transition: color 0.3s ease;
 
+
+/* ------------------- End Content ------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+/* Start Button View Details */
+/* خلفية البوب أب */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.65); /* أغمق شوية */
+  backdrop-filter: blur(10px); /* نفس تأثير تسجيل الدخول */
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 9999;
 }
 
-.card:hover .card__price {
-  color: #00e0ff; /* لون تاني مختلف */
-  transition: color 0.3s ease;
+.popup-overlay.active {
+  visibility: visible;
+  opacity: 1;
 }
 
+/* محتوى البوب أب الزجاجي */
+.popup-content {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 25px;
+  padding: 35px 45px;
+  color: #fff;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  animation: fadeIn 0.4s ease forwards;
+  text-align: right;
+  position: relative;
+}
 
-/* ------------------- End Cards ------------------- */
+/* العنوان */
+.popup-content h3 {
+  font-size: 22px;
+  color: #00c6ff;
+  margin-bottom: 18px;
+  text-align: center;
+}
 
+/* النصوص */
+.popup-content p {
+  margin: 8px 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
 
+/* زر الإغلاق */
+.btn.close {
+  margin-top: 25px;
+  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
 
+.btn.close:hover {
+  background: linear-gradient(90deg, #ff4b2b, #ff416c);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* أنيميشن */
+@keyframes fadeIn {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+/* Start Button View Details */
 
 
 
@@ -740,7 +760,6 @@ body {
   padding: 60px 0 20px;
   font-family: "Cairo", sans-serif;
   direction: rtl;
-position: relative;
 }
 
 /* ===== Footer Content ===== */
@@ -880,6 +899,33 @@ position: relative;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Start Scroll To Top Btn */
 #scrollToTopBtn {
   position: fixed;
@@ -914,3 +960,7 @@ position: relative;
   -webkit-text-fill-color: transparent;
 }
 /* End Scroll To Top Btn */
+
+
+
+

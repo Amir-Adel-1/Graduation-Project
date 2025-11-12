@@ -2,92 +2,213 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
+    <!-- Responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>طلبات الأدوية الناقصة</title>
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/> -->
 
-      <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css">
-      <link rel="stylesheet" href="Medicine Requests.css">
+    <!-- Logo Website -->
+    <link rel="icon" href="" type="png" />
+    <!-- Main Template CSS File -->
+    <link rel="stylesheet" href="Medicine Requests.css" />
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="" />
   </head>
-  <body class="bg-light p-5">
-    <div class="container">
-      <h1 class="text-center mb-4">💊 طلبات الأدوية الناقصة</h1>
+<body>
 
-      <!-- نموذج إضافة طلب -->
-      <div class="card p-3 mb-4 shadow-sm">
-        <h5>📝 أضف طلب جديد</h5>
-        <input
-          id="name"
-          class="form-control mb-2"
-          placeholder="اسمك (اختياري)"
-        />
-        <input
-          id="medicine"
-          class="form-control mb-2"
-          placeholder="اسم الدواء الناقص"
-          required
-        />
-        <button id="addBtn" class="btn btn-primary w-100">نشر الطلب</button>
+
+    <!--  Start NavBar -->
+    <nav class="navbar" id="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+        <span class="text-logo">Se7ty</span>
       </div>
 
-      <!-- قائمة الطلبات -->
-      <h4 class="mb-3">📋 الطلبات المنشورة</h4>
-      <div id="posts" class="row g-3"></div>
+      <ul class="nav-links">
+        <li><a href="../../User/Home/User.html">الرئيسية</a></li>
+        <li><a href="../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../Main/Products/Products.html">المنتجات</a></li>
+        <li><a href="../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+        <li><a href="../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+        <li><a href="../../Main/Inquiry About Medication/Inquiry About Medication.html">الآستفسار عن دواء</a></li>
+        <li><a href="../../Main/Medicine Requests/Medicine Requests.html" class="active">طلبات الأدوية الناقصة</a></li>
+      </ul>
+
+      <div class="actions">
+        <div class="icons">
+          <div class="icon">
+            <a href="../../Main/Shopping Cart/Shopping Cart.html"><i class="fa-solid fa-cart-shopping "></i></a>
+            <span class="count" id="cart_clr">0</span>
+          </div>
+          <div class="icon">
+            <a href="../../Main/Favorites/Favorites.html"><i class="fa-solid fa-heart "></i></a>
+            <span class="count" id="fav_clr">0</span>
+          </div>
+        </div>
+        <div class="user-info" id="userInfo">
+          <span  id="userName" class="user-name"></span>
+        </div>
+        <!-- القائمة المنسدلة -->
+        <div class="user-menu" id="userMenu">
+          <ul>
+            <li><a href="../../User/Home/User_Menu/User_Profile_Page/User_Profile.html">👤 الملف الشخصي</a></li>
+            <li><a href="../../User/Home/User_Menu/User_Requests_Page/Requests.html"><i class="fa-regular fa-folder-open"></i> الطلبات</a></li>
+            <li><a href="#">⚙️ الإعدادات</a></li>
+            <li><a id="exit">🚪 تسجيل الخروج</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!--  End NavBar -->
+
+
+
+
+<!-- Start Content -->
+<section class="missing-section">
+    <div class="missing-container">
+      <h2>طلبات الأدوية الناقصة</h2>
+
+      <form class="form-grid-missing">
+        <!-- اسم المستخدم -->
+        <div class="nebula-input-missing">
+          <input type="text" class="input" value="اسم المستخدم من قاعدة البيانات" readonly required />
+          <label class="user-label"> </label>
+            <div class="nebula-particle-login" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-login" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-login" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-login" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-login" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-login" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+        </div>
+
+        <!-- اسم الدواء -->
+        <div class="nebula-input-missing">
+          <input type="text" class="input" required  autocomplete="off" />
+          <label class="user-label">اسم الدواء المطلوب</label>
+  <div class="nebula-particle-login" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-login" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-login" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-login" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-login" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-login" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+        </div>
+
+        <!-- الكمية -->
+        <div class="nebula-input-missing">
+          <select class="input  color" required>
+            <option disabled selected>اختر الكمية</option>
+            <option value="شريط واحد">شريط واحد</option>
+            <option value="شريطين">شريطين</option>
+            <option value="ثلاثة شرائط">ثلاثة شرائط</option>
+            <option value="علبة واحدة">عبوة واحدة</option>
+            <option value="علبتين">عبوتان</option>
+            <option value="ثلاثة علب">ثلاثة عبوات</option>
+          </select>
+  <div class="nebula-particle-login" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
+  <div class="nebula-particle-login" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
+  <div class="nebula-particle-login" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
+  <div class="nebula-particle-login" style="--x:0.7; --y:0.1; --delay:0.2s"></div>
+  <div class="nebula-particle-login" style="--x:0.1; --y:-0.7; --delay:0.4s"></div>
+  <div class="nebula-particle-login" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
+        </div>
+
+        <!-- زر الإرسال -->
+        <div class="submit-wrap">
+          <button type="submit" class="submit-btn-missing">إرسال الطلب</button>
+        </div>
+      </form>
     </div>
+</section>
+<!-- End Content -->
 
-    <script>
-      const addBtn = document.getElementById("addBtn");
-      const nameInput = document.getElementById("name");
-      const medInput = document.getElementById("medicine");
-      const postsDiv = document.getElementById("posts");
 
-      // تحميل الطلبات عند فتح الصفحة
-      const loadPosts = () => {
-        const posts = JSON.parse(localStorage.getItem("posts")) || [];
-        postsDiv.innerHTML = "";
 
-        if (posts.length === 0) {
-          postsDiv.innerHTML =
-            "<p class='text-muted'>لا توجد طلبات حالياً.</p>";
-          return;
-        }
+<!-- Start Menu button -->
+<div class="menu-container">
+  <button id="menuBtn" class="menu-btn" title="القائمة"><i class="fa-solid fa-bars"></i></button>
+  <div class="menu-options" id="menuOptions">
+    <ul>
+      <li id="newChat"><i class="fa-solid fa-plus"></i> طلب جديد</li>
+      <a href="../../User/Home/User_Menu/User_Requests_Page/Requests.html"><li><i class="fa-regular fa-folder-open"></i> الطلبات</li></a>
+    </ul>
+  </div>
+</div>
+<!-- End Menu button -->
 
-        posts.reverse().forEach((p, i) => {
-          postsDiv.innerHTML += `
-          <div class="col-md-6">
-            <div class="card p-3 shadow-sm">
-              <h5>💊 ${p.medicine}</h5>
-              <p>👤 ${p.name || "مستخدم مجهول"}</p>
-              <button class="btn btn-success btn-sm" onclick="offer(${i})">💬 متوفر لدينا</button>
-            </div>
-          </div>`;
-        });
-      };
 
-      // إضافة منشور جديد
-      addBtn.onclick = () => {
-        const name = nameInput.value.trim();
-        const medicine = medInput.value.trim();
-        if (!medicine) return alert("من فضلك اكتب اسم الدواء.");
 
-        const posts = JSON.parse(localStorage.getItem("posts")) || [];
-        posts.push({ name, medicine });
-        localStorage.setItem("posts", JSON.stringify(posts));
+    <!-- Start Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section about">
+          <div class="logo">
+            <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+            <span class="text-logo">Se7ty</span>
+          </div>
+          <p>صيدليتك الموثوقة لجميع الأدوية والمنتجات الصحية عالية الجودة</p>
+        </div>
 
-        nameInput.value = "";
-        medInput.value = "";
-        loadPosts();
-      };
+        <div class="footer-section links">
+          <h3>روابط سريعة</h3>
+          <ul>
+            <li><a href="../../User/Home/User.html">الرئيسية</a></li>
+            <li><a href="../../Main/About Us/About Us.html">نبذة عنا</a></li>
+            <li><a href="../../Main/Products/Products.html">المنتجات</a></li>
+            <li><a href="../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+            <li><a href="../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+            <li><a href="../../Main/Inquiry About Medication/Inquiry About Medication.html">الاستفسار عن دواء</a></li>
+            <li><a href="../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
+          </ul>
+        </div>
 
-      // عند ضغط الصيدلية "متوفر لدينا"
-      const offer = (index) => {
-        const posts = JSON.parse(localStorage.getItem("posts")) || [];
-        const post = posts[index];
-        alert(`💊 الصيدلية قالت إن "${post.medicine}" متوفر لديها! 
-يمكنك التواصل مع الصيدلية الآن.`);
-      };
+        <div class="footer-section contact">
+          <h3>تواصل معنا</h3>
+          <p><i class="fa-solid fa-envelope"></i>info@Se7ty.com</p>
+          <p><i class="fa-solid fa-phone"></i>4455 888 02</p>
+        </div>
 
-      loadPosts();
-    </script>
-  </body>
+        <div class="footer-section social">
+          <h3>تابعنا</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="footer-bottom">
+        <div class="rights">
+          <p>© 2026 <bdi>Se7ty</bdi>. جميع الحقوق محفوظة.</p>
+          <!-- يعني بيخلي الكلمة الإنجليزية تبقى معزولة عن اتجاه النص العربي (bdi) -->
+        </div>
+        <div class="policy">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+
+
+    <!-- Start scroll To Top Btn -->
+    <button id="scrollToTopBtn" title="Go to top">
+      <i class="fa-solid fa-arrow-up-from-bracket"></i>
+    </button>
+    <!-- End scroll To Top Btn -->
+
+
+
+
+<script src="Medicine Requests.js"></script>
+</body>
 </html>

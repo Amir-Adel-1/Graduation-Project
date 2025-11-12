@@ -1,5 +1,4 @@
 
-
 // ==========================================================
 // 📌  الجزء الأول: إعداد الـ NavBar وسلوك الصفحة أثناء التمرير
 // ==========================================================
@@ -105,28 +104,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+// Start Button View Details
+  function openPopup() {
+    document.getElementById("popup").classList.add("active");
+  }
 
+  document.getElementById("closePopup").addEventListener("click", function () {
+    document.getElementById("popup").classList.remove("active");
+  });
 
-
-
-
-
-
-
-// 🖼️ عرض الصورة بعد الرفع
-  const fileInput = document.getElementById("drugFileInput");
-  const previewImage = document.getElementById("previewImage");
-  const uploadArea = document.getElementById("uploadArea");
-
-  fileInput.addEventListener("change", (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        previewImage.src = e.target.result;
-        previewImage.style.display = "block";
-        uploadArea.classList.add("has-image");
-      };
-      reader.readAsDataURL(file);
+  // كمان لو المستخدم ضغط برا البوب أب يقفله
+  document.getElementById("popup").addEventListener("click", function (e) {
+    if (e.target.id === "popup") {
+      document.getElementById("popup").classList.remove("active");
     }
   });
+// End Button View Details
+

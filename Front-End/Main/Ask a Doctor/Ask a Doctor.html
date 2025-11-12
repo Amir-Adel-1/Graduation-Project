@@ -2,233 +2,126 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
+    <!-- Responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>استشارة طبية</title>
+
+    <title>اسأل طبيب</title>
+
+    <!-- Logo Website -->
+    <link rel="icon" href="" type="png" />
+    <!-- Main Template CSS File -->
     <link rel="stylesheet" href="Ask a Doctor.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="" />
   </head>
   <body>
+
+
     <!--  Start NavBar -->
     <nav class="navbar" id="navbar">
       <div class="logo">
-        <i class="fa-solid fa-prescription-bottle-medical"></i>
-        <span>Se7ty</span>
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+        <span class="text-logo">Se7ty</span>
       </div>
 
       <ul class="nav-links">
-        <li><a href="../Home/index.html">الرئيسية</a></li>
-        <li><a href="../About Us/About Us.html">نبذة عنا</a></li>
-        <li><a href="../Products/Products.html">المنتجات</a></li>
-        <li><a href="../Health tips/Health Tips.html">نصائح صحية</a></li>
-        <li><a href="../Ask a Doctor/index.html">اسأل طبيب</a></li>
-        <li>
-          <a href="../Inquiry About Medication/Inquiry About Medication.html"
-            >الآستفسار عن دواء</a
-          >
-        </li>
+        <li><a href="../../User/Home/User.html">الرئيسية</a></li>
+        <li><a href="../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../Main/Products/Products.html">المنتجات</a></li>
+        <li><a href="../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+        <li><a href="../../Main/Ask a Doctor/Ask a Doctor.html" class="active">اسأل طبيب</a></li>
+        <li><a href="../../Main/Inquiry About Medication/Inquiry About Medication.html">الآستفسار عن دواء</a></li>
+        <li><a href="../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
       </ul>
-
-      <!-- Start Dark Mode Button -->
-      <div class="dark-mode">
-        <label class="switch">
-          <input id="input" type="checkbox" checked="darkTheme" />
-          <div class="slider round">
-            <div class="sun-moon">
-              <svg id="moon-dot-1" class="moon-dot" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="moon-dot-2" class="moon-dot" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="moon-dot-3" class="moon-dot" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="light-ray-1" class="light-ray" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="light-ray-2" class="light-ray" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="light-ray-3" class="light-ray" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-
-              <svg id="cloud-1" class="cloud-dark" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="cloud-2" class="cloud-dark" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="cloud-3" class="cloud-dark" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="cloud-4" class="cloud-light" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="cloud-5" class="cloud-light" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-              <svg id="cloud-6" class="cloud-light" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="50"></circle>
-              </svg>
-            </div>
-            <div class="stars">
-              <svg id="star-1" class="star" viewBox="0 0 20 20">
-                <path
-                  d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-                ></path>
-              </svg>
-              <svg id="star-2" class="star" viewBox="0 0 20 20">
-                <path
-                  d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-                ></path>
-              </svg>
-              <svg id="star-3" class="star" viewBox="0 0 20 20">
-                <path
-                  d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-                ></path>
-              </svg>
-              <svg id="star-4" class="star" viewBox="0 0 20 20">
-                <path
-                  d="M 0 10 C 10 10,10 10 ,0 10 C 10 10 , 10 10 , 10 20 C 10 10 , 10 10 , 20 10 C 10 10 , 10 10 , 10 0 C 10 10,10 10 ,0 10 Z"
-                ></path>
-              </svg>
-            </div>
-          </div>
-        </label>
-      </div>
-      <!-- Start Dark Mode Button -->
 
       <div class="actions">
         <div class="icons">
           <div class="icon">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <span class="count green">0</span>
+            <a href="../../Main/Shopping Cart/Shopping Cart.html"><i class="fa-solid fa-cart-shopping "></i></a>
+            <span class="count" id="cart_clr">0</span>
           </div>
           <div class="icon">
-            <i class="fa-solid fa-heart"></i>
-            <span class="count red">0</span>
+            <a href="../../Main/Favorites/Favorites.html"><i class="fa-solid fa-heart "></i></a>
+            <span class="count" id="fav_clr">0</span>
           </div>
         </div>
-        <button class="login-btn">تسجيل الدخول</button>
+        <div class="user-info" id="userInfo">
+          <span  id="userName" class="user-name"></span>
+        </div>
+        <!-- القائمة المنسدلة -->
+        <div class="user-menu" id="userMenu">
+          <ul>
+            <li><a href="../../User/Home/User_Menu/User_Profile.html">👤 الملف الشخصي</a></li>
+            <li><a href="#">⚙️ الإعدادات</a></li>
+            <li><a id="exit">🚪 تسجيل الخروج</a></li>
+          </ul>
+        </div>
       </div>
     </nav>
     <!--  End NavBar -->
 
-    <div class="form-container">
-      <header class="form-header">
-        <h1><i class="fas fa-stethoscope"></i> استمارة الاستشارة الطبية</h1>
-      </header>
 
-      <form id="medical-form" class="medical-form">
-        <div class="form-group">
-          <label for="description"
-            >وصف السؤال (اشرح مشكلتك الصحية بالتفصيل)</label
-          >
-          <textarea
-            id="description"
-            name="description"
-            rows="4"
-            required
-          ></textarea>
+
+    <!-- Start Content -->
+<div class="chat-wrapper">
+    <div class="chat-box">
+      <div class="chat-body" id="chatBody">
+        <div class="message bot">
+          <p>مرحبًا بك 👋 في نظام المحادثة!</p>
         </div>
-
-        <div class="form-group">
-          <label>نوع السؤال</label>
-          <div class="radio-group">
-            <label class="radio-label">
-              <input
-                type="radio"
-                name="questionType"
-                value="forMyself"
-                required
-              />
-              <span class="radio-custom"></span>
-              لنفسي
-            </label>
-            <label class="radio-label">
-              <input
-                type="radio"
-                name="questionType"
-                value="forAnotherPatient"
-                required
-              />
-              <span class="radio-custom"></span>
-              لمريض آخر
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>الجنس</label>
-          <div class="radio-group">
-            <label class="radio-label">
-              <input type="radio" name="gender" value="male" required />
-              <span class="radio-custom"></span>
-              ذكر
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="gender" value="female" required />
-              <span class="radio-custom"></span>
-              أنثى
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="age">العمر</label>
-          <input type="number" id="age" name="age" min="1" max="120" required />
-        </div>
-
-        <div class="form-group">
-          <label for="chronicDiseases">هل تعاني من أي أمراض مزمنة؟</label>
-          <textarea
-            id="chronicDiseases"
-            name="chronicDiseases"
-            rows="2"
-            placeholder="اذكر أي أمراض مزمنة تعاني منها"
-            required
-          ></textarea>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="submit-btn">
-            التالي <i class="fas fa-arrow-left"></i>
-          </button>
-        </div>
-
-        <div class="disclaimer">
-          <p>
-            هذا النموذج مخصص للاستشارة الطبية العامة فقط ولا يغني عن زيارة
-            الطبيب
-          </p>
-        </div>
-      </form>
-
-      <div
-        id="response-container"
-        class="response-container"
-        style="display: none"
-      >
-        <h2>شكراً لتقديم استشارتك</h2>
-        <div id="response-content" class="response-content"></div>
-        <button id="new-consultation" class="submit-btn">
-          استشارة جديدة <i class="fas fa-redo"></i>
-        </button>
       </div>
+
+      <div class="chat-input">
+        <button id="attachBtn" title="إضافة مرفق"><i class="fa-solid fa-plus"></i></button>
+        <input type="text" id="userInput" placeholder="💬 اكتب رسالتك هنا...">
+        <button id="sendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+        <input type="file" id="fileInput" hidden />
+      </div>
+
     </div>
+  </div>
+    <!-- End Content -->
+
+
+
+
+<!-- Start Menu button -->
+<div class="menu-container">
+  <button id="menuBtn" class="menu-btn" title="القائمة"><i class="fa-solid fa-bars"></i></button>
+  <div class="menu-options" id="menuOptions">
+    <ul>
+      <li id="newChat"><i class="fa-solid fa-plus"></i> شات جديد</li>
+      <!-- عنوان الشاتات (مش قابل للضغط) -->
+      <li class="chats-title"><i class="fa-solid fa-comments"></i> الشاتات</li>
+      <!-- الشاتات اللي هتظهر تحت العنوان -->
+      <li class="chat-history">
+        <ul>
+          <li>💬 محادثة 1</li>
+          <li>💬 محادثة 2</li>
+          <li>💬 استفسار عن دواء</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- End Menu button -->
+
+
+
+
+
 
     <!-- Start Footer -->
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-section about">
           <div class="logo">
-            <i class="fa-solid fa-prescription-bottle-medical"></i>
-            <span>Se7ty</span>
+            <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+            <span class="text-logo">Se7ty</span>
           </div>
           <p>صيدليتك الموثوقة لجميع الأدوية والمنتجات الصحية عالية الجودة</p>
         </div>
@@ -236,17 +129,13 @@
         <div class="footer-section links">
           <h3>روابط سريعة</h3>
           <ul>
-            <li><a href="../Home/index.html">الرئيسية</a></li>
-            <li><a href="../About Us/About Us.html">نبذة عنا</a></li>
-            <li><a href="../Products/Products.html">المنتجات</a></li>
-            <li><a href="../Health tips/Health Tips.html">نصائح صحية</a></li>
-            <li><a href="../Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
-            <li>
-              <a
-                href="../Inquiry About Medication/Inquiry About Medication.html"
-                >الاستفسار عن دواء</a
-              >
-            </li>
+            <li><a href="../../User/Home/User.html">الرئيسية</a></li>
+            <li><a href="../../Main/About Us/About Us.html">نبذة عنا</a></li>
+            <li><a href="../../Main/Products/Products.html">المنتجات</a></li>
+            <li><a href="../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+            <li><a href="../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+            <li><a href="../../Main/Inquiry About Medication/Inquiry About Medication.html">الاستفسار عن دواء</a></li>
+            <li><a href="../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
           </ul>
         </div>
 
@@ -282,6 +171,15 @@
     </footer>
     <!-- End Footer -->
 
-    <script src="Ask a Doctor.js"></script>
-  </body>
+
+
+    <!-- Start scroll To Top Btn -->
+    <button id="scrollToTopBtn" title="Go to top">
+      <i class="fa-solid fa-arrow-up-from-bracket"></i>
+    </button>
+    <!-- End scroll To Top Btn -->
+
+
+<script src="test.js"></script>
+</body>
 </html>
