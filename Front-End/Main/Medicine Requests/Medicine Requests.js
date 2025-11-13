@@ -119,37 +119,13 @@ document.addEventListener("click", (e) => {
   }
 });
 
-document.getElementById("newChat").addEventListener("click", () => {
-  // مسح كل الرسائل القديمة
-  const chatBody = document.getElementById("chatBody");
-  chatBody.innerHTML = "";
-
-  // إضافة رسالة ترحيبية من البوت
-  addMessage("🩺 تم بدء محادثة جديدة! كيف يمكنني مساعدتك اليوم؟", "bot");
-
-  // إغلاق القائمة
-  menuBtn.classList.remove("active");
-  menuOptions.style.display = "none";
-});
 
 
-// ------------------ التحكم في قائمة الشاتات ------------------
-const chatItems = document.querySelectorAll(".chat-history ul li");
+document.getElementById("newChat").onclick = function() {
+  document.getElementById("medName").value = "";
+  document.getElementById("selectq").selectedIndex = 0;
+};
 
-chatItems.forEach((item) => {
-  item.addEventListener("click", () => {
-    // إزالة التحديد من الكل
-    chatItems.forEach((li) => li.classList.remove("active"));
-    // تفعيل الشات الحالي
-    item.classList.add("active");
 
-    // إضافة رسالة داخل الشات
-    addMessage(`تم فتح ${item.textContent} 💬`, "bot");
 
-    // ممكن تقفل المنيو بعد الاختيار (اختياري)
-    menuBtn.classList.remove("active");
-    menuOptions.style.display = "none";
-  });
-});
 
-// ------------------ End Menu Button ------------------

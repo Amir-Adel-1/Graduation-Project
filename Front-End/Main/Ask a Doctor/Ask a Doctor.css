@@ -654,15 +654,13 @@ background-color: #00e0ff;
 
 
 
-
-
-
-/* Start Menu button */
-
+/* ===============================
+   🌐 زر القائمة والمنيو
+================================ */
 .menu-container {
   position: fixed;
   top: 110px;
-  left: 10px; /* خليها أقرب أو أبعد حسب ذوقك */
+  left: 10px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -684,10 +682,9 @@ background-color: #00e0ff;
   display: flex;
   justify-content: center;
   align-items: center;
-      box-shadow: 0 6px 20px rgba(0, 192, 255, 0.8);
+  box-shadow: 0 6px 20px rgba(0, 192, 255, 0.8);
 }
 
-/* لما يفتح */
 .menu-btn.active {
   justify-content: flex-start;
   gap: 10px;
@@ -699,49 +696,13 @@ background-color: #00e0ff;
   margin-top: 10px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(15px);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  padding: 20px 10px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  padding: 20px 12px;
   animation: fadeIn 0.3s ease;
-  width: 220px;
-
-}
-
-.menu-options ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.menu-options ul li {
-  padding: 15px 10px;
-  color: white;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background 0.2s;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.menu-options ul li:hover {
-  background: rgba(255,255,255,0.2);
-    background: rgba(255, 255, 255, 0.1); /* خلفية خفيفة */
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); /* توهج */
-  cursor: pointer;
-  transform: scale(1.03); /* تأثير بسيط للتكبير */
-}
-
-.menu-options li:hover {
-    color: #00e0ff;
-  text-shadow:
-    0 0 6px #00e0ff,
-    0 0 12px #00e0ff,
-    0 0 24px #00e0ff;
-    transform: scale(1.03);
+  width: 260px;
+  max-height: 420px;
+  overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -749,52 +710,84 @@ background-color: #00e0ff;
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* End Menu button */
+/* عناصر القائمة العامة */
+.menu-options ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
+.menu-options ul li {
+  padding: 14px 10px;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.25s, transform 0.25s;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
 
+.menu-options ul li:hover {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  color: #00e0ff;
+  text-shadow: 0 0 8px #00e0ff;
+  transform: scale(1.03);
+}
 
-
-
-/* عنوان قسم الشاتات (غير قابل للضغط) */
+/* ===============================
+   💬 قسم الشاتات (Chat History)
+================================ */
 .chats-title {
   cursor: default !important;
   font-weight: 600;
   opacity: 0.9;
   color: #aeeaff;
   text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+  margin-top: 10px;
 }
 
-/* وقف تأثير hover عن العنوان */
-.chats-title:hover {
-  background: none !important;
-  box-shadow: none !important;
-  transform: none !important;
-  color: #aeeaff !important;
+/* صندوق المحادثات */
+.chat-history {
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 10px 0 15px 0;
+  padding-right: 5px;
+  border-left: 2px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
 }
 
-/* قائمة الشاتات */
+/* قائمة المحادثات */
 .chat-history ul {
   list-style: none;
-  margin: 8px 0 0 10px;
+  margin: 8px 0;
   padding: 0;
-  border-left: 2px solid rgba(255, 255, 255, 0.2);
 }
 
+/* كل محادثة */
 .chat-history ul li {
-  padding: 6px 8px;
-  font-size: 14px;
+  position: relative;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  font-size: 15px;
   color: #e0f8ff;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.25s ease;
 }
 
-/* تأثير hover على عناصر الشات */
+/* تأثير hover على المحادثة */
 .chat-history ul li:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   color: #00e0ff;
   text-shadow: 0 0 6px #00e0ff;
-  transform: scale(1.02);
+  transform: translateY(-2px);
 }
 
 /* الشات النشط */
@@ -805,6 +798,55 @@ background-color: #00e0ff;
   text-shadow: 0 0 8px #00e0ff;
 }
 
+/* ===============================
+   🗑️ أيقونة السلة داخل المحادثة
+================================ */
+.chat-history ul li .delete-icon {
+  font-size: 15px;
+  color: #ff6b6b;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.25s ease, transform 0.25s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+/* تظهر فقط عند hover */
+.chat-history ul li:hover .delete-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* تأثير عند الضغط على السلة */
+.chat-history ul li .delete-icon:active {
+  transform: scale(0.8);
+  color: #ff2e2e;
+}
+
+/* الاسم النصي داخل المحادثة */
+.chat-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 10px;
+}
+
+/* ===============================
+   🧹 زر مسح كل المحادثات
+================================ */
+#clearChats {
+  color: #ffbdbd;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+#clearChats:hover {
+  background: rgba(255, 0, 0, 0.15);
+  color: white;
+  text-shadow: 0 0 8px #ff4d4d, 0 0 16px #ff1a1a;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.3);
+  transform: scale(1.05);
+}
 
 
 
@@ -812,6 +854,58 @@ background-color: #00e0ff;
 
 
 
+
+
+/* 🎯 زر الحذف في الشات هيستوري */
+.chat-item {
+  position: relative;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: #e0f8ff;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+/* زر الحذف */
+.chat-item .delete-btn {
+  background: transparent;
+  border: none;
+  color: #ff8c8c;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0; /* مخفية افتراضياً */
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+
+/* الأيقونة داخل الزر */
+.chat-item .delete-btn i {
+  pointer-events: none; /* عشان الكليك يبقى على الزر نفسه */
+}
+
+/* تظهر فقط عند الهوفر */
+.chat-item:hover .delete-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* تأثير عند المرور على الزر نفسه */
+.chat-item .delete-btn:hover {
+  color: #ff3333;
+  text-shadow: 0 0 8px #ff4d4d;
+  transform: scale(1.1);
+}
+
+/* لو عايز الماوس يقف عند النص بس مش الزر */
+.chat-item .chat-text {
+  flex-grow: 1;
+  margin-right: 10px;
+}
 
 
 
