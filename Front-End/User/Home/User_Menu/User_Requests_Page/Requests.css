@@ -534,19 +534,43 @@ transform: translateY(-7px);
 box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
 }
 
+
+
+/* ------------------- أيقونات النصوص داخل الكارت ------------------- */
+.request-info {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* مسافة بين الأيقونة والنص */
+  margin: 6px 0;
+}
+
+.request-info i {
+  font-size: 17px;
+  color: #00c6ff; /* لون الأيقونة */
+  min-width: 20px;
+  text-align: center;
+}
+
+/* خلي الأيقونات الخاصة بالحالة ليها لون خاص */
+.status i {
+  color: currentColor;
+  margin-left: 5px;
+}
+
+
 /* رقم الطلب */
 .request-card p:first-child {
   font-size: 16px;
   font-weight: bold;
-  color: #00bcd4;
+  color: white;
   margin-bottom: 10px;
 }
 
 /* اسم الدواء */
-.request-card h3 {
+.request-card h3 strong {
+  color: #43e97b;
   font-size: 20px;
   margin-bottom: 12px;
-  color: #fff;
 }
 
 /* نصوص التفاصيل */
@@ -704,6 +728,7 @@ box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
   line-height: 1.6;
 }
 
+
 /* زر الإغلاق */
 .btn.close {
   margin-top: 25px;
@@ -735,8 +760,6 @@ box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
   }
 }
 /* Start Button View Details */
-
-
 
 
 
