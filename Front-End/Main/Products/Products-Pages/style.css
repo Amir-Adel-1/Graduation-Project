@@ -576,10 +576,7 @@ body {
   text-align: center;
 }
 
-.card-image-back h4 {
-  color: black;
-  padding-bottom: 5px;
-}
+
 
 /* حالة الانقلاب */
 .card-image.flipped .card-image-front {
