@@ -45,7 +45,7 @@
             <span class="count" id="cart_clr">0</span>
           </div>
           <div class="icon">
-            <a href="../../Main/Favorites/Favorites.html"><i class="fa-solid fa-heart "></i></a>
+            <a href="../../Main/Favorites/Favorites.html" class="active"><i class="fa-solid fa-heart "></i></a>
             <span class="count" id="fav_clr">0</span>
           </div>
         </div>
@@ -55,7 +55,7 @@
         <!-- القائمة المنسدلة -->
         <div class="user-menu" id="userMenu">
           <ul>
-            <li><a href="../../User/Home/User_Menu/User_Profile.html">👤 الملف الشخصي</a></li>
+            <li><a href="../../User/Home/User_Menu/User_Profile_Page/User_Profile.html">👤 الملف الشخصي</a></li>
             <li><a href="#">⚙️ الإعدادات</a></li>
             <li><a id="exit">🚪 تسجيل الخروج</a></li>
           </ul>
@@ -67,27 +67,69 @@
 
 
 
+
 <!-- Start Content -->
 
+<!-- Start Cart Section -->
 <section class="favorites-section">
-  <div class="favorites-container">
-    <div class="name-category">
+
+<div class="glass-bg">
+
+<div class="name-category">
     <h2>🩵 المفضلة الخاصة بك</h2>
-    </div>
-    <div class="favorites-grid">
-      <!-- هنا بتحط كارت المنتج بتاعك -->
-      <!-- مثال بسيط مبدئي -->
-      <div class="fav-card">
-        <img src="../Home/images/1.jpg" alt="اسم المنتج">
-        <h3>اسم الدواء</h3>
-        <p>السعر: 25 جنيه</p>
-        <button class="remove-btn">إزالة من المفضلة</button>
-        <button class="add-btn">إضافة إلى العربة</button>
+</div>
+
+<div class="container-cards">
+
+<div class="card">
+<div class="card-content">
+
+    <div class="card-image cart-image">
+      <img src="../Home/images/1.jpg" alt="" />
+      <div class="card-overlay">
+        <i class="fa-solid fa-eye"></i>
       </div>
-      <!-- كرر كروت تانية أو خليها تتولد من API -->
     </div>
+
+    <div class="card-text">
+      <p class="card__title">بنادول ادفانس 500 مجم</p>
+    </div>
+
+    <div class="card-footer">
+
+      <div class="card__price">92 ج.م</div>
+
+      <div class="buttons">
+        <button class="card-button delete-btn">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+
+        <button class="card-button cart-btn">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+      </div>
+
+    </div>
+
   </div>
+</div>
+
+</div>
+
+</div>
+
+<!-- Start Nova Pop-up Window Details -->
+<div class="nova-popup" id="novaPopup">
+  <div class="nova-content">
+    <span class="nova-close-btn">&times;</span>
+    <h3>التفاصيل</h3>
+    <p>مسكن للألم وخافض للحرارة.<br>يُستخدم لتخفيف الصداع وآلام العضلات.</p>
+  </div>
+</div>
+<!-- End Nova Pop-up Window Details -->
+
 </section>
+<!-- End Cart Section -->
 
 <!-- End Content -->
 

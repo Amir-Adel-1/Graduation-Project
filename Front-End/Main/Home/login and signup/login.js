@@ -15,16 +15,25 @@ if (loginOverlay && closeLoginPopup && openLoginButtons.length > 0) {
     btn.addEventListener('click', () => {
       loginOverlay.style.display = 'flex';
       conteiner_hide2.style.display = 'none';
+
+      // ✋ منع الاسكرول
+      document.body.style.overflow = "hidden";
     });
   });
 
   // غلق النافذة بزر الإغلاق
   closeLoginPopup.addEventListener('click', () => {
     loginOverlay.style.display = 'none';
+
+    // 🔄 رجع الاسكرول
+    document.body.style.overflow = "auto";
   });
 
   // غلق النافذة عند الضغط على الخلفية
   loginOverlay.addEventListener('click', (e) => {
     if (e.target === loginOverlay) loginOverlay.style.display = 'none';
+
+    // 🔄 رجع الاسكرول
+      document.body.style.overflow = "auto";
   });
 }

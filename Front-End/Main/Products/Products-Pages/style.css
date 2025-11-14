@@ -670,7 +670,7 @@ body {
   backdrop-filter: blur(5px);
   justify-content: center;
   align-items: center;
-  z-index: 10000;
+  z-index: 111111;
 
   overflow-y: auto; /* لو المحتوى طويل يقدر المستخدم يمرره */
   padding: 40px 20px;

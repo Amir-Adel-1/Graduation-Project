@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================
   const novaPopup = document.getElementById("novaPopup");
   const novaCloseBtn = document.querySelector(".nova-close-btn");
-  const eyeAreas = document.querySelectorAll(".overlay");
+  const eyeAreas = document.querySelectorAll(".card-overlay");
 
 eyeAreas.forEach(area => {
   area.addEventListener("click", () => {
@@ -89,4 +89,37 @@ eyeAreas.forEach(area => {
     }
   });
 
+});
+
+
+
+
+// ==========================================================
+// 📌  الجزء الرابع: Quantity + / -
+// ==========================================================
+
+const qtyBoxes = document.querySelectorAll(".quantity-box");
+
+qtyBoxes.forEach(box => {
+  const minusBtn = box.querySelector(".minus");
+  const plusBtn = box.querySelector(".plus");
+  const qtyNumber = box.querySelector(".qty-number");
+
+  let qty = parseInt(qtyNumber.textContent);
+
+  // زيادة
+  plusBtn.addEventListener("click", () => {
+    if (qty < 5) {
+      qty++;
+      qtyNumber.textContent = qty;
+    }
+  });
+
+  // نقصان
+  minusBtn.addEventListener("click", () => {
+    if (qty > 1) {
+      qty--;
+      qtyNumber.textContent = qty;
+    }
+  });
 });

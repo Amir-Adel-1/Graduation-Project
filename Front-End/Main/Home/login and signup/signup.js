@@ -15,16 +15,25 @@ if (signupOverlay && closeSignupPopup && openSignupButtons.length > 0) {
     btn.addEventListener('click', () => {
       signupOverlay.style.display = 'flex';
       conteiner_hide.style.display = 'none';
+
+      // ✋ منع الاسكرول
+      document.body.style.overflow = "hidden";
     });
   });
 
   // غلق النافذة بزر الإغلاق
   closeSignupPopup.addEventListener('click', () => {
     signupOverlay.style.display = 'none';
+
+    // 🔄 رجع الاسكرول
+    document.body.style.overflow = "auto";
   });
 
   // غلق النافذة عند الضغط على الخلفية
   signupOverlay.addEventListener('click', (e) => {
     if (e.target === signupOverlay) signupOverlay.style.display = 'none';
+
+    // 🔄 رجع الاسكرول
+      document.body.style.overflow = "auto";
   });
 }

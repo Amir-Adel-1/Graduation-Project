@@ -92,22 +92,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+  // ==========================================================
+  // 📌  الجزء الثالث: Pop-up Window (Eye Icon)
+  // ==========================================================
+  const novaPopup = document.getElementById("novaPopup");
+  const novaCloseBtn = document.querySelector(".nova-close-btn");
+  const eyeAreas = document.querySelectorAll(".card-overlay");
 
-
-
-
-
-
-
-
-
-
-// Srart card flipped image
-const cards = document.querySelectorAll('.card-image');
-
-cards.forEach(card => {
-  card.addEventListener('click', () => {
-    card.classList.toggle('flipped');
+eyeAreas.forEach(area => {
+  area.addEventListener("click", () => {
+    novaPopup.style.display = "flex";
+    document.body.style.overflow = "hidden"; 
   });
 });
-// End card flipped image
+
+
+  novaCloseBtn.addEventListener("click", () => {
+    novaPopup.style.display = "none";
+    document.body.style.overflow = "";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === novaPopup) {
+      novaPopup.style.display = "none";
+      document.body.style.overflow = "";
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      novaPopup.style.display = "none";
+      document.body.style.overflow = "";
+    }
+  });
+
+
+
+
+
+
+
+
+

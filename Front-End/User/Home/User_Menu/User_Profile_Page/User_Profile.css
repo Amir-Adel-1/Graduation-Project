@@ -205,7 +205,7 @@ body {
 
 
 /* اللينك النشط */
-.nav-links a.active {
+.user-menu a.active {
   position: relative;
   color: #00e0ff; /* اللون الأساسي وقت الهوفر */
   text-shadow:
@@ -401,6 +401,22 @@ body {
   cursor: pointer;
   transform: scale(1.03); /* تأثير بسيط للتكبير */
 }
+
+.user-menu li.active {
+  background: rgba(255, 255, 255, 0.1); /* خلفية خفيفة */
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); /* توهج */
+  cursor: pointer;
+  transform: scale(1.03); /* تأثير بسيط للتكبير */
+}
+
+.user-menu li.active a {
+  color: #00e0ff;
+  text-shadow:
+    0 0 6px #00e0ff,
+    0 0 12px #00e0ff,
+    0 0 24px #00e0ff;
+}
+
 
 /* 🔹 اللينك الأساسي */
 .user-menu a {
