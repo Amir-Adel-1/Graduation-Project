@@ -67,6 +67,76 @@ async function getProductDetails(productId) {
   }
 }
 
+// Function to safely decode and sanitize HTML
+function decodeAndSanitize(html) {
+  if (!html) return '';
+  
+  // First decode any HTML entities
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = html;
+  let decoded = textarea.value;
+  
+  // Decode any Unicode escape sequences
+  decoded = decodeText(decoded);
+  
+  // Basic HTML sanitization (allow common safe tags)
+  const allowedTags = ['p', 'br', 'b', 'strong', 'i', 'em', 'u', 'ul', 'ol', 'li', 'div', 'span'];
+  const doc = new DOMParser().parseFromString(decoded, 'text/html');
+  
+  // Remove any potentially dangerous tags and attributes
+  const walker = document.createTreeWalker(
+    doc.body,
+    NodeFilter.SHOW_ELEMENT,
+    null,
+    false
+  );
+  
+  const nodesToRemove = [];
+  let node;
+  
+  while (node = walker.nextNode()) {
+    // Remove disallowed tags
+    if (!allowedTags.includes(node.tagName.toLowerCase())) {
+      nodesToRemove.push(node);
+      continue;
+    }
+    
+    // Remove all attributes except for class and style
+    for (let i = node.attributes.length - 1; i >= 0; i--) {
+      const attr = node.attributes[i];
+      if (!['class', 'style'].includes(attr.name.toLowerCase())) {
+        node.removeAttribute(attr.name);
+      }
+    }
+  }
+  
+  // Remove disallowed nodes
+  nodesToRemove.forEach(node => node.parentNode?.removeChild(node));
+  
+  return doc.body.innerHTML || 'لا توجد تفاصيل متاحة';
+}
+
+// Function to create a popup element
+function createPopup(product, details) {
+  const popup = document.createElement('div');
+  popup.className = 'nova-popup';
+  popup.id = `popup-${product.id}`;
+  
+  const name = decodeText(product.name) || 'اسم المنتج غير متوفر';
+  const detailsText = details ? (details.msg || details.description || details.info || 'لا توجد تفاصيل متاحة') : 'جاري تحميل التفاصيل...';
+  
+  popup.innerHTML = `
+    <div class="nova-content">
+      <span class="nova-close-btn">&times;</span>
+      <h3>${name}</h3>
+      <div class="popup-details">${details ? decodeAndSanitize(detailsText) : 'جاري تحميل التفاصيل...'}</div>
+    </div>
+  `;
+  
+  document.body.appendChild(popup);
+  return popup;
+}
+
 // Function to create a product card
 function createProductCard(product) {
   const card = document.createElement('div');
@@ -76,15 +146,12 @@ function createProductCard(product) {
   const price = product.price ? `${product.price} ج.م` : 'السعر غير متوفر';
   const image = product.image || 'placeholder-image.jpg';
   
-  // 🟢 هنا نعمل الكارت الأساسي
   card.innerHTML = `
     <div class="card-content">
       <div class="card-image">
-        <div class="card-image-front">
-          <img src="${image}" alt="${name}" onerror="this.src='placeholder-image.jpg'" />
-        </div>
-        <div class="card-image-back">
-          <p class="back-details">جاري تحميل التفاصيل...</p>
+        <img src="${image}" alt="${name}" onerror="this.src='placeholder-image.jpg'" />
+        <div class="overlay">
+          <i class="fa-solid fa-eye"></i>
         </div>
       </div>
       <div class="card-text">
@@ -104,21 +171,30 @@ function createProductCard(product) {
     </div>
   `;
 
-  // 🟢 هنا نجيب تفاصيل الدواء من الـ API التاني ونحطها في ضهر الكارت
-  getProductDetails(product.id)
-    .then(details => {
-      const back = card.querySelector('.card-image-back');
-
-      // المفتاح الصحيح حسب تجربة الـ API هو msg
+  // Add click handler for the eye icon
+  const overlay = card.querySelector('.overlay');
+  overlay.addEventListener('click', async () => {
+    // Show loading state
+    const popup = createPopup(product, null);
+    popup.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    
+    try {
+      // Load product details
+      const details = await getProductDetails(product.id);
       const detailsText = details?.msg || details?.description || details?.info || 'لا توجد تفاصيل متاحة';
-
-      back.innerHTML = `<p class="back-details">${decodeText(detailsText)}</p>`;
-    })
-    .catch(error => {
+      const detailsElement = popup.querySelector('.popup-details');
+      if (detailsElement) {
+        detailsElement.innerHTML = decodeAndSanitize(detailsText);
+      }
+    } catch (error) {
       console.error('Error fetching product details:', error);
-      const back = card.querySelector('.card-image-back');
-      back.innerHTML = `<p class="back-details">حدث خطأ في تحميل التفاصيل</p>`;
-    });
+      const detailsElement = popup.querySelector('.popup-details');
+      if (detailsElement) {
+        detailsElement.textContent = 'حدث خطأ في تحميل التفاصيل';
+      }
+    }
+  });
 
   return card;
 }
@@ -197,6 +273,34 @@ function addEventListeners() {
       console.log('Added to favorites:', productId);
       // You can update the favorites count here
     });
+  });
+  
+  // Close popup when clicking the close button or outside
+  document.addEventListener('click', (e) => {
+    // Close when clicking the close button
+    if (e.target.classList.contains('nova-close-btn')) {
+      const popup = e.target.closest('.nova-popup');
+      if (popup) {
+        popup.remove();
+        document.body.style.overflow = "";
+      }
+    }
+    // Close when clicking outside the popup content
+    else if (e.target.classList.contains('nova-popup')) {
+      e.target.remove();
+      document.body.style.overflow = "";
+    }
+  });
+
+  // Close popup with ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+      const popup = document.querySelector('.nova-popup');
+      if (popup) {
+        popup.remove();
+        document.body.style.overflow = "";
+      }
+    }
   });
 }
 

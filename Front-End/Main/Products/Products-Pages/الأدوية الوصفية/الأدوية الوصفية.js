@@ -1,16 +1,14 @@
 // Search terms from the image
 const searchTerms = [
-  'polyfresh',
-  'polyfresh advanced',
-  'polyfresh advanced eye drops',
-  'polyfresh eye drops',
-  'polyfresh eye',
-  'poly fresh',
-  'poly fresh eye drops',
-  'poly fresh eye',
-  'polyfresh drops',
-  'poly fresh drops'
+  'antibiotic',     // مضاد حيوي
+  'amoxicillin',    // أموكسيسيلين
+  'augmentin',      // أوجمنتين
+  ' pressure',       // أدوية الضغط
+  'insulin',        // أدوية السكر
+  'heart',          // أدوية القلب
+  'cholesterol'     // أدوية الكوليسترول
 ];
+
 
 // Function to decode Unicode escape sequences
 const decodeText = (str) => {
@@ -69,6 +67,76 @@ async function getProductDetails(productId) {
   }
 }
 
+// Function to safely decode and sanitize HTML
+function decodeAndSanitize(html) {
+  if (!html) return '';
+  
+  // First decode any HTML entities
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = html;
+  let decoded = textarea.value;
+  
+  // Decode any Unicode escape sequences
+  decoded = decodeText(decoded);
+  
+  // Basic HTML sanitization (allow common safe tags)
+  const allowedTags = ['p', 'br', 'b', 'strong', 'i', 'em', 'u', 'ul', 'ol', 'li', 'div', 'span'];
+  const doc = new DOMParser().parseFromString(decoded, 'text/html');
+  
+  // Remove any potentially dangerous tags and attributes
+  const walker = document.createTreeWalker(
+    doc.body,
+    NodeFilter.SHOW_ELEMENT,
+    null,
+    false
+  );
+  
+  const nodesToRemove = [];
+  let node;
+  
+  while (node = walker.nextNode()) {
+    // Remove disallowed tags
+    if (!allowedTags.includes(node.tagName.toLowerCase())) {
+      nodesToRemove.push(node);
+      continue;
+    }
+    
+    // Remove all attributes except for class and style
+    for (let i = node.attributes.length - 1; i >= 0; i--) {
+      const attr = node.attributes[i];
+      if (!['class', 'style'].includes(attr.name.toLowerCase())) {
+        node.removeAttribute(attr.name);
+      }
+    }
+  }
+  
+  // Remove disallowed nodes
+  nodesToRemove.forEach(node => node.parentNode?.removeChild(node));
+  
+  return doc.body.innerHTML || 'لا توجد تفاصيل متاحة';
+}
+
+// Function to create a popup element
+function createPopup(product, details) {
+  const popup = document.createElement('div');
+  popup.className = 'nova-popup';
+  popup.id = `popup-${product.id}`;
+  
+  const name = decodeText(product.name) || 'اسم المنتج غير متوفر';
+  const detailsText = details ? (details.msg || details.description || details.info || 'لا توجد تفاصيل متاحة') : 'جاري تحميل التفاصيل...';
+  
+  popup.innerHTML = `
+    <div class="nova-content">
+      <span class="nova-close-btn">&times;</span>
+      <h3>${name}</h3>
+      <div class="popup-details">${details ? decodeAndSanitize(detailsText) : 'جاري تحميل التفاصيل...'}</div>
+    </div>
+  `;
+  
+  document.body.appendChild(popup);
+  return popup;
+}
+
 // Function to create a product card
 function createProductCard(product) {
   const card = document.createElement('div');
@@ -81,12 +149,9 @@ function createProductCard(product) {
   card.innerHTML = `
     <div class="card-content">
       <div class="card-image">
-        <div class="card-image-front">
-          <img src="${image}" alt="${name}" onerror="this.src='placeholder-image.jpg'" />
-        </div>
-        <div class="card-image-back">
-          <h4>${name}</h4>
-          <p>${name} - اضغط لمعرفة المزيد</p>
+        <img src="${image}" alt="${name}" onerror="this.src='placeholder-image.jpg'" />
+        <div class="overlay">
+          <i class="fa-solid fa-eye"></i>
         </div>
       </div>
       <div class="card-text">
@@ -105,9 +170,35 @@ function createProductCard(product) {
       </div>
     </div>
   `;
-  
+
+  // Add click handler for the eye icon
+  const overlay = card.querySelector('.overlay');
+  overlay.addEventListener('click', async () => {
+    // Show loading state
+    const popup = createPopup(product, null);
+    popup.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    
+    try {
+      // Load product details
+      const details = await getProductDetails(product.id);
+      const detailsText = details?.msg || details?.description || details?.info || 'لا توجد تفاصيل متاحة';
+      const detailsElement = popup.querySelector('.popup-details');
+      if (detailsElement) {
+        detailsElement.innerHTML = decodeAndSanitize(detailsText);
+      }
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+      const detailsElement = popup.querySelector('.popup-details');
+      if (detailsElement) {
+        detailsElement.textContent = 'حدث خطأ في تحميل التفاصيل';
+      }
+    }
+  });
+
   return card;
 }
+
 
 // Function to display all products
 async function displayAllProducts() {
@@ -167,7 +258,6 @@ function addEventListeners() {
   // Add to cart functionality
   document.querySelectorAll('.add-to-cart').forEach(button => {
     button.addEventListener('click', (e) => {
-      e.stopPropagation();
       const productId = e.currentTarget.dataset.productId;
       // Add your add to cart logic here
       console.log('Added to cart:', productId);
@@ -178,7 +268,6 @@ function addEventListeners() {
   // Add to favorites functionality
   document.querySelectorAll('.add-to-favorites').forEach(button => {
     button.addEventListener('click', (e) => {
-      e.stopPropagation();
       const productId = e.currentTarget.dataset.productId;
       // Add your add to favorites logic here
       console.log('Added to favorites:', productId);
@@ -186,14 +275,31 @@ function addEventListeners() {
     });
   });
   
-  // Use event delegation for card flip
-  document.addEventListener('click', function(event) {
-    // Check if the clicked element or any of its parents have the card-image class
-    const cardImage = event.target.closest('.card-image');
-    if (cardImage) {
-      event.preventDefault();
-      event.stopPropagation();
-      cardImage.classList.toggle('flipped');
+  // Close popup when clicking the close button or outside
+  document.addEventListener('click', (e) => {
+    // Close when clicking the close button
+    if (e.target.classList.contains('nova-close-btn')) {
+      const popup = e.target.closest('.nova-popup');
+      if (popup) {
+        popup.remove();
+        document.body.style.overflow = "";
+      }
+    }
+    // Close when clicking outside the popup content
+    else if (e.target.classList.contains('nova-popup')) {
+      e.target.remove();
+      document.body.style.overflow = "";
+    }
+  });
+
+  // Close popup with ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+      const popup = document.querySelector('.nova-popup');
+      if (popup) {
+        popup.remove();
+        document.body.style.overflow = "";
+      }
     }
   });
 }
@@ -201,4 +307,13 @@ function addEventListeners() {
 // Initialize the page when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
   displayAllProducts();
+});
+
+
+
+document.addEventListener('click', (e) => {
+  const card = e.target.closest('.card-image');
+  if (card) {
+    card.classList.toggle('flipped');
+  }
 });
