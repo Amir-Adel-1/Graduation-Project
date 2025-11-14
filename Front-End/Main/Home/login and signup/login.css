@@ -96,12 +96,13 @@
   border: 2px solid #2a2a3a;
   background: #00000f;
   color: white;
-  font-size: 16px;
+  font-size: 20px;
   outline: none;
   border-radius: 8px;
   transition: all 0.4s ease-out;
   box-sizing: border-box;
 }
+
 
 .nebula-input-login .user-label-login {
   position: absolute;
@@ -140,6 +141,23 @@
   padding-top: 1px;
   font-size: 13px;
 }
+
+
+/* إصلاح حركة الليبل لحقل الإيميل فقط */
+.email-fix:focus ~ .user-label-login,
+.email-fix:not(:placeholder-shown) ~ .user-label-login {
+  transform: translateY(-25px);
+  font-size: 13px;
+  color: white;
+}
+/* رفع ليبل الإيميل فوق بشكل أعلى */
+.email-fix ~ .user-label-login {
+  top: -1px; /* ارفع أو نزل حسب ما تحب */
+}
+
+
+
+
 
 .nebula-particle-login {
   position: absolute;
