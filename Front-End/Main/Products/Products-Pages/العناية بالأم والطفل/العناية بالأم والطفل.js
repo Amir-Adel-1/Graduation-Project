@@ -1,15 +1,11 @@
-// Search terms for mother and baby care products
+// Search terms from the image
 const searchTerms = [
-  'حفاضات',         // Diapers
-  'رضاعة',          // Baby bottles
-  'استحمام اطفال',   // Baby bath
-  'غسول اطفال',     // Baby wash
-  'كريم حفاضات',    // Diaper cream
-  'حليب اطفال',     // Baby formula
-  'فيتامينات اطفال', // Baby vitamins
-  'العناية بالحامل', // Pregnancy care
-  'فوط صحية',       // Sanitary pads
-  'حمالات صدر رضاعة' // Nursing bras
+  'milk',
+  'pampers',
+  'baby shampoo',
+  'baby cream',
+  'mother',
+  'prenatal'
 ];
 
 

@@ -1018,3 +1018,76 @@ body {
   -webkit-text-fill-color: transparent;
 }
 /* End Scroll To Top Btn */
+
+
+
+
+
+
+
+
+
+
+
+/* ==================== جزء السرش بال api  ================== */
+
+
+.search-dropdown {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 500;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.search-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    margin-left: 10px;
+    object-fit: cover;
+}
+
+.search-item .data {
+    flex: 1;
+}
+
+.search-item h4 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+}
+
+.search-item .price {
+    color: #0075ff;
+    font-size: 14px;
+}
+
+.add-btn {
+    background: #e6f2ff;
+    color: #0075ff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 10px;
+}
+
+.not-available {
+    background: #ddd;
+    color: #555;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 10px;
+}

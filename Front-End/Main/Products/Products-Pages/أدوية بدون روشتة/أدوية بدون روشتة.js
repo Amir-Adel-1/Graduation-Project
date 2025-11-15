@@ -1,14 +1,11 @@
 // Search terms from the image
 const searchTerms = [
-  'antibiotic',     // مضاد حيوي
-  'amoxicillin',    // أموكسيسيلين
-  'augmentin',      // أوجمنتين
-  ' pressure',       // أدوية الضغط
-  'insulin',        // أدوية السكر
-  'heart',          // أدوية القلب
-  'cholesterol'     // أدوية الكوليسترول
+  'panadol',
+  'brufen',
+  'cough',
+  'antacid',
+  'paracetamol'
 ];
-
 
 // Function to decode Unicode escape sequences
 const decodeText = (str) => {

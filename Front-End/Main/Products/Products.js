@@ -170,3 +170,76 @@ document.addEventListener("click", (e) => {
     searchDropdown.style.display = "none";
   }
 });
+
+
+
+
+
+
+//// جزء ال سرش و ال api
+
+
+const input = document.getElementById("searchInput");
+const dropdown = document.getElementById("searchDropdown");
+
+input.addEventListener("input", async () => {
+    let text = input.value.trim();
+
+    if (text.length < 2) {
+        dropdown.style.display = "none";
+        return;
+    }
+
+    dropdown.style.display = "block";
+    dropdown.innerHTML = `<div class="loading">جاري البحث...</div>`;
+
+    let products = await searchProducts(text);
+
+    if (!products || products.length === 0) {
+        dropdown.innerHTML = `<div class="no-results">لا توجد نتائج</div>`;
+        return;
+    }
+
+    showProducts(products);
+});
+
+// ⭐ API CALL
+async function searchProducts(query) {
+    const apiUrl = `https://moelshafey.xyz/API/MD/search.php?name=${encodeURIComponent(query)}`;
+    const proxy = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
+    
+    try {
+        let res = await fetch(proxy);
+        let json = await res.json();
+
+        // إذا API يرجع {products: [...]} 
+        return json.products || [];
+    } catch (e) {
+        console.error("API Error:", e);
+        return [];
+    }
+}
+
+// ⭐ عرض النتائج
+function showProducts(products) {
+    dropdown.innerHTML = "";
+
+    products.forEach(p => {
+        dropdown.innerHTML += `
+            <div class="search-item">
+                <img src="${p.image || 'default.jpg'}">
+
+                <div  class="data">
+                    <h4>${p.name}</h4>
+                    <p class="price">${p.price || 0} جنيه</p>
+                </div>
+
+                ${
+                  
+                     `<button class="add-btn">إضافة</button>`
+              
+                }
+            </div>
+        `;
+    });
+}
