@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <!-- Responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>طلبات المستخدمين</title>
+    <title>نبذة عنا</title>
 
     <!-- Logo Website -->
     <link rel="icon" href="" type="png" />
     <!-- Main Template CSS File -->
-    <link rel="stylesheet" href="User_Requests.css" />
+    <link rel="stylesheet" href="About Us.css" />
     <!-- Bootstrap -->
-    <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
+     <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
     <!-- Font Awsome -->
-    <link rel="stylesheet" href="../../../bootstrap-5.3.8-dist/css/all.min.css" />
+     <link rel="stylesheet" href="../../../bootstrap-5.3.8-dist/css/all.min.css" />
     <!-- Google Fonts -->
     <link rel="stylesheet" href="" />
-  </head>
+
+</head>
 <body>
 
 
@@ -30,8 +31,8 @@
 
       <ul class="nav-links">
         <li><a href="../Pharmacy.html">الرئيسية</a></li>
-        <li><a href="../About Us/About Us.html">نبذة عنا</a></li>
-        <li><a href="User_Requests.html"  class="active">طلبات المستخدمين</a></li>
+        <li><a href="../About Us/About Us.html" class="active">نبذة عنا</a></li>
+        <li><a href="../User_Requests/User_Requests.html">طلبات المستخدمين</a></li>
         <li><a href="../Available_Orders/Available_Orders.html">الطلبات المتاحة</a></li>
       </ul>
 
@@ -52,45 +53,28 @@
     <!--  End NavBar -->
 
 
-
-<!-- Start User-Requests-Section -->
-<section class="user-requests-section">
-<!-- العنوان -->
-    <h2 class="page-title">• طلبات المستخدمين •</h2>
-
-        <div class="orders-container">
-
-            <!-- ====== مثال كارت واحد ====== -->
-            <div class="order-card" data-order-id="101">
-
-                <p class="order-title"><span>💊 المطلوب :</span> بانادول </p>
-                <p><span>📦 الكمية :</span> 2 عبوات</p>
-                <p><span>📅 التاريخ :</span> 2025-11-14</p>
-                <p><span>⏰ الوقت :</span> 03:30 م</p>
-
-                <button class="btn-available">متوفر لدي</button>
-
-            </div>
-            <!-- كرّر من قاعدة البيانات -->
-
-        </div>
-
-</section>
-
-    <!-- نافذة البوب أب -->
-    <div id="overlayAvailable" class="overlay">
-        <div class="popup">
-            <h3>تأكيد التوافر</h3>
-            <p>هل تريد إرسال إشعار للمستخدم بأن الدواء متوفر لديك؟</p>
-
-            <div class="popup-btns">
-                <button id="confirmSend" class="confirm-send">تأكيد الإرسال</button>
-                <button id="cancelSend" class="cancel-send">إلغاء</button>
-            </div>
-        </div>
+<!-- Start About Se7ty -->
+<section class="about-se7ty">
+  <div class="about-container">
+    <div class="about-content">
+      <h2>من نحن؟</h2>
+      <p>
+        <strong>Se7ty</strong> هو موقع يهتم بصحتك وسلامتك، ويهدف إلى نشر الوعي الصحي بأسلوب بسيط وسهل.
+        نقدم لك نصائح طبية موثوقة حول التغذية، اللياقة، الأمراض الشائعة، والعناية بالصحة النفسية والجسدية.
+        نسعى دائمًا لأن نكون مصدر ثقة لكل من يبحث عن المعلومة الطبية الصحيحة بعيدًا عن التعقيد.
+      </p>
+      <p>
+        رؤيتنا أن تكون <strong>Se7ty</strong> بوابتك الأولى للحياة الصحية المتكاملة،
+        من خلال محتوى مبسط، دقيق، ومبني على المعرفة العلمية.
+      </p>
     </div>
-<!-- End User-Requests-Section -->
 
+    <div class="about-logo">
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+    </div>
+  </div>
+</section>
+<!-- End About Se7ty -->
 
 
     <!-- Start Footer -->
@@ -108,8 +92,8 @@
           <h3>روابط سريعة</h3>
           <ul>
         <li><a href="../Pharmacy.html">الرئيسية</a></li>
-        <li><a href="../About Us/About Us.html">نبذة عنا</a></li>
-        <li><a href="User_Requests.html">طلبات المستخدمين</a></li>
+        <li><a href="../About Us/About Us.html" class="active">نبذة عنا</a></li>
+        <li><a href="../User_Requests/User_Requests.html">طلبات المستخدمين</a></li>
         <li><a href="../Available_Orders/Available_Orders.html">الطلبات المتاحة</a></li>
           </ul>
         </div>
@@ -147,14 +131,13 @@
     <!-- End Footer -->
 
 
+<!-- Start scroll To Top Btn -->
+  <button id="scrollToTopBtn" title="Go to top">
+  <i class="fa-solid fa-arrow-up-from-bracket"></i>
+  </button>
+<!-- End scroll To Top Btn -->
 
-    <!-- Start scroll To Top Btn -->
-    <button id="scrollToTopBtn" title="Go to top">
-      <i class="fa-solid fa-arrow-up-from-bracket"></i>
-    </button>
-    <!-- End scroll To Top Btn -->
-
-
-<script src="User_Requests.js"></script>
+  
+<script src="About Us.js"></script>
 </body>
 </html>

@@ -73,12 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // الحقول المقفولة دائمًا حتى في التعديل
   const lockedFields = [
-    "الاسم الكامل:",
-    "الجنس:",
-    "تاريخ الميلاد:",
-    "البريد الإلكتروني:",
-    "رقم الهاتف:",
-    "العنوان:"
+    "اسم الصيدلية :",
+    "البريد الإلكتروني :",
+    "رقم الهاتف :",
+    "العنوان :"
   ];
 
   // إخفاء أزرار الإضافة في البداية
@@ -218,17 +216,20 @@ document.addEventListener("DOMContentLoaded", () => {
     alertBox.textContent = text;
     Object.assign(alertBox.style, {
       position: "fixed",
-      top: "30px",
-      left: "50%",
-      transform: "translateX(-50%)",
-      background: "rgba(0, 255, 200, 0.25)",
-      color: "#00ffaa",
-      padding: "12px 25px",
-      borderRadius: "12px",
-      backdropFilter: "blur(6px)",
-      boxShadow: "0 0 15px rgba(0,255,255,0.4)",
-      transition: "opacity 0.8s ease",
-      zIndex: "9999",
+    top: "50%",                     // في نص الشاشة
+    left: "50%",                    // في نص الشاشة
+    transform: "translate(-50%, -50%)", // توسيط كامل
+    background: "rgba(0, 255, 200, 0.25)",
+    color: "#00ffaa",
+    padding: "12px 25px",
+    borderRadius: "12px",
+    backdropFilter: "blur(6px)",
+    boxShadow: "0 0 15px rgba(0,255,255,0.4)",
+    transition: "opacity 0.8s ease",
+    zIndex: "9999",
+    fontSize: "18px",
+    fontWeight: "600",
+    whiteSpace: "nowrap",
     });
 
     document.body.appendChild(alertBox);
