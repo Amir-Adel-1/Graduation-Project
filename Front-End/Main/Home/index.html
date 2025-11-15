@@ -14,6 +14,8 @@
     <link rel="icon" href="" type="png" />
     <!-- Main Template CSS File -->
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login and signup/Choose-Button-Signup.css" />
+    <link rel="stylesheet" href="login and signup/Pharmacist-Signup.css" />
     <link rel="stylesheet" href="login and signup/login.css" />
     <link rel="stylesheet" href="login and signup/signup.css" />
     <!-- Bootstrap -->
@@ -56,11 +58,27 @@
         </div>
         <div class="auth-buttons">
           <button class="btn open-login">تسجيل الدخول</button>
-          <button class="btn open-signup ">إنشاء حساب</button>
+          <button class="btn open-account-choice ">إنشاء حساب</button>
         </div>
       </div>
     </nav>
     <!--  End NavBar -->
+
+
+
+<!-- Start Account-Choice -->
+<div class="account-choice-overlay">
+    <div class="popup-choice">
+        <span class="close-choice-signup">&times;</span>
+        <h2 class="choice-title">اختر نوع الحساب</h2>
+    
+        <form class="form-choice">
+            <button class="choice-btn  open-pharmacy-signup">إنشاء حساب كصيدلي</button>
+            <button class="choice-btn  open-signup">إنشاء حساب كمستخدم</button>
+        </form>
+    </div>
+</div>
+<!-- End Account-Choice -->
 
 
 
@@ -111,7 +129,7 @@
 
 
 
-  <!-- ✅ Start SIGNUP POPUP -->
+  <!-- ✅ Start USER SIGNUP POPUP -->
   <div class="overlay-signup">
     <div class="popup-signup">
       <span class="close-popup-signup">&times;</span>
@@ -301,7 +319,207 @@
       </form>
     </div>
   </div>
-  <!-- ✅ End SIGNUP POPUP -->
+  <!-- ✅ End USER SIGNUP POPUP -->
+
+
+
+    <!-- ✅ Start PHARMACIST SIGNUP POPUP -->
+    <div class="overlay-pharmacist">
+      <div class="popup-pharmacist">
+        <span id="closePharmacysignup" class="close-popup-pharmacist">&times;</span>
+        <h2>• إنشاء حساب صيدلي جديد •</h2>
+
+        <form class="form-pharmacist">
+          <div class="form-grid-pharmacist">
+            <!-- الاسم -->
+            <div class="nebula-input-signup">
+              <input
+                required
+                type="text"
+                name="FullName"
+                autocomplete="off"
+                class="input"
+              />
+              <label class="user-label-signup">الاسم</label>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.2; --y: -0.4; --delay: 0.1s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.5; --y: -0.2; --delay: 0.3s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.3; --y: 0.3; --delay: 0.5s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.7; --y: 0.1; --delay: 0.2s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.1; --y: -0.7; --delay: 0.4s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.6; --y: 0.4; --delay: 0.6s"
+              ></div>
+            </div>
+
+            <!-- العنوان -->
+            <div class="nebula-input-signup">
+              <input
+                required
+                type="text"
+                name="Address"
+                autocomplete="off"
+                class="input"
+              />
+              <label class="user-label-signup">العنوان</label>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.2; --y: -0.4; --delay: 0.1s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.5; --y: -0.2; --delay: 0.3s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.3; --y: 0.3; --delay: 0.5s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.7; --y: 0.1; --delay: 0.2s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.1; --y: -0.7; --delay: 0.4s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.6; --y: 0.4; --delay: 0.6s"
+              ></div>
+            </div>
+
+            <!-- الهاتف -->
+            <div class="nebula-input-signup">
+              <input
+                required
+                type="text"
+                name="Phone"
+                autocomplete="off"
+                class="input"
+              />
+              <label class="user-label-signup">رقم الهاتف</label>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.2; --y: -0.4; --delay: 0.1s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.5; --y: -0.2; --delay: 0.3s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.3; --y: 0.3; --delay: 0.5s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.7; --y: 0.1; --delay: 0.2s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.1; --y: -0.7; --delay: 0.4s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.6; --y: 0.4; --delay: 0.6s"
+              ></div>
+            </div>
+
+            <!-- البريد -->
+            <div class="nebula-input-signup">
+              <input
+                placeholder=" "
+                required
+                type="email"
+                name="Email"
+                autocomplete="off"
+                class="input email-fix"
+              />
+              <label class="user-label-signup">البريد الإلكتروني</label>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.2; --y: -0.4; --delay: 0.1s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.5; --y: -0.2; --delay: 0.3s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.3; --y: 0.3; --delay: 0.5s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.7; --y: 0.1; --delay: 0.2s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.1; --y: -0.7; --delay: 0.4s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.6; --y: 0.4; --delay: 0.6s"
+              ></div>
+            </div>
+
+            <!-- كلمة المرور -->
+            <div class="nebula-input-signup">
+              <input
+                required
+                type="password"
+                name="Password"
+                autocomplete="off"
+                class="input"
+              />
+              <label class="user-label-signup">كلمة المرور</label>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.2; --y: -0.4; --delay: 0.1s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.5; --y: -0.2; --delay: 0.3s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.3; --y: 0.3; --delay: 0.5s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.7; --y: 0.1; --delay: 0.2s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.1; --y: -0.7; --delay: 0.4s"
+              ></div>
+              <div
+                class="nebula-particle-signup"
+                style="--x: 0.6; --y: 0.4; --delay: 0.6s"
+              ></div>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn-signup">تـسـجـيـل</button>
+          <p class="signup-link">هل لديك حساب بالفعل؟<a href="#">تسجيل الدخول</a></p>
+        </form>
+      </div>
+    </div>
+    <!-- ✅ End PHARMACIST SIGNUP POPUP -->
+
 
 
 
@@ -619,6 +837,8 @@
 
 
     <script src="../Home/index.js"></script>
+    <script src="login and signup/Choose-Button-Signup.js"></script>
+    <script src="login and signup/Pharmacist-Signup.js"></script>
     <script src="login and signup/login.js"></script>
     <script src="login and signup/signup.js"></script>
   </body>

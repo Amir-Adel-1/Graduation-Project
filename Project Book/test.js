@@ -1,48 +1,36 @@
+// عناصر صفحة إنشاء حساب الصيدلي
+const openPharmacyRegister = document.getElementById("openPharmacyRegister"); // زر فتح البوب
+const pharmacyOverlay = document.getElementById("popupPharmacy"); // الخلفية
+const closePharmacyPopup = document.getElementById("closePharmacysignup"); // زر الإغلاق
 
+// لو عندك صفحة لوجن وعايز تخفيها وقت ظهور البوب (اختياري)
+const loginOverlay = document.querySelector(".overlay-login"); // لو مش موجود سيبه فاضي
 
-// Start pop-up Window
+// تأكد إن العناصر موجودة قبل تشغيل الكود
+if (openPharmacyRegister && pharmacyOverlay && closePharmacyPopup) {
 
-// ===============================
-// ⭐ Nova Pop-up Window (Final)
-// ===============================
+  // فتح نافذة إنشاء حساب صيدلي
+  openPharmacyRegister.addEventListener("click", () => {
+    pharmacyOverlay.style.display = "flex";
 
-// عناصر البوب أب
-const novaPopup = document.getElementById("novaPopup");
-const novaCloseBtn = document.querySelector(".nova-close-btn");
+    // إخفاء صفحة اللوجن (اختياري)
+    if (loginOverlay) loginOverlay.style.display = "none";
 
-// كل أيقونات العين في الكروت
-const eyeAreas = document.querySelectorAll(".overlay");
-
-// عند الضغط على أيقونة العين → افتح البوب أب
-eyeAreas.forEach(area => {
-  area.addEventListener("click", () => {
-    novaPopup.style.display = "flex";
-    document.body.style.overflow = "hidden"; 
+    // منع الاسكرول
+    document.body.style.overflow = "hidden";
   });
-});
 
+  // غلق النافذة بزر الإغلاق
+  closePharmacyPopup.addEventListener("click", () => {
+    pharmacyOverlay.style.display = "none";
+    document.body.style.overflow = "auto";
+  });
 
-// عند الضغط على زر الإغلاق
-novaCloseBtn.addEventListener("click", () => {
-  novaPopup.style.display = "none";
-  document.body.style.overflow = "";
-});
-
-// عند الضغط خارج محتوى البوب أب
-window.addEventListener("click", (e) => {
-  if (e.target === novaPopup) {
-    novaPopup.style.display = "none";
-    document.body.style.overflow = "";
-  }
-});
-
-// إغلاق عند الضغط على ESC
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    novaPopup.style.display = "none";
-    document.body.style.overflow = "";
-  }
-});
-
-
-// End pop-up Window
+  // غلق النافذة عند الضغط على الخلفية فقط
+  pharmacyOverlay.addEventListener("click", (e) => {
+    if (e.target === pharmacyOverlay) {
+      pharmacyOverlay.style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+  });
+}

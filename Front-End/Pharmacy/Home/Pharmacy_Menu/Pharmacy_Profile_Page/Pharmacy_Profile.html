@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>الملف الشخصي</title>
+
+    <!-- Logo Website -->
+    <link rel="icon" href="" type="png" />
+    <!-- Main Template CSS File -->
+    <link rel="stylesheet" href="Pharmacy_Profile.css" />
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="../../../../bootstrap-5.3.8-dist/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="" />
+  </head>
+<body>
+
+
+    <!--  Start NavBar -->
+    <nav class="navbar" id="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+        <span class="text-logo">Se7ty</span>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="../../Pharmacy.html">الرئيسية</a></li>
+        <li><a href="../../../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+        <li><a href="../../User_Requests/User_Requests.html">طلبات المستخدمين</a></li>
+        <li><a href="../../Available_Orders/Available_Orders.html">الطلبات المتاحة</a></li>
+      </ul>
+
+      <div class="actions">
+        <div class="user-info" id="userInfo">
+          <span  id="userName" class="user-name"></span>
+        </div>
+        <!-- القائمة المنسدلة -->
+        <div class="user-menu" id="userMenu">
+          <ul>
+            <li><a href="../Pharmacy_Profile_Page/Pharmacy_Profile.html">👤 الملف الشخصي</a></li>
+            <li><a href="#">⚙️ الإعدادات</a></li>
+            <li><a id="exit">🚪 تسجيل الخروج</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!--  End NavBar -->
+
+
+
+<!--Start Profile-Section -->
+<section class="profile-section glass-bg">
+  <h2 class="profile-title">الملف الشخصي</h2>
+
+  <!-- البيانات الشخصية -->
+  <div class="profile-card">
+    <h3>🧍 البيانات الشخصية</h3>
+    <div class="profile-field">
+      <label>الاسم الكامل:</label>
+      <input type="text" value="صيدلية العزبي" readonly />
+    </div>
+    <div class="profile-field">
+      <label>الجنس:</label>
+      <input type="text" value="ذكر" readonly />
+    </div>
+    <div class="profile-field">
+      <label>تاريخ الميلاد:</label>
+      <input type="date" value="2000-01-01" readonly />
+    </div>
+  </div>
+
+  <!-- بيانات التواصل -->
+  <div class="profile-card">
+    <h3>📞 بيانات التواصل</h3>
+
+    <div class="profile-field">
+      <label>البريد الإلكتروني:</label>
+      <input type="email" value="example@email.com" readonly />
+    </div>
+
+<!-- رقم الهاتف -->
+<div class="profile-field phone-container">
+  <label>رقم الهاتف:</label>
+  <div class="input-row single" id="phoneRow">
+    <input type="text" value="01000000000" readonly class="input-field" />
+    <button class="add-btn" id="addPhoneBtn">+</button>
+  </div>
+</div>
+
+<!-- العنوان -->
+<div class="profile-field address-container">
+  <label>العنوان:</label>
+  <div class="input-row single" id="addressRow">
+    <textarea readonly class="input-field" id="addressInput">القاهرة، مصر</textarea>
+    <button class="add-btn" id="addAddressBtn">+</button>
+  </div>
+</div>
+
+  </div>
+
+  <div class="buttons">
+    <button id="editBtn" class="edit-btn">تعديل البيانات</button>
+    <button id="saveBtn" class="save-btn" disabled>حفظ التغييرات</button>
+  </div>
+</section>
+<!--End Profile-Section -->
+
+
+    <!-- Start Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section about">
+          <div class="logo">
+            <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+            <span class="text-logo">Se7ty</span>
+          </div>
+          <p>صيدليتك الموثوقة لجميع الأدوية والمنتجات الصحية عالية الجودة</p>
+        </div>
+
+        <div class="footer-section links">
+          <h3>روابط سريعة</h3>
+          <ul>
+        <li><a href="../../Pharmacy.html">الرئيسية</a></li>
+        <li><a href="../../../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+        <li><a href="../../User_Requests/User_Requests.html">طلبات المستخدمين</a></li>
+        <li><a href="../../Available_Orders/Available_Orders.html">الطلبات المتاحة</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section contact">
+          <h3>تواصل معنا</h3>
+          <p><i class="fa-solid fa-envelope"></i>info@Se7ty.com</p>
+          <p><i class="fa-solid fa-phone"></i>4455 888 02</p>
+        </div>
+
+        <div class="footer-section social">
+          <h3>تابعنا</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="footer-bottom">
+        <div class="rights">
+          <p>© 2026 <bdi>Se7ty</bdi>. جميع الحقوق محفوظة.</p>
+          <!-- يعني بيخلي الكلمة الإنجليزية تبقى معزولة عن اتجاه النص العربي (bdi) -->
+        </div>
+        <div class="policy">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+
+
+    <!-- Start scroll To Top Btn -->
+    <button id="scrollToTopBtn" title="Go to top">
+      <i class="fa-solid fa-arrow-up-from-bracket"></i>
+    </button>
+    <!-- End scroll To Top Btn -->
+
+
+<script src="Pharmacy_Profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>طلبات المستخدمين</title>
+
+    <!-- Logo Website -->
+    <link rel="icon" href="" type="png" />
+    <!-- Main Template CSS File -->
+    <link rel="stylesheet" href="User_Requests.css" />
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="../../../bootstrap-5.3.8-dist/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="" />
+  </head>
+<body>
+
+
+    <!--  Start NavBar -->
+    <nav class="navbar" id="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+        <span class="text-logo">Se7ty</span>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="../../Pharmacy.html">الرئيسية</a></li>
+        <li><a href="../../../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+        <li><a href="../../User_Requests/User_Requests.html"  class="active">طلبات المستخدمين</a></li>
+        <li><a href="../../Available_Orders/Available_Orders.html">الطلبات المتاحة</a></li>
+      </ul>
+
+      <div class="actions">
+        <div class="user-info" id="userInfo">
+          <span  id="userName" class="user-name"></span>
+        </div>
+        <!-- القائمة المنسدلة -->
+        <div class="user-menu" id="userMenu">
+          <ul>
+            <li><a href="../Pharmacy_Profile_Page/Pharmacy_Profile.html">👤 الملف الشخصي</a></li>
+            <li><a href="#">⚙️ الإعدادات</a></li>
+            <li><a id="exit">🚪 تسجيل الخروج</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!--  End NavBar -->
+
+
+
+<section class="user-requests-section">
+<!-- العنوان -->
+    <h2 class="page-title">• طلبات المستخدمين •</h2>
+
+        <div class="orders-container">
+
+            <!-- ====== مثال كارت واحد ====== -->
+            <div class="order-card" data-order-id="101">
+
+                <p class="order-title"><span>💊 المطلوب :</span> بانادول </p>
+                <p><span>📦 الكمية :</span> 2 عبوات</p>
+                <p><span>📅 التاريخ :</span> 2025-11-14</p>
+                <p><span>⏰ الوقت :</span> 03:30 م</p>
+
+                <button class="btn-available">متوفر لدي</button>
+
+            </div>
+            <!-- كرّر من قاعدة البيانات -->
+
+        </div>
+
+</section>
+
+
+    <!-- نافذة البوب أب -->
+    <div id="overlayAvailable" class="overlay">
+        <div class="popup">
+            <h3>تأكيد التوافر</h3>
+            <p>هل تريد إرسال إشعار للمستخدم بأن الدواء متوفر لديك؟</p>
+
+            <div class="popup-btns">
+                <button id="confirmSend" class="confirm-send">تأكيد الإرسال</button>
+                <button id="cancelSend" class="cancel-send">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Start Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section about">
+          <div class="logo">
+            <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+            <span class="text-logo">Se7ty</span>
+          </div>
+          <p>صيدليتك الموثوقة لجميع الأدوية والمنتجات الصحية عالية الجودة</p>
+        </div>
+
+        <div class="footer-section links">
+          <h3>روابط سريعة</h3>
+          <ul>
+        <li><a href="../../Pharmacy.html">الرئيسية</a></li>
+        <li><a href="../../../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+        <li><a href="../../User_Requests/User_Requests.html">طلبات المستخدمين</a></li>
+        <li><a href="../../Available_Orders/Available_Orders.html">الطلبات المتاحة</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section contact">
+          <h3>تواصل معنا</h3>
+          <p><i class="fa-solid fa-envelope"></i>info@Se7ty.com</p>
+          <p><i class="fa-solid fa-phone"></i>4455 888 02</p>
+        </div>
+
+        <div class="footer-section social">
+          <h3>تابعنا</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="footer-bottom">
+        <div class="rights">
+          <p>© 2026 <bdi>Se7ty</bdi>. جميع الحقوق محفوظة.</p>
+          <!-- يعني بيخلي الكلمة الإنجليزية تبقى معزولة عن اتجاه النص العربي (bdi) -->
+        </div>
+        <div class="policy">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+
+
+    <!-- Start scroll To Top Btn -->
+    <button id="scrollToTopBtn" title="Go to top">
+      <i class="fa-solid fa-arrow-up-from-bracket"></i>
+    </button>
+    <!-- End scroll To Top Btn -->
+
+
+<script src="User_Requests.js"></script>
+</body>
+</html>
