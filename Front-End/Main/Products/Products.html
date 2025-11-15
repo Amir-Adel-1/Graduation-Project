@@ -68,10 +68,27 @@
 <section class="container">
     <!-- Start search-bar -->
     <div class="search-bar">
-        <input type="text" placeholder="ابحث عن طلبك">
+        <input type="text" id="searchInput" autocomplete="off" placeholder="ابحث عن طلبك">
         <button><i class="fa-solid fa-magnifying-glass"></i></button>
+
+        <!-- 🔽 Dropdown Results -->
+        <div class="search-dropdown" id="searchDropdown">
+        <!-- يظهر لما المستخدم يكتب -->
+<!-- 🔽 نتائج البحث -->
+
+
+<!-- رسالة لا توجد نتائج -->
+<div class="no-results">لا توجد نتائج</div>
+
+
+        <div class="no-results">لا توجد نتائج</div>
+        </div>
+
     </div>
     <!-- End search-bar -->
+    
+
+
     <!-- Start Categories -->
     <div class="categories">
   <h2>ابحث بالقسم</h2>
