@@ -1,36 +1,34 @@
-// عناصر صفحة إنشاء حساب الصيدلي
-const openPharmacyRegister = document.getElementById("openPharmacyRegister"); // زر فتح البوب
-const pharmacyOverlay = document.getElementById("popupPharmacy"); // الخلفية
-const closePharmacyPopup = document.getElementById("closePharmacysignup"); // زر الإغلاق
+// زرار فتح البوب
+const btnOpen = document.getElementById("btnOpenPharmacyRegister");
 
-// لو عندك صفحة لوجن وعايز تخفيها وقت ظهور البوب (اختياري)
-const loginOverlay = document.querySelector(".overlay-login"); // لو مش موجود سيبه فاضي
+// الخلفية (Overlay)
+const overlay = document.querySelector(".overlay-pharmacist");
 
-// تأكد إن العناصر موجودة قبل تشغيل الكود
-if (openPharmacyRegister && pharmacyOverlay && closePharmacyPopup) {
+// البوب نفسه
+const popup = document.getElementById("pharmacyOverlay");
 
-  // فتح نافذة إنشاء حساب صيدلي
-  openPharmacyRegister.addEventListener("click", () => {
-    pharmacyOverlay.style.display = "flex";
+// زرار الإغلاق داخل البوب
+const closeBtn = document.getElementById("closePharmacysignup");
 
-    // إخفاء صفحة اللوجن (اختياري)
-    if (loginOverlay) loginOverlay.style.display = "none";
 
-    // منع الاسكرول
-    document.body.style.overflow = "hidden";
-  });
+// فتح البوب
+btnOpen.addEventListener("click", () => {
+  overlay.style.display = "flex";
+  document.body.style.overflow = "hidden"; // منع الاسكرول
+});
 
-  // غلق النافذة بزر الإغلاق
-  closePharmacyPopup.addEventListener("click", () => {
-    pharmacyOverlay.style.display = "none";
+
+// إغلاق بالزر
+closeBtn.addEventListener("click", () => {
+  overlay.style.display = "none";
+  document.body.style.overflow = "auto";
+});
+
+
+// إغلاق عند الضغط على الخلفية
+overlay.addEventListener("click", (e) => {
+  if (e.target === overlay) {
+    overlay.style.display = "none";
     document.body.style.overflow = "auto";
-  });
-
-  // غلق النافذة عند الضغط على الخلفية فقط
-  pharmacyOverlay.addEventListener("click", (e) => {
-    if (e.target === pharmacyOverlay) {
-      pharmacyOverlay.style.display = "none";
-      document.body.style.overflow = "auto";
-    }
-  });
-}
+  }
+});
