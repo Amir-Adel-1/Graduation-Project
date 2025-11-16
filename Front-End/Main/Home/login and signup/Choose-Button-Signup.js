@@ -4,15 +4,22 @@ const accountChoiceOverlay = document.querySelector(".account-choice-overlay");
 const openChoiceBtns = document.querySelectorAll(".open-account-choice");
 const closeChoiceBtn = document.querySelector(".close-choice-signup");
 
+// دالة لإغلاق جميع النوافذ المنبثقة
+function closeAllOverlays() {
+    // إغلاق جميع النوافذ المنبثقة
+    document.querySelectorAll('.overlay-login, .overlay-signup, .overlay-pharmacist, .account-choice-overlay').forEach(overlay => {
+        overlay.style.display = 'none';
+    });
+    document.body.style.overflow = "auto";
+}
+
 // فتح بوب اختيار الحساب
 openChoiceBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      accountChoiceOverlay.style.display = "flex";
-        document.querySelector('.overlay-login').style.display = 'none';
-        
-      document.body.style.overflow = "hidden";
-
-        
+    btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        closeAllOverlays();
+        accountChoiceOverlay.style.display = "flex";
+        document.body.style.overflow = "hidden";
     });
 });
 

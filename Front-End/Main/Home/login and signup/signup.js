@@ -3,37 +3,38 @@ const openSignupButtons = document.querySelectorAll('.open-signup');
 const signupOverlay = document.querySelector('.overlay-signup');
 const closeSignupPopup = document.querySelector('.close-popup-signup');
 
-
-const conteiner_hide = document.querySelector('.overlay-login');
-
+// دالة لإغلاق جميع النوافذ المنبثقة
+function closeAllOverlays() {
+    // إغلاق جميع النوافذ المنبثقة
+    document.querySelectorAll('.overlay-login, .overlay-signup, .overlay-pharmacist, .account-choice-overlay').forEach(overlay => {
+        overlay.style.display = 'none';
+    });
+    document.body.style.overflow = "auto";
+}
 
 // تأكد إن العناصر موجودة قبل تشغيل الكود
 if (signupOverlay && closeSignupPopup && openSignupButtons.length > 0) {
-
-  // فتح النافذة عند الضغط على أي زر من نفس الكلاس
-  openSignupButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      signupOverlay.style.display = 'flex';
-      conteiner_hide.style.display = 'none';
-
-      // ✋ منع الاسكرول
-      document.body.style.overflow = "hidden";
+    // فتح نافذة إنشاء الحساب
+    openSignupButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeAllOverlays();
+            signupOverlay.style.display = 'flex';
+            document.body.style.overflow = "hidden";
+        });
     });
-  });
 
-  // غلق النافذة بزر الإغلاق
-  closeSignupPopup.addEventListener('click', () => {
-    signupOverlay.style.display = 'none';
+    // غلق النافذة بزر الإغلاق
+    closeSignupPopup.addEventListener('click', () => {
+        signupOverlay.style.display = 'none';
+        document.body.style.overflow = "auto";
+    });
 
-    // 🔄 رجع الاسكرول
-
-  });
-
-  // غلق النافذة عند الضغط على الخلفية
-  signupOverlay.addEventListener('click', (e) => {
-    if (e.target === signupOverlay) signupOverlay.style.display = 'none';
-
-    // 🔄 رجع الاسكرول
-    
-  });
+    // غلق النافذة عند الضغط على الخلفية
+    signupOverlay.addEventListener('click', (e) => {
+        if (e.target === signupOverlay) {
+            signupOverlay.style.display = 'none';
+            document.body.style.overflow = "auto";
+        }
+    });
 }

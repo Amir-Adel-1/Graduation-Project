@@ -3,47 +3,38 @@ const openLoginButtons = document.querySelectorAll('.open-login');
 const loginOverlay = document.querySelector('.overlay-login');
 const closeLoginPopup = document.querySelector('.close-popup-login');
 
-const accountchoiceoverlay = document.querySelector('.account-choice-overlay');
- const overlaypharmacist = document.querySelector('.overlay-pharmacist');
-
-const conteiner_hide2 = document.querySelector('.overlay-signup');
-
+// دالة لإغلاق جميع النوافذ المنبثقة
+function closeAllOverlays() {
+    // إغلاق جميع النوافذ المنبثقة
+    document.querySelectorAll('.overlay-login, .overlay-signup, .overlay-pharmacist, .account-choice-overlay').forEach(overlay => {
+        overlay.style.display = 'none';
+    });
+    document.body.style.overflow = "auto";
+}
 
 // تأكد إن العناصر موجودة قبل تشغيل الكود
 if (loginOverlay && closeLoginPopup && openLoginButtons.length > 0) {
-
-  // فتح النافذة عند الضغط على أي زر من نفس الكلاس
-  openLoginButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      loginOverlay.style.display = 'flex';
-      conteiner_hide2.style.display = 'none';
-      accountchoiceoverlay.style.display = 'none';
-      overlaypharmacist.style.display = 'none';
-
-      // ✋ منع الاسكرول
-      document.body.style.overflow = "hidden";
+    // فتح نافذة تسجيل الدخول
+    openLoginButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeAllOverlays();
+            loginOverlay.style.display = 'flex';
+            document.body.style.overflow = "hidden";
+        });
     });
-  });
 
-  // غلق النافذة بزر الإغلاق
-  closeLoginPopup.addEventListener('click', () => {
-    loginOverlay.style.display = 'none';
+    // غلق النافذة بزر الإغلاق
+    closeLoginPopup.addEventListener('click', () => {
+        loginOverlay.style.display = 'none';
+        document.body.style.overflow = "auto";
+    });
 
-    // 🔄 رجع الاسكرول
-    if (document.querySelector('.account-choice-overlay').style.display !== 'flex') {
-    document.body.style.overflow = "auto";
-}
-
-  });
-
-  // غلق النافذة عند الضغط على الخلفية
-  loginOverlay.addEventListener('click', (e) => {
-    if (e.target === loginOverlay) loginOverlay.style.display = 'none';
-
-    // 🔄 رجع الاسكرول
-     if (document.querySelector('.account-choice-overlay').style.display !== 'flex') {
-    document.body.style.overflow = "auto";
-}
-
-  });
+    // غلق النافذة عند الضغط على الخلفية
+    loginOverlay.addEventListener('click', (e) => {
+        if (e.target === loginOverlay) {
+            loginOverlay.style.display = 'none';
+            document.body.style.overflow = "auto";
+        }
+    });
 }
