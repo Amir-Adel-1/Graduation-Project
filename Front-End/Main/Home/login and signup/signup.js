@@ -26,7 +26,7 @@ if (signupOverlay && closeSignupPopup && openSignupButtons.length > 0) {
     signupOverlay.style.display = 'none';
 
     // 🔄 رجع الاسكرول
-    document.body.style.overflow = "auto";
+
   });
 
   // غلق النافذة عند الضغط على الخلفية
@@ -34,6 +34,6 @@ if (signupOverlay && closeSignupPopup && openSignupButtons.length > 0) {
     if (e.target === signupOverlay) signupOverlay.style.display = 'none';
 
     // 🔄 رجع الاسكرول
-      document.body.style.overflow = "auto";
+    
   });
 }

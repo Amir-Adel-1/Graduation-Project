@@ -16,8 +16,6 @@ if (pharmacyOverlay && closePharmacyPopup && openPharmacyButtons.length > 0) {
 
       pharmacyOverlay.style.display = 'flex';
 
-      // اخفي اللوجن لو مفتوح
-      if (loginOverlayPh) loginOverlayPh.style.display = 'none';
 
       // منع الاسكرول
       document.body.style.overflow = "hidden";
@@ -27,14 +25,14 @@ if (pharmacyOverlay && closePharmacyPopup && openPharmacyButtons.length > 0) {
   // غلق النافذة بزر الإغلاق
   closePharmacyPopup.addEventListener('click', () => {
     pharmacyOverlay.style.display = 'none';
-    document.body.style.overflow = "auto"; // رجوع الاسكرول
+  
   });
 
   // غلق النافذة عند الضغط على الخلفية
   pharmacyOverlay.addEventListener('click', (e) => {
     if (e.target === pharmacyOverlay) {
       pharmacyOverlay.style.display = 'none';
-      document.body.style.overflow = "auto";
+     
     }
   });
 
