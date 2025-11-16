@@ -1,0 +1,261 @@
+/* =============================== */
+/*   🔵 إعدادات أساسية للصفحة     */
+/* =============================== */
+
+body {
+  background-color: #F1F5F9;
+  font-family: "Segoe UI", sans-serif;
+  direction: rtl;
+}
+
+
+
+/* =============================== */
+/*            🔵 الداشبورد         */
+/* =============================== */
+
+.dashboard {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 250px;
+  height: 93vh;
+  border-radius: 20px 0 0 20px;
+  background: rgb(32, 32, 32);
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 2px solid #0e3347;
+  transition: 0.35s ease;
+}
+
+/* 🔹 وضع الـ Mini Sidebar */
+.dashboard.mini {
+  width: 80px;
+}
+
+
+/* العناصر اللي فيها نص */
+.dashboard .text-logo,
+.dashboard .dash-links li a span,
+.dashboard .footer-btn span {
+  opacity: 1;
+  max-width: 200px;
+  transform: translateX(0);
+  overflow: hidden;
+  white-space: nowrap;
+  transition: 
+    opacity 0.8s ease,
+    max-width 0.8s ease,
+    transform 0.8s ease;
+}
+
+/* لما تبقى Mini */
+.dashboard.mini .text-logo,
+.dashboard.mini .dash-links li a span,
+.dashboard.mini .footer-btn span {
+  opacity: 0;
+  max-width: 0;
+  transform: translateX(20px);
+}
+
+/* ضبط العناصر داخل قائمة الميني */
+.dashboard.mini .dash-links li a {
+  justify-content: center !important;
+  padding: 12px 0 !important;
+}
+
+/* تكبير الأيقونات */
+.dashboard.mini .dash-links li i,
+.dashboard.mini .footer-btn i {
+  font-size: 24px !important;
+  margin: 0 auto !important;
+  width: auto !important;
+}
+
+/* اللوجو في وضع Mini */
+.dashboard.mini .logo {
+  justify-content: center !important;
+}
+
+.dashboard.mini .logo span {
+  opacity: 0;
+  max-width: 0;
+}
+
+.dashboard.mini .logo i {
+  font-size: 45px !important;
+}
+
+
+
+/* =============================== */
+/*          🔵 اللوجو              */
+/* =============================== */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  border-bottom: 2px solid #1a3a4f;
+  padding-bottom: 20px;
+}
+
+.logo .gradient-color {
+  background: radial-gradient(circle, #009ad755, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo .gradient-color {
+  font-size: 40px;
+}
+
+.logo span {
+  font-size: 30px;
+  padding-bottom: 4px;
+  background: radial-gradient(circle, #009ad755, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 32px;
+  font-weight: 700;
+
+  text-shadow:
+    0 0 2px #009ad755,
+    0 0 2px #009ad755,
+    0 0 2px #009ad755,
+    0 0 2px #009ad755,
+    0 0 2px #009ad755;
+
+
+}
+
+
+
+/* تأثير اللمعان في النص */
+.glowing-text {
+  color: #9bc4d4;
+  font-size: 45px;
+  font-weight: bold;
+  text-shadow:
+    0 0 10px #009ad7,
+    0 0 20px #009ad7,
+    0 0 40px #009ad7,
+    0 0 80px #00e0ff,
+    0 0 120px #00e0ff;
+  animation: pulse 2s ease-in-out infinite alternate;
+}
+
+
+.text-logo {
+    color: #009ad7;
+  font-size: 45px;
+  font-weight: bold;
+
+}
+
+/* 💫 تأثير توهج بسيط للوجو */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+
+/* =============================== */
+/*      🔵 القائمة داخل الداش      */
+/* =============================== */
+
+.menu {
+  margin-top: 30px;
+}
+
+.dash-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.dash-links li a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #d9e7ef;
+  transition: 0.3s ease;
+}
+
+.dash-links li i {
+  font-size: 20px;
+  width: 26px;
+  text-align: center;
+}
+
+/* Hover */
+.dash-links li a:hover {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(-5px);
+  color: #00e0ff;
+  text-shadow: 0 0 8px #00e0ff;
+}
+
+
+
+/* =============================== */
+/*        🔵 الجزء الأخير           */
+/* =============================== */
+
+.footer-section {
+  padding-top: 20px;
+  border-top: 2px solid #1a3a4f;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: auto;
+  margin-bottom: 20px;
+}
+
+/* زر تسجيل الخروج */
+.footer-btn {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 12px;
+  border-radius: 10px;
+  color: #d9e7ef;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 17px;
+  transition: 0.3s ease;
+}
+
+.footer-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(-5px);
+  color: #00e0ff;
+  text-shadow: 0 0 8px #00e0ff;
+}
+
+
+
+
+
+
+
+
+
+
+

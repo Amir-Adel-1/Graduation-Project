@@ -61,6 +61,24 @@ body {
   z-index: 9999;
 }
 
+
+.navbar li {
+    animation: slideTop 1s ease forwards;
+    animation-delay: calc(.2s * var(--i));
+    display: inline-block;
+    opacity: 0;
+}
+@keyframes slideTop {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 /* عند السحب للأسفل */
 .navbar.scrolled {
   background: #0f1923;
@@ -96,6 +114,19 @@ body {
   gap: 10px;
   font-size: 22px;
   font-weight: 700;
+
+  animation: slideRight 2s ease forwards;
+}
+
+@keyframes slideRight {
+    0% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .logo .gradient-color,
@@ -471,7 +502,22 @@ body {
   font-weight: 700;
   color: #009ad7;
   user-select: none;
+
+        opacity: 0;
+  animation: slideTop  2s ease forwards;
 }
+
+@keyframes slideTop {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 
 .loader-letter {
   display: inline-block;
@@ -498,6 +544,9 @@ body {
   margin-bottom: 15px;
   color: #fff;
   letter-spacing: 1px;
+
+          opacity: 0;
+  animation: slideTop  2s ease forwards;
 }
 
 .hero-content p {
@@ -506,6 +555,9 @@ body {
   max-width: 700px;
   margin: 0 auto 30px;
   color: #f1f1f1;
+
+          opacity: 0;
+  animation: slideTop  2s ease forwards;
 }
 
 /* ---- Buttons ---- */
@@ -514,6 +566,20 @@ body {
   display: flex;
   justify-content: center;
   gap: 20px;
+
+            opacity: 0;
+  animation: slideBottom  2s ease forwards;
+}
+
+@keyframes slideBottom {
+    0% {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .btn {
