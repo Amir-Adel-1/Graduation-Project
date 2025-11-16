@@ -30,7 +30,10 @@ if (loginOverlay && closeLoginPopup && openLoginButtons.length > 0) {
     loginOverlay.style.display = 'none';
 
     // 🔄 رجع الاسكرول
+    if (document.querySelector('.account-choice-overlay').style.display !== 'flex') {
     document.body.style.overflow = "auto";
+}
+
   });
 
   // غلق النافذة عند الضغط على الخلفية
@@ -38,6 +41,9 @@ if (loginOverlay && closeLoginPopup && openLoginButtons.length > 0) {
     if (e.target === loginOverlay) loginOverlay.style.display = 'none';
 
     // 🔄 رجع الاسكرول
-      document.body.style.overflow = "auto";
+     if (document.querySelector('.account-choice-overlay').style.display !== 'flex') {
+    document.body.style.overflow = "auto";
+}
+
   });
 }
