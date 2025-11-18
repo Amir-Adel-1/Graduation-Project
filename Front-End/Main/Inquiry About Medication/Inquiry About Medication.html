@@ -176,6 +176,18 @@
 
 
 
+<!-- Marked.js for markdown support -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  // Configure marked to use line breaks and other options
+  marked.setOptions({
+    breaks: true,
+    gfm: true,
+    sanitize: true // Prevent XSS
+  });
+</script>
+
 <script src="Inquiry About Medication.js"></script>
+<script src="api.js"></script>
 </body>
 </html>

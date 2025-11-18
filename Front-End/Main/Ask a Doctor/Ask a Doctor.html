@@ -76,10 +76,8 @@
       </div>
 
       <div class="chat-input">
-        <button id="attachBtn" title="إضافة مرفق"><i class="fa-solid fa-plus"></i></button>
         <input type="text" id="userInput" autocomplete="off" placeholder="💬 اكتب رسالتك هنا...">
         <button id="sendBtn"><i class="fa-solid fa-paper-plane"></i></button>
-        <input type="file" id="fileInput" hidden />
       </div>
 
     </div>
@@ -188,6 +186,18 @@
     <!-- End scroll To Top Btn -->
 
 
+<!-- Marked.js for markdown support -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+  // Configure marked to use line breaks and other options
+  marked.setOptions({
+    breaks: true,
+    gfm: true,
+    sanitize: true // Prevent XSS
+  });
+</script>
+
 <script src="Ask a Doctor.js"></script>
+<script src="test.js"></script>
 </body>
 </html>

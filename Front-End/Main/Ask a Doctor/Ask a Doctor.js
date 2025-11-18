@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-  // helper
+  // Helper functions
   const $id = (s) => document.getElementById(s);
   const $q = (s) => document.querySelector(s);
   const $qa = (s) => document.querySelectorAll(s);
@@ -74,13 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const popup = $id("popup");
   const closePopup = $id("closePopup");
 
-  if (typeof openPopup === "undefined") {
-    // define only if not defined elsewhere
-    window.openPopup = function () {
-      if (popup) popup.classList.add("active");
-    };
-  }
-
   if (closePopup && popup) {
     closePopup.addEventListener("click", () => popup.classList.remove("active"));
     popup.addEventListener("click", (e) => {
@@ -89,105 +81,70 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================
-  // Chat Bot System
+  // Chat UI Elements
   // =========================
-  const sendBtn = $id("sendBtn");
-  const userInput = $id("userInput");
-  const chatBody = $id("chatBody");
-  const attachBtn = $id("attachBtn");
-  const fileInput = $id("fileInput");
-
   const menuBtn = $id("menuBtn");
   const menuOptions = $id("menuOptions");
   const newChatBtn = $id("newChat");
-  const chatListContainer = $id("chatList");
   const clearBtn = $id("clearChats");
 
-  let allChats = (localStorage && localStorage.getItem("chatHistory")) ? JSON.parse(localStorage.getItem("chatHistory")) : [];
+  // Menu functionality
+  if (menuBtn && menuOptions) {
+    menuBtn.addEventListener("click", () => {
+      menuOptions.classList.toggle("show");
+    });
+  }
+
+  // Close menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (menuOptions && !menuOptions.contains(e.target) && e.target !== menuBtn) {
+      menuOptions.classList.remove("show");
+    }
+  });
+
+  // New chat functionality
+  if (newChatBtn) {
+    newChatBtn.addEventListener("click", () => {
+      const chatBody = $id("chatBody");
+      if (chatBody && confirm("هل أنت متأكد من إنشاء محادثة جديدة؟ سيتم مسح سجل المحادثة الحالي.")) {
+        chatBody.innerHTML = '';
+        addMessageToChat("مرحباً! كيف يمكنني مساعدتك اليوم؟", "bot");
+      }
+    });
+  }
+
+  // Clear all chats
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      const chatBody = $id("chatBody");
+      if (chatBody && confirm("هل أنت متأكد من مسح جميع المحادثات؟ لا يمكن التراجع عن هذا الإجراء.")) {
+        chatBody.innerHTML = '';
+        addMessageToChat("تم مسح جميع المحادثات.", "bot");
+      }
+    });
+  }
+
+  // Chat history for context
+  let chatHistory = [];
+  let allChats = [];
   let currentChat = [];
+  const chatBody = $id("chatBody");
+  const chatListContainer = $id("chatList");
 
-  const safeAudio = (src) => {
-    try { return new Audio(src); } catch (e) { return null; }
-  };
-
-  const sendSound = safeAudio("https://cdn.pixabay.com/audio/2022/03/15/audio_7a5f3a3e35.mp3");
-  const receiveSound = safeAudio("https://cdn.pixabay.com/audio/2022/03/15/audio_69f16db3b2.mp3");
-  const deleteSound = safeAudio("https://cdn.pixabay.com/audio/2022/03/15/audio_5b3bb1b37b.mp3");
-
-  function addMessage(text, sender = "bot") {
+  // Function to add message to chat
+  function addMessageToChat(text, sender = "bot") {
     if (!chatBody) return;
     const message = document.createElement("div");
     message.classList.add("message", sender);
     message.innerHTML = `<p>${text}</p>`;
     chatBody.appendChild(message);
     chatBody.scrollTop = chatBody.scrollHeight;
-    currentChat.push({ sender, text });
-    if (sender === "user" && sendSound) sendSound.play();
-    else if (receiveSound) receiveSound.play();
+    chatHistory.push({ sender, text });
   }
 
-  if (sendBtn && userInput) {
-    sendBtn.addEventListener("click", () => {
-      const text = userInput.value.trim();
-      if (!text) return;
-      addMessage(text, "user");
-      userInput.value = "";
-      setTimeout(() => {
-        addMessage("🤖 جارٍ التفكير...");
-        setTimeout(() => addMessage("تم استلام سؤالك! سيتم الرد قريبًا 🩺"), 1000);
-      }, 600);
-    });
-
-    userInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendBtn.click();
-    });
-  }
-
-  if (attachBtn && fileInput) {
-    attachBtn.addEventListener("click", () => fileInput.click());
-    fileInput.addEventListener("change", () => {
-      if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        addMessage(`📎 تم اختيار الملف: <strong>${file.name}</strong>`, "user");
-      }
-    });
-  }
-
-  if (menuBtn && menuOptions) {
-    menuBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      menuOptions.style.display = menuOptions.style.display === "block" ? "none" : "block";
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!menuBtn.contains(e.target) && !menuOptions.contains(e.target)) {
-        menuOptions.style.display = "none";
-      }
-    });
-  }
-
-  if (newChatBtn) {
-    newChatBtn.addEventListener("click", () => {
-      if (currentChat.length > 0) {
-        const firstUserMsg = currentChat.find((m) => m.sender === "user");
-        const summary = firstUserMsg
-          ? firstUserMsg.text.slice(0, 25) + (firstUserMsg.text.length > 25 ? "..." : "")
-          : "محادثة بدون عنوان";
-
-        allChats.push({
-          id: Date.now(),
-          summary,
-          messages: currentChat,
-        });
-
-        if (localStorage) localStorage.setItem("chatHistory", JSON.stringify(allChats));
-        if (typeof renderChatHistory === "function") renderChatHistory();
-      }
-
-      currentChat = [];
-      if (chatBody) chatBody.innerHTML = `<div class="message bot"><p>🩺 تم بدء محادثة جديدة! كيف يمكنني مساعدتك اليوم؟</p></div>`;
-      if (menuOptions) menuOptions.style.display = "none";
-    });
+  // Initial welcome message
+  if (chatBody && chatBody.children.length === 0) {
+    addMessageToChat("مرحباً! أنا مساعدك الطبي. كيف يمكنني مساعدتك اليوم؟", "bot");
   }
 
   function showSuccessMessage(text) {
