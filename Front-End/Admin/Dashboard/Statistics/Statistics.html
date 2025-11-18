@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الإحصائيات</title>
+  <link rel="stylesheet" href="Statistics.css">
+  <link rel="stylesheet" href="../../../bootstrap-5.3.8-dist/css/all.min.css">
+</head>
+
+<body>
+
+
+  <!-- 📌 Start Sidebar -->
+  <div class="dashboard">
+
+    <!-- اللوجو -->
+    <div class="logo-section">
+      <div class="logo">
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+        <span class="text-logo">Se7ty</span>
+      </div>
+    </div>
+
+    <!-- القائمة -->
+    <div class="menu">
+      <ul class="dash-links">
+        <li><a href="../Dashboard.html"><i class="fa-solid fa-bars"></i> <span>لوحة القيادة</span></a></li>
+        <li><a href="../User_Management/User_Management.html"><i class="fa-solid fa-users"></i> <span>إدارة المستخدمين</span></a></li>
+        <li><a href="../Pharmacists_Management/Pharmacists_Management.html"><i class="fa-solid fa-user-nurse"></i> <span>إدارة الصيدليات</span></a></li>
+        <li><a href="../Requests_Management/Requests_Management.html"><i class="fa-solid fa-list"></i> <span>طلبات المستخدمين</span></a></li>
+        <li><a href="Statistics.html"><i class="fa-solid fa-chart-line"></i> <span>الإحصائيات</span></a></li>
+      </ul>
+    </div>
+
+    <!-- البروفايل -->
+    <div class="footer-section">
+      <div class="admin-profile">
+        <i class="fa-solid fa-user-shield admin-icon"></i>
+        <div class="admin-info">
+          <h4>Administrator</h4>
+        </div>
+      </div>
+
+      <div class="logout footer-btn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>تسجيل الخروج</span>
+      </div>
+    </div>
+
+  </div>
+  <!-- 📌 End Sidebar -->
+
+
+
+  <!-- 📌 Start Main Content -->
+  <div class="main-content">
+
+
+  <!-- Start Name Page  -->
+<div class="top-bar">
+  <h2>الإحصائيات</h2>
+  <i class="fa-solid fa-chart-line"></i>
+</div>
+  <!-- Start Name Page  -->
+
+
+
+<!-- Start Cards -->
+<div class="data-info">
+
+        <div class="box">
+            <i class="fa-solid fa-users icon"></i>
+            <div class="data">
+                <p>إجمالي المستخدمين</p>
+                <span>7851</span>
+            </div>
+        </div>
+
+        <div class="box">
+                <i class="fa-solid fa-user-nurse"></i>
+                <div class="data">
+                    <p>إجمالي الصيدليات</p>
+                    <span>465</span>
+                </div>
+        </div>
+
+        <div class="box">
+            <i class="fa-solid fa-list-check icon"></i>
+
+            <div class="data">
+                <p>إجمالي طلبات المستخدمين</p>
+                <span>277</span>
+            </div>
+        </div>
+
+        <div class="box">
+                <i class="fa-solid fa-user-lock icon"></i>
+
+                <div class="data">
+                    <p>إجمالي المستخدمين المحظورين</p>
+                    <span>17</span>
+                </div>
+        </div>
+
+</div>
+<!-- Start Cards -->
+
+
+
+<!-- ================= 📈 Chart Section ================== -->
+<div class="chart-box small-chart">
+    <h3>معدل الطلبات الأسبوعية</h3>
+    <canvas id="requestsChart"></canvas>
+</div>
+
+
+
+
+  </div>
+  <!-- 📌 End Main Content -->
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="Statistics.js"></script>
+</body>
+</html>

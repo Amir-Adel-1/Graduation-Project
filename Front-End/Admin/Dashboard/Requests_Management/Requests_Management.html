@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>طلبات المستخدمين</title>
+
+    <!-- Logo Website -->
+    <link rel="icon" href="" type="png" />
+    <!-- Main Template CSS File -->
+    <link rel="stylesheet" href="Requests_Management.css" />
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="../../../bootstrap-5.3.8-dist/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="" />
+  </head>
+<body>
+
+
+
+  <!-- 📌 Start Sidebar -->
+  <div class="dashboard">
+
+    <!-- اللوجو -->
+    <div class="logo-section">
+      <div class="logo">
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+        <span class="text-logo">Se7ty</span>
+      </div>
+    </div>
+
+    <!-- القائمة -->
+    <div class="menu">
+      <ul class="dash-links">
+        <li><a href="../Dashboard.html"><i class="fa-solid fa-bars"></i> <span>لوحة القيادة</span></a></li>
+        <li><a href="../User_Management/User_Management.html"><i class="fa-solid fa-users"></i> <span>إدارة المستخدمين</span></a></li>
+        <li><a href="../Pharmacists_Management/Pharmacists_Management.html"><i class="fa-solid fa-user-nurse"></i> <span>إدارة الصيدليات</span></a></li>
+        <li><a href="Requests_Management.html"><i class="fa-solid fa-list"></i> <span>طلبات المستخدمين</span></a></li>
+        <li><a href="stats.html"><i class="fa-solid fa-chart-line"></i> <span>الإحصائيات</span></a></li>
+      </ul>
+    </div>
+
+    <!-- البروفايل -->
+    <div class="footer-section">
+      <div class="admin-profile">
+        <i class="fa-solid fa-user-shield admin-icon"></i>
+        <div class="admin-info">
+          <h4>Administrator</h4>
+        </div>
+      </div>
+
+      <div class="logout footer-btn">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>تسجيل الخروج</span>
+      </div>
+    </div>
+
+  </div>
+  <!-- 📌 End Sidebar -->
+
+
+
+<!-- 📌 Start Main Content -->
+<div class="main-content">
+
+
+  <!-- Start Name Page  -->
+<div class="top-bar">
+  <h2>طلبات المستخدمين</h2>
+  <i class="fa-solid fa-user-nurse"></i>
+</div>
+  <!-- End Name Page  -->
+
+
+
+<!-- 🔍 Start Search Section -->
+<div class="search-wrapper">
+  <div class="search-box">
+    <input type="text" autocomplete="off" placeholder="بحث عن طلب مستخدم ...">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </div>
+</div>
+<!-- 🔍 End Search Section -->
+
+
+
+<!-- 📋 Start Users Table -->
+<div class="table-card">
+  <div class="table-wrapper">
+    <table id="users-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>الاسم</th>
+          <th>البريد الإلكتروني</th>
+          <th>رقم الهاتف</th>
+          <th>تاريخ / وقت الإنشاء</th>
+          <th>حالة الطلب</th>
+          <th>الإجراءات</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr>
+          <td>1</td>
+          <td>أمير عادل</td>
+          <td>amir@gmail.com</td>
+          <td>01012345678</td>
+          <td>2025-01-12 | 03:15 PM</td>
+          <td><span class="status pending">قيد المراجعة</span></td>
+          <td class="actions">
+            <button class="btn-action edit" data-title="تعديل البيانات"><i class="fa fa-edit"></i></button>
+            <button class="btn-action delete" data-title="حذف المستخدم"><i class="fa fa-trash"></i></button>
+            <button class="btn-action ban" data-title="حظر المستخدم"><i class="fa fa-ban"></i></button>
+          </td>
+        </tr>
+
+        <tr>
+          <td>2</td>
+          <td>محمد السيد</td>
+          <td>mohamed@mail.com</td>
+          <td>01198765432</td>
+          <td>2025-02-03 | 10:30 AM</td>
+          <td><span class="status pending">قيد المراجعة</span></td>
+          <td class="actions">
+            <button class="btn-action edit" data-title="تعديل البيانات"><i class="fa fa-edit"></i></button>
+            <button class="btn-action delete" data-title="حذف المستخدم"><i class="fa fa-trash"></i></button>
+            <button class="btn-action ban" data-title="حظر المستخدم"><i class="fa fa-ban"></i></button>
+          </td>
+        </tr>
+
+        <tr>
+          <td>3</td>
+          <td>محمد السيد</td>
+          <td>mohamed@mail.com</td>
+          <td>01198765432</td>
+          <td>2025-03-22 | 08:45 PM</td>
+          <td><span class="status success">تم الرد</span></td>
+          <td class="actions">
+            <button class="btn-action edit" data-title="تعديل البيانات"><i class="fa fa-edit"></i></button>
+            <button class="btn-action delete" data-title="حذف المستخدم"><i class="fa fa-trash"></i></button>
+            <button class="btn-action ban" data-title="حظر المستخدم"><i class="fa fa-ban"></i></button>
+          </td>
+        </tr>
+
+        <tr>
+          <td>3</td>
+          <td>محمد السيد</td>
+          <td>mohamed@mail.com</td>
+          <td>01198765432</td>
+          <td>2025-04-17 | 01:20 PM</td>
+          <td><span class="status success">تم الرد</span></td>
+          <td class="actions">
+            <button class="btn-action edit" data-title="تعديل البيانات"><i class="fa fa-edit"></i></button>
+            <button class="btn-action delete" data-title="حذف المستخدم"><i class="fa fa-trash"></i></button>
+            <button class="btn-action ban" data-title="حظر المستخدم"><i class="fa fa-ban"></i></button>
+          </td>
+        </tr>
+
+        <tr>
+          <td>3</td>
+          <td>محمد السيد</td>
+          <td>mohamed@mail.com</td>
+          <td>01198765432</td>
+          <td>2025-05-09 | 11:55 AM</td>
+          <td><span class="status pending">قيد المراجعة</span></td>
+          <td class="actions">
+            <button class="btn-action edit" data-title="تعديل البيانات"><i class="fa fa-edit"></i></button>
+            <button class="btn-action delete" data-title="حذف المستخدم"><i class="fa fa-trash"></i></button>
+            <button class="btn-action ban" data-title="حظر المستخدم"><i class="fa fa-ban"></i></button>
+          </td>
+        </tr>
+
+        <tr>
+          <td>3</td>
+          <td>محمد السيد</td>
+          <td>mohamed@mail.com</td>
+          <td>01198765432</td>
+          <td>2025-06-28 | 06:10 PM</td>
+          <td><span class="status success">تم الرد</span></td>
+          <td class="actions">
+            <button class="btn-action edit" data-title="تعديل البيانات"><i class="fa fa-edit"></i></button>
+            <button class="btn-action delete" data-title="حذف المستخدم"><i class="fa fa-trash"></i></button>
+            <button class="btn-action ban" data-title="حظر المستخدم"><i class="fa fa-ban"></i></button>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- 📋 End Users Table -->
+
+
+
+
+</div>
+<!-- 📌 End Main Content -->
+
+
+
+
+<script src="Requests_Management.js"></script>
+</body>
+</html>

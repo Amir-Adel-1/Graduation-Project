@@ -319,6 +319,12 @@ body {
 
 
 
+
+
+
+
+
+
 /* =============================== */
 /*        🔵 محتوى الصفحة          */
 /* =============================== */
@@ -367,118 +373,75 @@ body {
 
 
 
-/* Start Cards */
 
-.data-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
-    color: white;
-}
-.data-info .box {
-  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(0,0,0,0.15));
-  border:1px solid rgba(255,255,255,0.04);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
-    height: 150px;
-    flex-basis: 150px;
-    flex-grow: 1;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-}
-.data-info .box:hover {
-  box-shadow: 0 20px 60px rgba(2,6,23,0.7), 0 6px 18px rgba(0,0,0,0.3);
+
+
+/* =============================== */
+/* 🔍 Search Bar */
+/* =============================== */
+
+.search-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;   /* ❗ يسنتر العنصر أفقياً */
+  margin: 20px 0;
 }
 
-.data-info .box i {
-    font-size: 40px;
-    color: #06b0ff;
-}
-.data-info .box .data {
-    text-align: center;
-}
-.data-info .box .data p {
-  font-size: 18px;
-  font-weight: 500;
-}
-.data-info .box .data span {
-    font-size: 30px;
-    font-weight: 500;
+.search-box {
+  width: 40%;   /* ✨ خلي السيرش ياخد 40% من عرض الشاشة */
+  min-width: 250px;
+  position: relative;
 }
 
-/* End Cards */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Start Graphs */
-
-/* حاوية الرسومات */
-.stats-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-top: 20px;
+/* 🎯 Search Box */
+.search-box {
+  width: 50%;
+  position: relative;
+  margin: 20px;
 }
 
-/* كروت الرسم */
-.chart-card {
-  background: #0F172A;
-  padding: 18px;
-  border-radius: 18px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.25);
-  height: 350px;  /* ↓↓↓ صغّر الكارد */
-}
-
-/* عنوان الرسم */
-.chart-title {
-  font-size: 22px;
-  margin-bottom: 10px;
+.search-box input {
+  width: 100%;
+padding: 15px;
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #fff;
-  font-weight: 700;
-  text-align: right;
+  font-size: 18px;
+  transition: 0.3s;
 }
 
-/* الرسم نفسه */
-.chart-card canvas {
-  width: 100% !important;
-  height: 300px !important;    /* ↓↓↓ تصغير الرسم */
-  max-height: 300px !important;
+.search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-/* End Graphs */
+.search-box input:focus {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #4da3ff;
+  box-shadow: 0 0 15px #4da3ff55;
+}
+
+/* 🔍 Icon */
+.search-box i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #fff;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.search-box i:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
 
 
 
@@ -505,34 +468,23 @@ body {
 
 
 
-
-
-
-
-/* Start Latest Requests */
+/* =============================== */
+/* 📋 Table */
+/* =============================== */
 
 .table-card {
   background: #0F172A;
-  padding: 20px;
+  padding: 22px;
   border-radius: 20px;
   box-shadow: 0 0 15px rgba(0,0,0,0.25);
   margin-top: 30px;
 }
 
-.table-title {
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 15px;
-  text-align: right;
-  color: #fff;
-}
 
 .table-wrapper {
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
   border-radius: 12px;
-  position: relative; /* مهم */
-  z-index: 1;
 }
 
 
@@ -557,106 +509,6 @@ body {
 
 
 
-#latest-requests {
-  width: 100%;
-  border-collapse: collapse;
-  color: #fff;
-}
-
-#latest-requests thead th {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-background: #1E293B;   /* 🔵 لون ثابت لا يحتوي شفافية */
-  padding: 14px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-#latest-requests tbody td {
-    text-align: center;
-  padding: 14px 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  font-size: 15px;
-}
-
-
-/* ✨ Hover لطيف على صفوف الجدول */
-#latest-requests tbody tr {
-  transition: 0.25s ease;
-}
-
-#latest-requests tbody tr:hover {
-  background: rgba(255, 255, 255, 0.06);   /* لون فاتح خفيف */
-  transform: scale(1);                  /* تكبير بسيط */
-}
-
-
-
-/* وسم الحالة */
-.status {
-  padding: 6px 12px;
-  border-radius: 12px;
-  font-size: 14px;
-  color: #fff;
-}
-
-.status.success { background: #27ae60; }
-.status.pending { background: #f1c40f; color: #000; }
-
-
-/* End Latest Requests */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Start Latest users */
-
-.table-card {
-  background: #0F172A;
-  padding: 22px;
-  border-radius: 20px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.25);
-  margin-top: 30px;
-}
-
-.table-title {
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 15px;
-  text-align: right;
-  color: #fff;
-}
-
-.table-wrapper {
-  max-height: 350px;
-  overflow-y: auto;
-  border-radius: 12px;
-}
-
 #users-table {
   width: 100%;
   border-collapse: collapse;
@@ -666,7 +518,7 @@ background: #1E293B;   /* 🔵 لون ثابت لا يحتوي شفافية */
 #users-table thead th {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 10;
 background: #1E293B;   /* 🔵 لون ثابت لا يحتوي شفافية */
   padding: 14px;
   font-size: 16px;
@@ -740,7 +592,6 @@ background: #1E293B;   /* 🔵 لون ثابت لا يحتوي شفافية */
   opacity: 0;
   transition: 0.25s ease;
   pointer-events: none;
-  z-index: 9999;
 }
 
 /* السهم */
@@ -755,7 +606,6 @@ background: #1E293B;   /* 🔵 لون ثابت لا يحتوي شفافية */
   border-color: #000000cc transparent transparent transparent;
   opacity: 0;
   transition: 0.2s ease;
-  z-index: 9999;
 }
 
 /* إظهار التولتيب */
@@ -794,7 +644,7 @@ background: #1E293B;   /* 🔵 لون ثابت لا يحتوي شفافية */
   background: #222;
 }
 
-/* End Latest users */
+
 
 
 
