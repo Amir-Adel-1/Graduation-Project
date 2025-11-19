@@ -68,8 +68,6 @@
 
 
 <!-- Start Content -->
-
-<!-- Start Cart Section -->
 <section class="shop-section">
 
 <div class="glass-bg">
@@ -78,72 +76,172 @@
     <h2>🛒 عربة المشتريات</h2>
 </div>
 
-<div class="container-cards">
+<div class="cart-container">
 
-<div class="card">
-<div class="card-content">
+  <!-- المنتجات -->
+  <div class="cart-items">
 
-    <div class="card-image cart-image">
-      <img src="../Home/images/1.jpg" alt="" />
-      <div class="card-overlay">
-        <i class="fa-solid fa-eye"></i>
-      </div>
-    </div>
+    <!-- عنصر واحد -->
+    <div class="cart-item">
+      <img src="../Home/images/1.jpg" class="item-img">
 
-    <div class="card-text">
-      <p class="card__title">بنادول ادفانس 500 مجم</p>
-    </div>
-
-    <div class="card-footer">
-
-      <div class="card__price">92 ج.م</div>
-
-      <div class="buttons">
-        <button class="card-button delete-btn">
+      <div class="item-info">
+        <h3 class="item-name"> اسم الدواء هنا اسم الدواء هنا اسم الدواء هنا اسم الدواء هنااسم الدواء هنا</h3>
+        <button class="remove-btn">
           <i class="fa-solid fa-trash"></i>
-        </button>
-
-        <button class="card-button">
-          <i class="fa-solid fa-heart"></i>
+            إزالة
         </button>
       </div>
 
+      <div class="item-price">
+        <span class="price">45 جنيه</span>
+
+        <div class="qty-box">
+          <button class="qty-btn">-</button>
+          <span class="qty">1</span>
+          <button class="qty-btn">+</button>
+        </div>
+      </div>
+    </div>
+    <!-- عنصر تاني نسخة -->
+    <div class="cart-item">
+      <img src="../Home/images/2.jpg" class="item-img">
+
+      <div class="item-info">
+        <h3 class="item-name">دواء آخر</h3>
+        <button class="remove-btn">
+          <i class="fa-solid fa-trash"></i>
+            إزالة
+        </button>
+      </div>
+
+      <div class="item-price">
+        <span class="price">36 جنيه</span>
+
+        <div class="qty-box">
+          <button class="qty-btn">-</button>
+          <span class="qty">2</span>
+          <button class="qty-btn">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="cart-item">
+      <img src="../Home/images/3.jpg" class="item-img">
+
+      <div class="item-info">
+        <h3 class="item-name">دواء آخر</h3>
+        <button class="remove-btn">
+          <i class="fa-solid fa-trash"></i>
+            إزالة
+        </button>
+      </div>
+
+      <div class="item-price">
+        <span class="price">36 جنيه</span>
+
+        <div class="qty-box">
+          <button class="qty-btn">-</button>
+          <span class="qty">2</span>
+          <button class="qty-btn">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="cart-item">
+      <img src="../Home/images/4.jpg" class="item-img">
+
+      <div class="item-info">
+        <h3 class="item-name">دواء آخر</h3>
+        <button class="remove-btn">
+          <i class="fa-solid fa-trash"></i>
+            إزالة
+        </button>
+      </div>
+
+      <div class="item-price">
+        <span class="price">36 جنيه</span>
+
+        <div class="qty-box">
+          <button class="qty-btn">-</button>
+          <span class="qty">2</span>
+          <button class="qty-btn">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="cart-item">
+      <img src="img/med2.png" class="item-img">
+
+      <div class="item-info">
+        <h3 class="item-name">دواء آخر</h3>
+        <button class="remove-btn">
+          <i class="fa-solid fa-trash"></i>
+            إزالة
+        </button>
+      </div>
+
+      <div class="item-price">
+        <span class="price">36 جنيه</span>
+
+        <div class="qty-box">
+          <button class="qty-btn">-</button>
+          <span class="qty">2</span>
+          <button class="qty-btn">+</button>
+        </div>
+      </div>
     </div>
 
-    <div class="quantity-box">
-      <button class="qty-btn minus">-</button>
-      <span class="qty-number">1</span>
-      <button class="qty-btn plus">+</button>
+
+  </div>
+
+
+
+  <!-- صندوق الحساب -->
+  <div class="cart-summary">
+    <h3 class="summary-title">تفاصيل الدفع</h3>
+
+    <div class="summary-row">
+      <span>المجموع الفرعي (3 منتجات)</span>
+      <span>5.235 جنيه</span>
     </div>
 
+    <div class="summary-row">
+      <span>الضريبة</span>
+      <span class="free">00.00 جنية</span>
+    </div>
+    
+    <div class="summary-row">
+      <span>رسوم الشحن</span>
+      <span class="free">مجانا</span>
+    </div>
+
+    <hr>
+
+    <div class="summary-total">
+      <span  class="total-price">إجمالي المجموع :  81.233 جنيه</span>
+      <small>(شامل ضريبة القيمة المضافة)</small>
+    </div>
+
+    <button class="checkout-btn">إتمام الشراء</button>
   </div>
-</div>
 
 </div>
 
 </div>
-
-<!-- Start Nova Pop-up Window Details -->
-<div class="nova-popup" id="novaPopup">
-  <div class="nova-content">
-    <span class="nova-close-btn">&times;</span>
-    <h3>التفاصيل</h3>
-    <p>مسكن للألم وخافض للحرارة.<br>يُستخدم لتخفيف الصداع وآلام العضلات.</p>
-  </div>
-</div>
-<!-- End Nova Pop-up Window Details -->
 
 </section>
-<!-- End Cart Section -->
-
 <!-- End Content -->
 
 
+<!-- Popup Confirm -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h3>هل تريد تأكيد عملية الشراء؟</h3>
 
-
-
-
-
+    <div class="confirm-actions">
+      <button id="confirmYes" class="yes-btn">تأكيد</button>
+      <button id="confirmNo" class="no-btn">إلغاء</button>
+    </div>
+  </div>
+</div>
 
 
 

@@ -44,60 +44,41 @@ counters.forEach(counter => {
 
 
 
+/* ================================
+   🔵 الرسم البياني — المستخدمين شهريًا
+==================================*/
+const usersChart = new Chart(document.getElementById("usersChart"), {
+  type: "line",
+  data: {
+    labels: [
+      "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+      "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+    ],
+    datasets: [{
+      label: "عدد المستخدمين",
+      data: [80, 95, 120, 140, 160, 200, 230, 260, 300, 350, 400, 450],
+      borderColor: "#3B82F6",
+      borderWidth: 3,
+      tension: 0.35,
+      fill: false,
+      pointRadius: 5,
+      pointBackgroundColor: "#3B82F6"
+    }]
+  },
+  options: {
+    scales: {
+      x: {
+        ticks: { color: "#fff", font: { size: 13 } }
+      },
+      y: {
+        ticks: { color: "#fff", font: { size: 13 } }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: { color: "#fff", font: { size: 14 } }
+      }
+    }
+  }
+});
 
-// =======================================================
-// 🔵 Render Weekly Chart
-// =======================================================
-
-const dashboardData = {
-    weeklyOrders: [12, 19, 8, 15, 22, 17, 25],
-    weeklyLabels: ["السبت", "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"]
-};
-
-
-// =======================================================
-// 🔵 Render Weekly Chart
-// =======================================================
-
-function renderWeeklyChart() {
-    const ctx = document.getElementById("requestsChart").getContext("2d");
-
-    new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: dashboardData.weeklyLabels,
-            datasets: [{
-                label: "عدد الطلبات",
-                data: dashboardData.weeklyOrders,
-                borderWidth: 2,
-                backgroundColor: [
-                    "rgba(14,165,233,0.7)",
-                    "rgba(59,130,246,0.7)",
-                    "rgba(16,185,129,0.7)",
-                    "rgba(249,115,22,0.7)",
-                    "rgba(236,72,153,0.7)",
-                    "rgba(139,92,246,0.7)",
-                    "rgba(234,179,8,0.7)"
-                ],
-                borderColor: "rgba(30,41,59,1)",
-                hoverBackgroundColor: "rgba(30,41,59,0.9)",
-                borderRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 5 }
-                }
-            }
-        }
-    });
-}
-
-// Call Chart
-renderWeeklyChart();

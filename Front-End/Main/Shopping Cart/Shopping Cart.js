@@ -98,28 +98,128 @@ eyeAreas.forEach(area => {
 // 📌  الجزء الرابع: Quantity + / -
 // ==========================================================
 
-const qtyBoxes = document.querySelectorAll(".quantity-box");
+document.querySelectorAll('.qty-box').forEach(box => {
+  const minusBtn = box.querySelectorAll('.qty-btn')[0];
+  const plusBtn = box.querySelectorAll('.qty-btn')[1];
+  const qtySpan = box.querySelector('.qty');
 
-qtyBoxes.forEach(box => {
-  const minusBtn = box.querySelector(".minus");
-  const plusBtn = box.querySelector(".plus");
-  const qtyNumber = box.querySelector(".qty-number");
-
-  let qty = parseInt(qtyNumber.textContent);
-
-  // زيادة
-  plusBtn.addEventListener("click", () => {
-    if (qty < 5) {
-      qty++;
-      qtyNumber.textContent = qty;
+  minusBtn.addEventListener('click', () => {
+    let value = parseInt(qtySpan.textContent);
+    if (value > 1) {
+      qtySpan.textContent = value - 1;
     }
   });
 
-  // نقصان
-  minusBtn.addEventListener("click", () => {
-    if (qty > 1) {
-      qty--;
-      qtyNumber.textContent = qty;
+  plusBtn.addEventListener('click', () => {
+    let value = parseInt(qtySpan.textContent);
+    if (value < 5) {
+      qtySpan.textContent = value + 1;
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ==============================
+// 1) ستايل الرسالة الخضرا - Pure JS (معدّل ومظبوط)
+// ==============================
+const successStyle = document.createElement("style");
+successStyle.innerHTML = `
+.success-message {
+  position: fixed;
+  top: 50%;                      /* منتصف الصفحة */
+  left: 50%;                     /* منتصف الصفحة */
+  transform: translate(-50%, -50%) scale(0.9);
+  background: rgba(0, 255, 200, 0.25);
+  color: #00ffaa;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 15px rgba(0,255,255,0.4);
+  opacity: 0;
+  transition: 0.35s ease;
+  z-index: 999999;
+  text-align: center;
+}
+`;
+document.head.appendChild(successStyle);
+
+
+// ==============================
+// 2) دالة الرسالة الخضرا (نفس كودك – فقط تم ظبط الأنيميشن)
+// ==============================
+function showSuccessMessage(text) {
+  const msg = document.createElement("div");
+  msg.className = "success-message";
+  msg.innerHTML = `<p>${text}</p>`;
+  document.body.appendChild(msg);
+
+  // ظهور الرسالة
+  setTimeout(() => {
+    msg.style.opacity = "1";
+    msg.style.transform = "translate(-50%, -50%) scale(1)";
+  }, 20);
+
+  // اختفاء الرسالة
+  setTimeout(() => {
+    msg.style.opacity = "0";
+    msg.style.transform = "translate(-50%, -60%) scale(0.9)";
+    setTimeout(() => msg.remove(), 300);
+  }, 2500);
+}
+
+
+// ==============================
+// 3) دمج كود الشراء — بدون أي تغيير
+// ==============================
+const checkoutBtn = document.querySelector(".checkout-btn");
+const confirmOverlay = document.getElementById("confirmOverlay");
+const confirmYes = document.getElementById("confirmYes");
+const confirmNo = document.getElementById("confirmNo");
+
+// فتح نافذة التأكيد
+checkoutBtn.addEventListener("click", () => {
+  confirmOverlay.style.display = "flex";
+});
+
+// زر الإلغاء
+confirmNo.addEventListener("click", () => {
+  confirmOverlay.style.display = "none";
+});
+
+// زر التأكيد
+confirmYes.addEventListener("click", () => {
+  confirmOverlay.style.display = "none";
+
+  // 🔥 الرسالة الخضرا
+  showSuccessMessage("🎉 تم تأكيد عملية الشراء بنجاح!");
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
