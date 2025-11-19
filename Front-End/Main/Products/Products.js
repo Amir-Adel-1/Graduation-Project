@@ -76,170 +76,122 @@ document.addEventListener("DOMContentLoaded", () => {
 const searchInput = document.getElementById("searchInput");
 const searchDropdown = document.getElementById("searchDropdown");
 
-// بيانات وهمية للبحث (بدّلها باللي عندك)
+// بيانات وهمية للبحث (تستخدم في حالة فشل الاتصال بالخادم)
 const fakeData = [
-  { name: "iPhone 15 Pro", price: "45,000 L.E", img: "images/iphone.jpg" },
-  { name: "Samsung S24", price: "38,000 L.E", img: "images/s24.jpg" },
-  { name: "Lenovo Legion", price: "52,000 L.E", img: "images/lenovo.jpg" },
+  { name: "iPhone 15 Pro", price: "45,000", image: "images/iphone.jpg" },
+  { name: "Samsung S24", price: "38,000", image: "images/s24.jpg" },
+  { name: "Lenovo Legion", price: "52,000", image: "images/lenovo.jpg" },
 ];
 
-// تشغيل البحث أثناء الكتابة
-searchInput.addEventListener("input", () => {
-  const text = searchInput.value.trim();
+// متغير لتخزين مؤقت للبحث
+let searchTimeout;
 
-  if (text === "") {
-    searchDropdown.style.display = "none";
+// عرض حالة التحميل
+function showLoading() {
+  searchDropdown.innerHTML = '<div class="loading">جاري البحث...</div>';
+  searchDropdown.style.display = 'block';
+}
+
+// عرض نتائج البحث
+async function showSearchResults(text) {
+  if (!text) {
+    searchDropdown.style.display = 'none';
     return;
   }
 
-  const results = fakeData.filter((x) =>
-    x.name.toLowerCase().includes(text.toLowerCase())
-  );
+  showLoading();
 
-  searchDropdown.innerHTML = "";
+  try {
+    // استخدام API للبحث
+    const products = await searchProducts(text);
+    
+    // إذا لم تكن هناك نتائج من API، استخدم البيانات الوهمية
+    const results = products.length > 0 ? products : fakeData.filter(item => 
+      item.name.toLowerCase().includes(text.toLowerCase())
+    );
 
-  if (results.length === 0) {
-    searchDropdown.innerHTML = `<div class="no-results">لا توجد نتائج</div>`;
+    displayResults(results);
+  } catch (error) {
+    console.error('Search error:', error);
+    // في حالة حدوث خطأ، استخدم البيانات الوهمية
+    const results = fakeData.filter(item => 
+      item.name.toLowerCase().includes(text.toLowerCase())
+    );
+    displayResults(results);
+  }
+}
+
+// عرض النتائج في القائمة المنسدلة
+function displayResults(products) {
+  searchDropdown.innerHTML = '';
+  
+  if (!products || products.length === 0) {
+    searchDropdown.innerHTML = '<div class="no-results">لا توجد نتائج</div>';
   } else {
-    results.forEach((item) => {
-      const div = document.createElement("div");
-      div.className = "search-item";
+    products.forEach(product => {
+      const div = document.createElement('div');
+      div.className = 'search-item';
       div.innerHTML = `
-        <img src="${item.img}">
-        <div class="search-info">
-          <h4>${item.name}</h4>
-          <span class="price">${item.price}</span>
+        <img src="${product.image || 'default.jpg'}">
+        <div class="data">
+          <h4>${product.name}</h4>
+          <p class="price">${product.price || 'N/A'} جنيه</p>
         </div>
+        <button class="add-btn">إضافة</button>
       `;
       searchDropdown.appendChild(div);
     });
   }
-
-  searchDropdown.style.display = "block";
-});
-
-
-// ==========================================================
-// 📌 تشغيل البحث عند الضغط على زر Enter
-// ==========================================================
-
-searchInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-
-    const text = searchInput.value.trim();
-
-    if (text === "") {
-      searchDropdown.style.display = "none";
-      return;
-    }
-
-    const results = fakeData.filter((x) =>
-      x.name.toLowerCase().includes(text.toLowerCase())
-    );
-
-    searchDropdown.innerHTML = "";
-
-    if (results.length === 0) {
-      searchDropdown.innerHTML = `<div class="no-results">لا توجد نتائج</div>`;
-    } else {
-      results.forEach((item) => {
-        const div = document.createElement("div");
-        div.className = "search-item";
-        div.innerHTML = `
-          <img src="${item.img}">
-          <div class="search-info">
-            <h4>${item.name}</h4>
-            <span class="price">${item.price}</span>
-          </div>
-        `;
-        searchDropdown.appendChild(div);
-      });
-    }
-
-    searchDropdown.style.display = "block";
-  }
-});
-
-
-// ==========================================================
-// 📌 إغلاق القائمة عند الضغط خارجها
-// ==========================================================
-document.addEventListener("click", (e) => {
-  if (!searchInput.contains(e.target)) {
-    searchDropdown.style.display = "none";
-  }
-});
-
-
-
-
-
-
-//// جزء ال سرش و ال api
-
-
-const input = document.getElementById("searchInput");
-const dropdown = document.getElementById("searchDropdown");
-
-input.addEventListener("input", async () => {
-    let text = input.value.trim();
-
-    if (text.length < 2) {
-        dropdown.style.display = "none";
-        return;
-    }
-
-    dropdown.style.display = "block";
-    dropdown.innerHTML = `<div class="loading">جاري البحث...</div>`;
-
-    let products = await searchProducts(text);
-
-    if (!products || products.length === 0) {
-        dropdown.innerHTML = `<div class="no-results">لا توجد نتائج</div>`;
-        return;
-    }
-
-    showProducts(products);
-});
-
-// ⭐ API CALL
-async function searchProducts(query) {
-    const apiUrl = `https://moelshafey.xyz/API/MD/search.php?name=${encodeURIComponent(query)}`;
-    const proxy = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
-    
-    try {
-        let res = await fetch(proxy);
-        let json = await res.json();
-
-        // إذا API يرجع {products: [...]} 
-        return json.products || [];
-    } catch (e) {
-        console.error("API Error:", e);
-        return [];
-    }
+  
+  searchDropdown.style.display = 'block';
 }
 
-// ⭐ عرض النتائج
-function showProducts(products) {
-    dropdown.innerHTML = "";
+// البحث عند الكتابة (مع تأخير 300 مللي ثانية)
+searchInput.addEventListener('input', (e) => {
+  clearTimeout(searchTimeout);
+  const searchText = e.target.value.trim();
+  
+  if (searchText.length < 2) {
+    searchDropdown.style.display = 'none';
+    return;
+  }
+  
+  searchTimeout = setTimeout(() => {
+    showSearchResults(searchText);
+  }, 300);
+});
 
-    products.forEach(p => {
-        dropdown.innerHTML += `
-            <div class="search-item">
-                <img src="${p.image || 'default.jpg'}">
+// إظهار النتائج عند النقر على حقل البحث
+searchInput.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (searchInput.value.trim().length >= 2) {
+    showSearchResults(searchInput.value.trim());
+  }
+});
 
-                <div  class="data">
-                    <h4>${p.name}</h4>
-                    <p class="price">${p.price || 0} جنيه</p>
-                </div>
+// إغلاق القائمة عند النقر خارجها
+document.addEventListener('click', () => {
+  searchDropdown.style.display = 'none';
+});
 
-                ${
-                  
-                     `<button class="add-btn">إضافة</button>`
-              
-                }
-            </div>
-        `;
-    });
+// منع إغلاق القائمة عند النقر عليها
+searchDropdown.addEventListener('click', (e) => {
+  e.stopPropagation();
+});
+
+// ⭐ API CALL للبحث عن المنتجات
+async function searchProducts(query) {
+  const apiUrl = `https://moelshafey.xyz/API/MD/search.php?name=${encodeURIComponent(query)}`;
+  const proxy = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
+  
+  try {
+    const response = await fetch(proxy);
+    if (!response.ok) throw new Error('Network response was not ok');
+    
+    const data = await response.json();
+    return Array.isArray(data) ? data : (data.products || []);
+  } catch (error) {
+    console.error("API Error:", error);
+    return []; // إرجاع مصفوفة فارغة في حالة الخطأ
+  }
 }
