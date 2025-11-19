@@ -794,8 +794,11 @@ animation: fadeIn 0.6s cubic-bezier(0.22, 1.15, 0.4, 1) forwards;
 
 
 
-
-
+/* Start Loading */
+.loading {
+  font-size: 25px;
+}
+/* End Loading */
 
 
 

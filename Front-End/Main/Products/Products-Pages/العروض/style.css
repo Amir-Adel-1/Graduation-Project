@@ -619,12 +619,13 @@ body {
   .discount-badge {
     background-color: #f44336;
     color: white;
-    font-size: 0.8rem;
-    padding: 2px 8px;
+    font-size: 12px;
+    padding: 2px 3px;
     border-radius: 10px;
     display: inline-block;
-    margin-right: 5px;
+    /* margin-right: 5px; */
     font-weight: bold;
+    width: 60px;
   }
   
   /* ===============================
