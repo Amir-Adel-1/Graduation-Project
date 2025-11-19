@@ -507,162 +507,295 @@ body {
   font-weight: 500;
 }
 
-/* 🔹 التفاصيل */
-.drug-result {
-  flex: 1;
-  overflow-y: auto;
-  margin: 15px 25px;
-  padding: 20px;
-  background: rgba(255,255,255,0.25);
-  border-radius: 20px;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
-  text-align: right;
-}
-.placeholder {
-  text-align: center;
-  color: #006f97;
-}
 
-.placeholder p {
-  color: white;
-}
+/* ------------------- 🟢 Chat Layout ------------------- */
 
-.placeholder img {
-  width: 70px;
-  opacity: 0.7;
-  margin-bottom: 10px;
-}
-
-/* 🔹 رفع الصورة */
-.drug-image-upload {
-  text-align: center;
-  margin: 0 0 90px; /* 👈 علشان تسيب مساحة فوق السيرش */
-}
-.upload-area {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  border: 2px dashed #00aaff;
-  border-radius: 15px;
-  width: 230px;
-  height: 120px;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
-}
-.upload-area:hover {
-  background: rgba(0, 170, 255, 0.1);
-  transform: scale(1.03);
-}
-.upload-area i {
-  font-size: 35px;
-  color: #009ad7;
-  margin-bottom: 8px;
-}
-.upload-area span {
-  color: white;
-  font-weight: 600;
-}
-
-/* 💬 سيرش الشات بوت (مثبّت تحت) */
-.drug-chat-input {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 15px 25px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(15px);
-  border-top: 1px solid rgba(255,255,255,0.3);
-  box-shadow: 0 -4px 25px rgba(0, 190, 255, 0.25);
-  border-radius: 0 0 25px 25px;
-}
-
-/* ✏️ إدخال النص */
-.drug-chat-input input {
-  flex: 1;
+.chat-wrapper {
+  width: 100%;
   max-width: 1300px;
-  padding: 14px 18px;
-  border-radius: 30px;
-  border: none;
-  outline: none;
-  background: rgba(255,255,255,0.6);
-  color: #003f57;
-  font-size: 18px;
-  backdrop-filter: blur(10px);
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 110px auto;
 }
-.drug-chat-input input:focus {
-  background: rgba(255,255,255,0.9);
+
+.chat-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  /* تأثير الزجاج */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 6px 20px rgba(0, 192, 255, 0.8);
 }
 
-/* 🔘 الأزرار */
-.drug-chat-input button {
+/* 💬 الجسم الرئيسي */
+.chat-body {
+  flex: 1;
+  padding: 25px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  scroll-behavior: smooth;
+}
+
+/* فقاعات الرسائل */
+.message {
+  max-width: 70%;
+  padding: 12px 18px;
+  border-radius: 20px;
+  line-height: 1.6;
+  font-size: 15px;
+  animation: fadeIn 0.3s ease;
+  
+}
+
+.message.bot {
+  background: transparent;
+  color: #fff;
+  
+  text-align: right;
+  direction: rtl;      /* اتجاه عربي */
+  border-top-left-radius: 0;
+}
+
+.message.user {
+  background: rgba(0, 154, 215, 0.8);
+  align-self: flex-end;
+ 
+  color: #333;
+  border-top-right-radius: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+align-self: flex-start;
+  text-align: right;
+direction: rtl;
+
+}
+
+/* ⚙️ شريط الإدخال الزجاجي */
+.chat-input {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(15px);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.chat-input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 15px;
+  border-radius: 25px;
+  background: rgba(255,255,255,0.6);
+  font-size: 18px;
+  color: #333;
+  transition: background 0.3s;
+}
+
+.chat-input input::placeholder {
+  color: #555;
+}
+
+.chat-input input:focus {
+      box-shadow: 0 6px 20px rgba(0, 192, 255, 0.8);
+  background: rgba(255,255,255,0.9);
+}
+
+.chat-input button {
+background-color: #00e0ff;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 154, 215, 0.5);
+  border: none;
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  border: none;
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
-  color: white;
+  cursor: pointer;
   font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+
+}
+
+.chat-input button:hover {
+  background-color: #0099ff;
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(0, 192, 255, 0.8);
+}
+
+/* ✨ حركة الرسائل */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Button Add */
+.chat-input button#attachDrugBtn {
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  color: #00e0ff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.chat-input button#attachDrugBtn:hover {
+  background: rgba(255, 255, 255, 0.45);
+  transform: scale(1.1);
+}
+
+/* Button Send */
+.chat-input button#drugSendBtn {
+  background: linear-gradient(135deg, #0099ff, #00ffcc);
+  color: #113543;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(0, 192, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
 
-}
-.drug-chat-input button:hover {
+#drugSendBtn:hover {
   transform: scale(1.1);
-  background: linear-gradient(135deg, #00e0ff, #0099ff);
+  box-shadow: 0 5px 15px rgba(0, 153, 255, 0.4);
 }
-/* 🌿 Start Drug Inquiry Section */
+
+/* Retry button styling */
+#drugSendBtn.retry-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+}
+
+#drugSendBtn.retry-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+/* Disabled state for input and buttons */
+#drugInput:disabled,
+#attachDrugBtn:disabled,
+#drugSendBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  padding: 12px 18px;
+  background: transparent;
+  border-radius: 20px;
+  border-top-left-radius: 0;
+  color: #fff;
+  text-align: right;
+  direction: rtl;
+}
+
+.typing {
+  display: flex;
+  gap: 4px;
+}
+
+.typing span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00e0ff;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typing span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes typing {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Typewriter cursor */
+.message.bot p:not(.typing-complete)::after {
+  content: '|';
+  color: #00e0ff;
+  animation: blink 1s infinite;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Markdown styling */
+.message.bot h3 {
+  color: #00e0ff;
+  margin: 10px 0 5px 0;
+  font-size: 16px;
+  text-shadow: 0 0 5px rgba(0, 224, 255, 0.5);
+}
+
+.message.bot strong {
+  color: #00e0ff;
+  font-weight: 600;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.message.bot em {
+  color: #aeeaff;
+  font-style: italic;
+}
+
+.message.bot img {
+  max-width: 200px;
+  border-radius: 10px;
+  margin: 10px 0;
+  border: 2px solid rgba(0, 224, 255, 0.3);
+}
 
 /* ------------------- End Content ------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 0 40px;
+}
 
 /* ==================== Start Footer ================== */
 .footer {

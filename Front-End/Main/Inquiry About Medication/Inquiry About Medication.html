@@ -68,39 +68,25 @@
 
 
 
-    <!-- Start Content -->
+        <!-- Start Content -->
+<div class="chat-wrapper">
+    <div class="chat-box">
+      <div class="chat-body" id="drugChatBody">
+        <div class="message bot">
+          <p>مرحباً! 👋 أنا مساعدك للاستفسار عن الأدوية. ارفع صورة الدواء أو اكتب اسمه وسأقدم لك المعلومات الكاملة 💊</p>
+        </div>
+      </div>
 
-<!-- 🌿 Start Drug Inquiry Section -->
-<section class="drug-inquiry-container">
-  <div class="drug-header">
-    <p>💊 ارفع صورة أو اكتب اسم الدواء لمعرفة التفاصيل 💊</p>
-  </div>
+      <div class="chat-input">
+        <input type="file" id="drugFileInput" accept="image/*" hidden>
+        <button id="attachDrugBtn" title="إضافة مرفق"><i class="fa-solid fa-plus"></i></button>
+        <input type="text" id="drugInput" autocomplete="off" placeholder="💊 اكتب اسم الدواء أو ارفع صورة...">
+        <button id="drugSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
 
-  <!-- 🧾 نتيجة البحث / تفاصيل الدواء -->
-  <div class="drug-result" id="drugResult">
-    <div class="placeholder">
-      <img src="https://cdn-icons-png.flaticon.com/512/993/993928.png" alt="Search Icon">
-      <p>سيتم عرض تفاصيل الدواء هنا بعد البحث 👇</p>
     </div>
   </div>
-
-  <!-- 🖼️ رفع الصورة -->
-  <div class="drug-image-upload">
-    <label class="upload-area" for="drugFileInput">
-      <i class="fa-solid fa-image"></i>
-      <span>ارفع صورة الدواء</span>
-    </label>
-    <input type="file" id="drugFileInput" accept="image/*" hidden>
-  </div>
-
-  <!-- 💬 السيرش بأسلوب الشات بوت (لاصق تحت) -->
-  <div class="drug-chat-input">
-    <button id="attachDrugBtn" title="إضافة مرفق"><i class="fa-solid fa-plus"></i></button>
-    <input type="text" id="drugInput" placeholder="💊 اكتب اسم الدواء هنا...">
-    <button id="drugSendBtn"><i class="fa-solid fa-paper-plane"></i></button>
-  </div>
-</section>
-<!-- 🌿 End Drug Inquiry Section -->
+    <!-- End Content -->
 
 
 
