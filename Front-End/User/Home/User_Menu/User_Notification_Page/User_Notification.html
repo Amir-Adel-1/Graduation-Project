@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>الإشعارات</title>
+
+    <!-- Logo Website -->
+    <link rel="icon" href="" type="png" />
+    <!-- Main Template CSS File -->
+    <link rel="stylesheet" href="User_Notification.css" />
+    <!-- Bootstrap -->
+    <!-- <link rel="stylesheet" href="../../bootstrap-5.3.8-dist/css/bootstrap.min.css" /> -->
+    <!-- Font Awsome -->
+    <link rel="stylesheet" href="../../../../bootstrap-5.3.8-dist/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="" />
+  </head>
+<body>
+
+
+    <!--  Start NavBar -->
+    <nav class="navbar" id="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+        <span class="text-logo">Se7ty</span>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="../../../../User/Home/User.html">الرئيسية</a></li>
+        <li><a href="../../../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../../../Main/Products/Products.html">المنتجات</a></li>
+        <li><a href="../../../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+        <li><a href="../../../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+        <li><a href="../../../../Main/Inquiry About Medication/Inquiry About Medication.html">الآستفسار عن دواء</a></li>
+        <li><a href="../../../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
+      </ul>
+
+      <div class="actions">
+        <div class="icons">
+          <div class="icon">
+            <a href="../../../../Main/Shopping Cart/Shopping Cart.html"><i class="fa-solid fa-cart-shopping "></i></a>
+            <span class="count" id="cart_clr">0</span>
+          </div>
+          <div class="icon">
+            <a href="../../../../Main/Favorites/Favorites.html"><i class="fa-solid fa-heart "></i></a>
+            <span class="count" id="fav_clr">0</span>
+          </div>
+        </div>
+        <div class="user-info" id="userInfo">
+          <span  id="userName" class="user-name"></span>
+        </div>
+        <!-- القائمة المنسدلة -->
+        <div class="user-menu" id="userMenu">
+          <ul>
+            <li><a href="../User_Profile_Page/User_Profile.html">👤 الملف الشخصي</a></li>
+
+            <li>
+              <a href="../User_Notification_Page/User_Notification.html" class="notif-link">
+                <i class="fa-solid fa-bell"></i>
+              الإشعارات
+              <span class="notif-badge" id="notifBadge">0</span>
+              </a>
+            </li>
+
+            <li><a href="../User_Requests_Page/Requests.html"><i class="fa-regular fa-folder-open"></i> الطلبات</a></li>
+            <li><a href="#">⚙️ الإعدادات</a></li>
+            <li><a id="logout">🚪 تسجيل الخروج</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!--  End NavBar -->
+
+
+
+<!-- Start Content -->
+<section class="notifications-section">
+
+<div class="glass-bg">
+
+<div class="title">
+    <h2>• الإشعارات •</h2>
+</div>
+
+<div class="notifications-container">
+
+    <!-- مثال على إشعار -->
+    <div class="notification-card new">
+        <div class="notif-header">
+            <span class="dot"></span>
+            <h3>صيدلية الشفاء</h3>
+        </div>
+
+        <p class="notif-text">
+            تم الرد على طلبك بخصوص الدواء المطلوب.
+        </p>
+
+        <p class="notif-time">منذ 5 دقائق</p>
+
+        <button class="view-btn"><i class="fa-solid fa-eye"></i>عرض التفاصيل</button>
+    </div>
+
+    <div class="notification-card">
+        <div class="notif-header">
+            <h3>صيدلية الحياة</h3>
+        </div>
+
+        <p class="notif-text">
+            الدواء متوفر ويمكن استلامه خلال ساعتين.
+        </p>
+
+        <p class="notif-time">منذ 3 ساعات</p>
+
+        <button class="view-btn"><i class="fa-solid fa-eye"></i>عرض التفاصيل</button>
+    </div>
+    <div class="notification-card">
+        <div class="notif-header">
+            <h3>صيدلية الحياة</h3>
+        </div>
+
+        <p class="notif-text">
+            الدواء متوفر ويمكن استلامه خلال ساعتين.
+        </p>
+
+        <p class="notif-time">منذ 3 ساعات</p>
+
+        <button class="view-btn"><i class="fa-solid fa-eye"></i>عرض التفاصيل</button>
+    </div>
+    <div class="notification-card">
+        <div class="notif-header">
+            <h3>صيدلية الحياة</h3>
+        </div>
+
+        <p class="notif-text">
+            الدواء متوفر ويمكن استلامه خلال ساعتين.
+        </p>
+
+        <p class="notif-time">منذ 3 ساعات</p>
+
+        <button class="view-btn"><i class="fa-solid fa-eye"></i>عرض التفاصيل</button>
+    </div>
+
+</div>
+
+</div>
+</section>
+<!-- End Content -->
+
+
+
+<!-- نافذة عرض التفاصيل -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-content">
+    <h3>تفاصيل الصيدلية</h3>
+    <p><strong>الاسم:</strong> صيدلية الشفاء</p>
+    <p><strong>العنوان:</strong> ١٢ شارع التحرير، القاهرة</p>
+    <p><strong>رقم الهاتف:</strong> 01012345678</p>
+    <p><strong>البريد الإلكتروني:</strong> pharmacy@gmail.com</p>
+    <button id="closePopup" class="btn close">إغلاق</button>
+  </div>
+</div>
+
+
+
+
+
+    <!-- Start Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section about">
+          <div class="logo">
+            <i class="fa-solid fa-heart-pulse gradient-color glowing-text"></i>
+            <span class="text-logo">Se7ty</span>
+          </div>
+          <p>صيدليتك الموثوقة لجميع الأدوية والمنتجات الصحية عالية الجودة</p>
+        </div>
+
+        <div class="footer-section links">
+          <h3>روابط سريعة</h3>
+          <ul>
+        <li><a href="../../../../User/Home/User.html">الرئيسية</a></li>
+        <li><a href="../../../../Main/About Us/About Us.html">نبذة عنا</a></li>
+        <li><a href="../../../../Main/Products/Products.html">المنتجات</a></li>
+        <li><a href="../../../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+        <li><a href="../../../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+        <li><a href="../../../../Main/Inquiry About Medication/Inquiry About Medication.html">الآستفسار عن دواء</a></li>
+        <li><a href="../../../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section contact">
+          <h3>تواصل معنا</h3>
+          <p><i class="fa-solid fa-envelope"></i>info@Se7ty.com</p>
+          <p><i class="fa-solid fa-phone"></i>4455 888 02</p>
+        </div>
+
+        <div class="footer-section social">
+          <h3>تابعنا</h3>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="footer-bottom">
+        <div class="rights">
+          <p>© 2026 <bdi>Se7ty</bdi>. جميع الحقوق محفوظة.</p>
+          <!-- يعني بيخلي الكلمة الإنجليزية تبقى معزولة عن اتجاه النص العربي (bdi) -->
+        </div>
+        <div class="policy">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">الشروط والأحكام</a>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+
+
+    <!-- Start scroll To Top Btn -->
+    <button id="scrollToTopBtn" title="Go to top">
+      <i class="fa-solid fa-arrow-up-from-bracket"></i>
+    </button>
+    <!-- End scroll To Top Btn -->
+
+
+
+
+<script src="User_Notification.js"></script>
+</body>
+</html>

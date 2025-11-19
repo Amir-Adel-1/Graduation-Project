@@ -121,3 +121,36 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 // End Button View Details
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// عدد الإشعارات (بدل الرقم ده هتجيبه من API)
+let newNotifications = 5;
+
+const badge = document.getElementById("notifBadge");
+
+if (newNotifications > 0) {
+    badge.innerText = newNotifications;
+    badge.style.display = "inline-block";
+} else {
+    badge.style.display = "none";
+}

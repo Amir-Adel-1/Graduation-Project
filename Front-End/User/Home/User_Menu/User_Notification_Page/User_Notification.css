@@ -1,10 +1,11 @@
 
+
 /* ------------------- 🟢 Global Styles ------------------- */
 body {
   margin: 0;
   font-family: "Segoe UI", "Noto Sans Arabic", "Arial", sans-serif, "Cairo";
   direction: rtl;
-      background: radial-gradient(circle, #009ad755, #ffffff);
+  background-color: #113543;
   color: #ffffff;
     overflow-x: hidden;
 }
@@ -399,6 +400,24 @@ body {
   transform: scale(1.03); /* تأثير بسيط للتكبير */
 }
 
+
+.user-menu li.active {
+  background: rgba(255, 255, 255, 0.1); /* خلفية خفيفة */
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); /* توهج */
+  cursor: pointer;
+  transform: scale(1.03); /* تأثير بسيط للتكبير */
+}
+
+.user-menu li.active a {
+  color: #00e0ff;
+  text-shadow:
+    0 0 6px #00e0ff,
+    0 0 12px #00e0ff,
+    0 0 24px #00e0ff;
+}
+
+
+
 /* 🔹 اللينك الأساسي */
 .user-menu a {
   display: block;
@@ -441,7 +460,6 @@ body {
 /* End (User Menu) 👤 */
 
 
-
 /* رقم الاشعار */
 .notif-link {
   position: relative;
@@ -475,362 +493,277 @@ body {
 
 
 
+/* Start Content */
 
 
-/* ===========================================================
-   💎 STYLE FILE FOR SEARCH BAR + CATEGORIES SECTION
-   Author: Amir Adel
-   Updated: 2025-11-08
-   =========================================================== */
-
-
-/* ===========================================================
-   🟢 1. GENERAL CONTAINER STYLES
-   =========================================================== */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.08); /* شفافية خفيفة */
-  backdrop-filter: blur(25px);            /* البلور (التمويه الزجاجي) */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* حدود خفيفة شبه زجاج */
-  padding: 40px 20px;
-  border-radius: 20px;
-  box-shadow: 0 0 15px rgba(0, 154, 215, 0.1);
-  margin: 150px auto;
-  width: 95%;
+/* ===============================
+  🌟 الخلفية الزجاجية العامة
+=============================== */
+.glass-bg {
   max-width: 1300px;
-  animation: fadeUp 0.8s ease forwards;
-  opacity: 0;
-  transform: translateY(30px);
-  box-shadow: 0 0 25px rgba(49, 40, 40, 0.35);
+  height: 80vh;
+  width: 90%;
+  margin: 110px auto;
+  padding: 40px;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 6px 20px rgba(0, 192, 255, 0.8);
 }
 
-/* ✨ تأثير دخول ناعم */
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ===============================
+   🔹 العنوان
+=============================== */
+.title {
+  text-align: center;
+  margin-top: -15px;
 }
 
 
-/* ===========================================================
-   🔍 2. SEARCH BAR SECTION
-   =========================================================== */
-.search-bar {
+.title h2 {
+  display: inline-block;
   position: relative;
+  font-size: 30px;
+  color: #00c6ff;
+  margin-bottom: 20px;
+}
+
+.title h2::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 2px;
+  background-color: #00b0ff;
+  border-radius: 2px;
+}
+
+
+
+
+
+
+
+
+.notifications-container {
+    max-height: 60vh;   /* ارتفاع مناسب */
+    overflow-y: auto;    /* سكرول رأسي */
+    padding: 0 10px; /* علشان شكل السكرول */
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.10);
+      border-radius: 20px;
+}
+
+/* شكل سكرول لطيف */
+.notifications-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notifications-container::-webkit-scrollbar-track {
+    background: #0d2337;
+    border-radius: 10px;
+}
+
+.notifications-container::-webkit-scrollbar-thumb {
+    background: #00c3ff;
+    border-radius: 10px;
+}
+
+
+
+.notification-card {
+    background: #1a2534;
+    padding: 18px 20px;
+    border-radius: 16px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 20px #0005;
+    transition: 0.3s ease;
+}
+
+.notification-card:hover {
+    transform: translateY(-4px);
+}
+
+.notif-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.notif-header h3 {
+    margin: 0;
+    color: #00d2ff;
+    font-size: 20px;
+}
+
+.notif-text {
+    margin: 10px 0;
+    color: #ddd;
+    line-height: 1.6;
+}
+
+.notif-time {
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* زرار عرض التفاصيل */
+.view-btn {
+  display: block;
+  width: 80%;
+  margin: 18px auto; /* يجي يمين */
+  padding: 10px 18px;
+  text-align: center;
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(45deg, #00b4d8, #0096c7);
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(0, 150, 200, 0.4);
+  transition: 0.25s ease-in-out;
+}
+
+/* hover */
+.view-btn:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(45deg, #0096c7, #0077b6);
+  box-shadow: 0 6px 15px rgba(0, 180, 220, 0.5);
+}
+
+.view-btn i {
+  margin: 0 5px;
+}
+
+/* الإشعار الجديد */
+.notification-card.new {
+    border-right: 4px solid #e63946;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: #e63946;
+    border-radius: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Start Button View Details */
+/* خلفية البوب أب */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.65); /* أغمق شوية */
+  backdrop-filter: blur(10px); /* نفس تأثير تسجيل الدخول */
+  -webkit-backdrop-filter: blur(10px);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 50px auto 10px auto;
-  width: 100%;
-  max-width: 600px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 8px #009ad7, 0 0 20px rgba(0, 154, 215, 0.4);
-  padding: 5px 10px;
-  direction: rtl;
-  transition: box-shadow 0.3s ease;
-}
-
-/* 🔥 الإضاءة المتحركة حول السيرش */
-.search-bar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  padding: 5px; /* ✅ توسيع الإضاءة */
-  background: linear-gradient(90deg, #00ffff, #0099ff, #00ffcc, #00ffff);
-  background-size: 300%;
-  animation: borderFlow 3s linear infinite;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: destination-out;
-  pointer-events: none;
-}
-
-@keyframes borderFlow {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 300% 50%; }
-}
-
-/* ✨ تأثير التوهج عند الضغط داخل السيرش */
-.search-bar:focus-within {
-  box-shadow: 0 0 25px 5px rgba(0, 255, 255, 0.6),
-              0 0 45px 10px rgba(0, 153, 255, 0.4);
-  transform: scale(1.02);
-  transition: box-shadow 0.8s ease, transform 0.6s ease, background 0.6s ease;
-}
-
-.search-bar:focus-within::before {
-  /* animation-duration: 1.5s; ⚡ سرعة أكبر أثناء الكتابة */
-  filter: brightness(1.3);
-}
-
-
-/* ===========================================================
-   ✏️ 3. INPUT FIELD
-   =========================================================== */
-.search-bar input {
-  flex: 1;
-  border: 2px solid transparent;
-  outline: none;
-  padding: 12px 15px;
-  font-size: 1rem;
-  font-family: "Cairo", sans-serif;
-  color: black;
-  border-radius: 8px;
-  background-color: white;
+  visibility: hidden;
+  opacity: 0;
   transition: all 0.3s ease;
-}
-
-/* 💡 تأثير عند الكتابة أو الضغط */
-.search-bar input:focus {
-  border-color: #00e0ff;
-  box-shadow: 0 0 8px rgba(0, 119, 255, 0.3);
-  background: linear-gradient(135deg, #f9fcff, #eaf4ff);
-}
-
-.search-bar input::placeholder {
-  color: #999;
-  opacity: 0.8;
-  transition: color 0.3s ease;
-}
-
-.search-bar input:focus::placeholder {
-  color: #bbb;
-}
-
-
-/* ===========================================================
-   🔘 4. SEARCH BUTTON
-   =========================================================== */
-.search-bar button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #555;
-  font-size: 1.2rem;
-  padding: 10px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 25px 5px rgba(73, 211, 211, 0.576);
-}
-
-/* 🖱️ عند المرور */
-.search-bar button:hover {
-  color: #009ad7;
-  box-shadow: 0 0 25px 5px rgba(0, 255, 255, 0.6),
-              0 0 45px 10px rgba(0, 153, 255, 0.4);
-}
-
-/* 👆 عند الضغط */
-.search-bar button:active {
-  transform: scale(0.9);
-  box-shadow: 0 0 10px 4px rgba(0, 119, 255, 0.4);
-}
-
-/* 💠 عند التركيز */
-.search-bar button:focus {
-  color: #00ffff;
-  box-shadow: 0 0 30px 8px rgba(0, 255, 255, 0.6);
-  transform: scale(1.1);
-}
-
-
-
-/* 🔽 صندوق نتائج البحث */
-.search-dropdown {
-  position: absolute;
-  top: 105%;                 /* يظهر تحت البوكس مباشرة */
-  left: 0;
-  width: 100%;
-
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-
-  max-height: 320px;         /* 🔥 ارتفاع ثابت */
-  overflow-y: auto;          /* 🔥 Scroll لو المحتوى زاد */
-  overflow-x: hidden;
-
-  padding: 10px 0;
   z-index: 9999;
-  display: none;             /* بيتفتح من الجافاسكريبت */
 }
 
-/* 🔹 كل عنصر نتيجة */
-.search-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: background 0.2s;
+.popup-overlay.active {
+  visibility: visible;
+  opacity: 1;
 }
 
-.search-item:hover {
-  background: #f4f8ff;
-}
-
-/* صورة المنتج */
-.search-item img {
-  width: 45px;
-  height: 45px;
-  object-fit: contain;
-  border-radius: 6px;
-}
-
-/* نصوص المنتج */
-.search-info h4 {
-  font-size: 15px;
-  margin: 0;
-  font-weight: 600;
-  color: #222;
-}
-
-.search-info .price {
-  font-size: 13px;
-  color: #009BD7;
-  font-weight: 600;
-  margin-top: 4px;
-}
-
-/* زرار الإضافة */
-.add-btn {
-  margin-left: auto;
-  padding: 4px 10px;
-
-  font-size: 18px;
-  font-weight: bold;
-
-  background: #009BD7;
+/* محتوى البوب أب الزجاجي */
+.popup-content {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 25px;
+  padding: 35px 45px;
   color: #fff;
-
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.add-btn:hover {
-  background: #5afaff;
-}
-
-/* رسالة لا توجد نتائج */
-.no-results {
-  padding: 15px;
-  text-align: center;
-  color: #777;
-  font-size: 14px;
-}
-
-
-
-
-
-/* ===========================================================
-   🧩 5. CATEGORIES SECTION
-   =========================================================== */
-.categories {
-  text-align: center;
-  padding: 60px 20px;
-  direction: rtl;
-  font-family: "Cairo", "Segoe UI", sans-serif;
-  max-width: 1200px;
-  margin: auto;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  animation: fadeIn 0.4s ease forwards;
+  text-align: right;
+  position: relative;
 }
 
 /* العنوان */
-.categories h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 40px;
+.popup-content h3 {
+  font-size: 22px;
+  color: #00c6ff;
+  margin-bottom: 18px;
+  text-align: center;
 }
 
-/* شبكة الكروت */
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  justify-items: center;
+/* النصوص */
+.popup-content p {
+  margin: 8px 0;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-/* الكارت */
-.category-card {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  overflow: hidden;
-  transition: all 0.3s ease;
+
+/* زر الإغلاق */
+.btn.close {
+  margin-top: 25px;
+  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
   width: 100%;
-  max-width: 250px;
-  text-decoration: none;
-  color: inherit;
-  display: block;
+  padding: 10px 0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
-/* تأثير عند hover */
-.category-card:hover {
-  transform: translateY(-8px);
-  /* box-shadow: 0 8px 20px rgba(0,0,0,0.15); */
-      box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
-
+.btn.close:hover {
+  background: linear-gradient(90deg, #ff4b2b, #ff416c);
 }
 
-/* الصورة */
-.category-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-/* تكبير الصورة عند المرور */
-.category-card:hover img {
-  transform: scale(1.05);
-}
-
-/* العنوان داخل الكارت */
-.category-card p {
-  background: #fff;
-  color: #0f172a;
-  font-weight: 600;
-  padding: 15px 0;
-  font-size: 1.1rem;
-  margin: 0;
-}
-
-
-/* ===========================================================
-   📱 6. RESPONSIVE DESIGN
-   =========================================================== */
-@media (max-width: 768px) {
-  .categories-grid {
-    grid-template-columns: repeat(2, 1fr);
+/* أنيميشن */
+@keyframes fadeIn {
+  from {
+    transform: translateY(-15px);
+    opacity: 0;
   }
-
-  .search-bar {
-    margin-bottom: 30px;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
-
-@media (max-width: 480px) {
-  .categories-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-
-
-
-
-
-
+/* Start Button View Details */
 
 
 
@@ -1004,6 +937,33 @@ body {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Start Scroll To Top Btn */
 #scrollToTopBtn {
   position: fixed;
@@ -1041,67 +1001,3 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-/* ==================== جزء السرش بال api  ================== */
-
-
-.search-dropdown {
-    position: absolute;
-    top: 50px;
-    width: 100%;
-    background: #fff;
-    border-radius: 10px;
-    max-height: 400px;
-    overflow-y: auto;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-    display: none;
-    z-index: 500;
-}
-
-.search-item {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.search-item img {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    margin-left: 10px;
-    object-fit: cover;
-}
-
-.search-item .data {
-    flex: 1;
-}
-
-.search-item h4 {
-    margin: 0;
-    font-size: 13px;
-    font-weight: bold;
-    color: #000;
-}
-
-.search-item .price {
-    color: #0075ff;
-    font-size: 14px;
-}
-
-
-
-.not-available {
-    background: #ddd;
-    color: #555;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 10px;
-}

@@ -1,3 +1,5 @@
+
+
 // ==========================================================
 // 📌  الجزء الأول: إعداد الـ NavBar وسلوك الصفحة أثناء التمرير
 // ==========================================================
@@ -92,39 +94,73 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-  // ==========================================================
-  // 📌  الجزء الثالث: Pop-up Window (Eye Icon)
-  // ==========================================================
-  const novaPopup = document.getElementById("novaPopup");
-  const novaCloseBtn = document.querySelector(".nova-close-btn");
-  const eyeAreas = document.querySelectorAll(".card-overlay");
 
-eyeAreas.forEach(area => {
-  area.addEventListener("click", () => {
-    novaPopup.style.display = "flex";
-    document.body.style.overflow = "hidden"; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Start Button View Details
+// كل أزرار "عرض التفاصيل"
+const viewButtons = document.querySelectorAll(".view-btn");
+
+// البوب أب و زر الإغلاق
+const popup = document.getElementById("popup");
+const closePopup = document.getElementById("closePopup");
+
+// فتح البوب أب عند الضغط على أي زرار
+viewButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    popup.classList.add("active");
   });
 });
 
+// إغلاق البوب أب
+closePopup.addEventListener("click", () => {
+  popup.classList.remove("active");
+});
 
-  novaCloseBtn.addEventListener("click", () => {
-    novaPopup.style.display = "none";
-    document.body.style.overflow = "";
-  });
+// إغلاق عند الضغط خارج محتوى البوب أب
+popup.addEventListener("click", (e) => {
+  if (e.target === popup) {
+    popup.classList.remove("active");
+  }
+});
 
-  window.addEventListener("click", (e) => {
-    if (e.target === novaPopup) {
-      novaPopup.style.display = "none";
-      document.body.style.overflow = "";
-    }
-  });
+// End Button View Details
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      novaPopup.style.display = "none";
-      document.body.style.overflow = "";
-    }
-  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -147,3 +183,5 @@ if (newNotifications > 0) {
 } else {
     badge.style.display = "none";
 }
+
+

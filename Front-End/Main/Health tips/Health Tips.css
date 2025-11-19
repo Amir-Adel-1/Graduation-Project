@@ -424,6 +424,26 @@ body {
 /* End (User Menu) 👤 */
 
 
+
+/* رقم الاشعار */
+.notif-link {
+  position: relative;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -6px;
+  right: -13px;
+  background: #e63946;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  display: none; /* هتظهر لما يبقى فيه إشعارات */
+}
+
+
 /* ------------------- 🔘 End Navbar ------------------- */
 
 
