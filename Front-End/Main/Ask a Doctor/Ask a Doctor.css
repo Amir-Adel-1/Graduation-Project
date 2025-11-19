@@ -540,23 +540,22 @@ body {
   line-height: 1.6;
   font-size: 15px;
   animation: fadeIn 0.3s ease;
-  
+  backdrop-filter: blur(10px);
 }
 
 .message.bot {
-  background: transparent;
-  color: #fff;
-  
-  text-align: right;
-  direction: rtl;      /* اتجاه عربي */
+  background: rgba(255, 255, 255, 0.5);
+  color: #333;
+  align-self: flex-end;   /* الفقاعة على اليمين */
+  text-align: right;      /* الكلام يبدأ من اليمين */
+  direction: rtl;         /* اتجاه عربي */
   border-top-left-radius: 0;
 }
 
 .message.user {
   background: rgba(0, 154, 215, 0.8);
   align-self: flex-end;
- 
-  color: #333;
+  color: #fff;
   border-top-right-radius: 0;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 
@@ -690,20 +689,15 @@ background-color: #00e0ff;
 /* القائمة المنسدلة */
 .menu-options {
   display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
   margin-top: 10px;
-  background: rgba(17, 53, 67, 0.95);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(15px);
   border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  padding: 20px 12px;
   animation: fadeIn 0.3s ease;
-  width: 280px;
-  max-height: 70vh;
-  overflow-y: auto;
-  z-index: 1001;
+  width: 260px;
+  max-height: 420px;
   overflow: hidden;
 }
 
@@ -1139,64 +1133,6 @@ background-color: #00e0ff;
   -webkit-text-fill-color: transparent;
 }
 /* End Scroll To Top Btn */
-
-
-
-/* ------------------- 🎯 Typewriter Effect ------------------- */
-
-/* Cursor animation for typewriter effect */
-.message.bot p::after {
-  content: '|';
-  animation: blink 1s infinite;
-  color: #00e0ff;
-  font-weight: bold;
-  margin-left: 2px;
-}
-
-/* Hide cursor when typing is complete */
-.message.bot p.typing-complete::after {
-  display: none;
-}
-
-/* Blinking cursor animation */
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-/* Smooth text appearance */
-.message.bot p {
-  animation: fadeInText 0.5s ease-in;
-}
-
-@keyframes fadeInText {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Markdown styling for bot messages */
-.message.bot h3 {
-  color: #00e0ff;
-  font-size: 18px;
-  margin: 10px 0 5px 0;
-  font-weight: 600;
-  text-shadow: 0 0 8px rgba(0, 224, 255, 0.3);
-}
-
-.message.bot strong {
-  color: #00e0ff;
-  font-weight: 700;
-  text-shadow: 0 0 6px rgba(0, 224, 255, 0.2);
-}
-
-.message.bot em {
-  color: #5afaff;
-  font-style: italic;
-}
-
-.message.bot br {
-  line-height: 1.6;
-}
 
 
 

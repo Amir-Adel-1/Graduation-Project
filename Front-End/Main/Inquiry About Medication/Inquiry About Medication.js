@@ -1,3 +1,5 @@
+
+
 // ==========================================================
 // 📌  الجزء الأول: إعداد الـ NavBar وسلوك الصفحة أثناء التمرير
 // ==========================================================
@@ -59,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+
 // ==========================================================
 // 📌  الجزء الثاني: قائمة المستخدم (User Menu)
 // ==========================================================
@@ -107,3 +110,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+// 🖼️ عرض الصورة بعد الرفع
+  const fileInput = document.getElementById("drugFileInput");
+  const previewImage = document.getElementById("previewImage");
+  const uploadArea = document.getElementById("uploadArea");
+
+  fileInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImage.src = e.target.result;
+        previewImage.style.display = "block";
+        uploadArea.classList.add("has-image");
+      };
+      reader.readAsDataURL(file);
+    }
+  });

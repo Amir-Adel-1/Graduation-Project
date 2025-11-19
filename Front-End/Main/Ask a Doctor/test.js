@@ -118,84 +118,35 @@ async function generateResponse(userPrompt) {
   }
 }
 
-// Simple markdown parser for typewriter effect
-function parseMarkdown(text) {
-  return text
-    // Headers (###)
-    .replace(/### (.*)/g, '<h3>$1</h3>')
-    // Bold (***text*** or **text**)
-    .replace(/\*\*\*(.*?)\*\*\*/g, '<strong>$1</strong>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    // Italic (*text*)
-    .replace(/\*(?!\*)(.*?)\*(?!\*)/g, '<em>$1</em>')
-    // Line breaks
-    .replace(/\n/g, '<br>');
-}
-
-// Typewriter effect for AI responses with markdown support
-function typeWriter(element, text, speed = 8) {
-  return new Promise((resolve) => {
-    // Parse markdown first
-    const parsedText = parseMarkdown(text);
-    let i = 0;
-    element.innerHTML = '';
-    
-    function type() {
-      if (i < parsedText.length) {
-        // Add characters one by one
-        element.innerHTML = parsedText.substring(0, i + 1);
-        i++;
-        
-        // Scroll to bottom as new content appears
-        const chatBody = document.getElementById('chatBody');
-        chatBody.scrollTop = chatBody.scrollHeight;
-        
-        // Vary the speed slightly for more natural effect
-        const delay = speed + (Math.random() * 10 - 5);
-        setTimeout(type, delay);
-      } else {
-        // Mark as complete to hide cursor
-        element.classList.add('typing-complete');
-        resolve();
-      }
-    }
-    
-    type();
-  });
-}
-
-// Add message to chat with typewriter effect for bot messages
-async function addMessageToChat(text, sender = 'bot') {
+// Add message to chat with markdown support
+function addMessageToChat(text, sender = 'bot') {
   const chatBody = document.getElementById('chatBody');
   if (!chatBody) return;
 
-  const messageDiv = document.createElement('div');
-  messageDiv.className = `message ${sender}`;
+  const msg = document.createElement('div');
+  msg.className = `message ${sender}`;
   
-  const messageContent = document.createElement('p');
-  messageDiv.appendChild(messageContent);
-  chatBody.appendChild(messageDiv);
-
-  if (sender === 'bot') {
-    // Apply typewriter effect for bot messages
-    await typeWriter(messageContent, text);
-  } else {
-    // User messages appear instantly
-    messageContent.textContent = text;
+  // Convert markdown to HTML using marked
+  try {
+    // First, clean up common markdown artifacts
+    let cleanText = text
+      .replace(/\*\*\*\*([^*]+)\*\*\*\*/g, '**$1**')  // Convert ****bold**** to **bold**
+      .replace(/###\s*/g, '### ')  // Ensure proper spacing after ###
+      .replace(/\*\*([^*]+)\*\*/g, '**$1**')  // Clean up bold markers
+      .replace(/\*([^*]+)\*/g, '*$1*');  // Clean up italic markers
+    
+    // Convert markdown to HTML
+    const htmlContent = marked.parse(cleanText);
+    msg.innerHTML = htmlContent;
+  } catch (e) {
+    console.error('Error parsing markdown:', e);
+    // Fallback to plain text if markdown parsing fails
+    msg.innerHTML = `<p>${text}</p>`;
   }
 
-  // Scroll to bottom after message is complete
+  // Add to chat and scroll to bottom
+  chatBody.appendChild(msg);
   chatBody.scrollTop = chatBody.scrollHeight;
-  
-  // Save to chat history
-  saveMessage(text, sender);
-}
-
-// Save message to localStorage (optional - for chat history)
-function saveMessage(text, sender) {
-  // This is a placeholder - you can implement localStorage saving here if needed
-  // For now, we'll just log it
-  console.log(`Message saved: ${sender}: ${text}`);
 }
 
 // Typing indicator
@@ -218,7 +169,7 @@ async function handleSendMessage() {
   const text = userInput.value.trim();
   if (!text) return;
 
-  await addMessageToChat(text, 'user');
+  addMessageToChat(text, 'user');
   userInput.value = '';
 
   const typingIndicator = showTypingIndicator();
@@ -227,11 +178,11 @@ async function handleSendMessage() {
 
   typingIndicator.remove();
 
-  await addMessageToChat(response, 'bot');
+  addMessageToChat(response, 'bot');
 }
 
 // Initialize chat
-async function initChat() {
+function initChat() {
   const sendBtn = document.getElementById('sendBtn');
   const userInput = document.getElementById('userInput');
 
@@ -239,12 +190,6 @@ async function initChat() {
   userInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSendMessage();
   });
-  
-  // Add initial welcome message with typewriter effect
-  const chatBody = document.getElementById('chatBody');
-  if (chatBody && chatBody.children.length === 0) {
-    await addMessageToChat('مرحباً! أنا مساعدك الطبي. كيف يمكنني مساعدتك اليوم؟', 'bot');
-  }
 }
 
 document.addEventListener('DOMContentLoaded', initChat);

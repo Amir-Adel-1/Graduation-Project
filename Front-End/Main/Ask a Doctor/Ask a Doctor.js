@@ -90,29 +90,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Menu functionality
   if (menuBtn && menuOptions) {
-    menuBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const isShowing = menuOptions.style.display === 'block';
-      menuOptions.style.display = isShowing ? 'none' : 'block';
+    menuBtn.addEventListener("click", () => {
+      menuOptions.classList.toggle("show");
     });
   }
 
   // Close menu when clicking outside
   document.addEventListener("click", (e) => {
-    if (menuOptions && 
-        e.target !== menuBtn && 
-        !menuBtn.contains(e.target) &&
-        !menuOptions.contains(e.target)) {
-      menuOptions.style.display = 'none';
+    if (menuOptions && !menuOptions.contains(e.target) && e.target !== menuBtn) {
+      menuOptions.classList.remove("show");
     }
   });
-
-  // Prevent menu from closing when clicking inside it
-  if (menuOptions) {
-    menuOptions.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
-  }
 
   // New chat functionality
   if (newChatBtn) {
