@@ -696,7 +696,7 @@ body {
 }
 
 .add-btn:hover {
-  background: #007cad;
+  background: #5afaff;
 }
 
 /* رسالة لا توجد نتائج */
@@ -1076,13 +1076,7 @@ body {
     font-size: 14px;
 }
 
-.add-btn {
-    background: #e6f2ff;
-    color: #0075ff;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 10px;
-}
+
 
 .not-available {
     background: #ddd;
