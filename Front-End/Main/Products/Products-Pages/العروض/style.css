@@ -1,0 +1,1045 @@
+
+/* ------------------- 🟢 Global Styles ------------------- */
+body {
+    margin: 0;
+    font-family: "Segoe UI", "Noto Sans Arabic", "Arial", sans-serif, "Cairo";
+    direction: rtl;
+        background: radial-gradient(circle, #009ad755, #ffffff);
+    color: #ffffff;
+      overflow-x: hidden;
+  }
+  
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  *::selection {
+    background-color: #00bcd4;
+    color: #ffffff;
+  }
+  
+  
+  
+  /* Start Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #0f1923; /* سماوي فاتح */
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #5afaff;
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #009ad7;
+  }
+  /* End Scrollbar */
+  
+  
+  
+  
+  /* ------------------- 🔵 Navbar Base ------------------- */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    box-shadow: none;
+    transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+    z-index: 9999;
+  }
+  
+  /* عند السحب للأسفل */
+  .navbar.scrolled {
+    background: #0f1923;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* عند الإخفاء */
+  .navbar.hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  
+  
+  /* ------------------- 🟣 Navbar Overlay ------------------- */
+  .navbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+    z-index: -1;
+    transition: opacity 0.3s ease;
+  
+      background: #0f1923;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar.scrolled::before {
+    opacity: 0;
+  }
+  
+  
+  /* ------------------- 🟠 Logo ------------------- */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  
+  .logo .gradient-color,
+  .logo span {
+    background: radial-gradient(circle, #009ad755, #ffffff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .logo .gradient-color {
+    font-size: 40px;
+  }
+  
+  .logo span {
+    font-size: 30px;
+    padding-bottom: 4px;
+  }
+  
+  /* تأثير اللمعان في النص */
+  .glowing-text {
+    color: #9bc4d4;
+    font-size: 45px;
+    font-weight: bold;
+    text-shadow:
+      0 0 10px #009ad7,
+      0 0 20px #009ad7,
+      0 0 40px #009ad7,
+      0 0 80px #00e0ff,
+      0 0 120px #00e0ff;
+    animation: pulse 2s ease-in-out infinite alternate;
+  }
+  
+  
+  .text-logo {
+      color: #9bc4d4;
+    font-size: 45px;
+    font-weight: bold;
+    text-shadow:
+      0 0 10px #009ad7,
+      0 0 20px #009ad7,
+      0 0 40px #009ad7,
+      0 0 80px #00e0ff,
+      0 0 120px #00e0ff;
+  }
+  
+  /* 💫 تأثير توهج بسيط للوجو */
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  
+  /* ------------------- 🟡 Nav Links ------------------- */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    font-weight: 600;
+    color: white;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar.scrolled .nav-links a {
+    color: white;
+  }
+  
+  .nav-links a:hover {
+    background: radial-gradient(circle, #00e0ff, #009ad7);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  
+  
+  /* اللينك النشط */
+  .nav-links a.active {
+    position: relative;
+    color: #00e0ff; /* اللون الأساسي وقت الهوفر */
+    text-shadow:
+      0 0 6px #00e0ff,
+      0 0 12px #00e0ff,
+      0 0 24px #00e0ff;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+  
+  /* شريط النبض */
+  .nav-links a.active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -15px;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: linear-gradient(90deg, #009ad7, #00d4ff, #009ad7);
+    border-radius: 5px;
+    animation: heartbeat 1.2s infinite ease-in-out;
+  }
+  
+  /* حركة النبض */
+  @keyframes heartbeat {
+    0%, 100% {
+      transform: translateX(-50%) scaleX(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translateX(-50%) scaleX(1.5);
+      opacity: 1;
+    }
+  }
+  
+  /* ===== تأثير الإضاءة عند مرور الماوس على الروابط ===== */
+  .nav-links a:hover {
+    color: #00e0ff; /* اللون الأساسي وقت الهوفر */
+    text-shadow:
+      0 0 6px #00e0ff,
+      0 0 12px #00e0ff,
+      0 0 24px #00e0ff;
+    transition: all 0.3s ease;
+  }
+  
+  
+  
+  /* ------------------- 🟢 Icons ------------------- */
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .icon {
+    position: relative;
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .icon a {
+    background: radial-gradient(circle, #00e0ff, #009ad7);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: transform 0.3s ease;
+  }
+  
+  .icon a:hover {
+      color: #00e0ff; /* اللون الأساسي وقت الهوفر */
+    text-shadow:
+      0 0 6px #00e0ff,
+      0 0 12px #00e0ff,
+      0 0 24px #00e0ff;
+    transition: all 0.3s ease;
+    transform: scale(1.1);
+  }
+  
+  .count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    font-size: 11px;
+    color: #009ad7;
+    border-radius: 50%;
+    width: 45px;
+    height: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+  
+  
+  /* ------------------- 🔴 user-info ------------------- */
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 5px 18px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1.5px solid #009ad7;
+    border-radius: 50px;
+    background: transparent;
+    color: #009ad7;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-right: 60px;
+    width: 140px; /* عدّل الرقم حسب أطول اسم محتمل عندك */
+    position: relative;
+  }
+  
+  /* hover زي الزرار */
+  .user-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 8px #009ad7, 0 0 20px rgba(0, 154, 215, 0.4);
+  
+    color: #00e0ff; /* اللون الأساسي وقت الهوفر */
+    text-shadow:
+      0 0 6px #00e0ff,
+      0 0 12px #00e0ff,
+      0 0 24px #00e0ff;
+    transition: all 0.3s ease;
+    transform: scale(1.1);
+  }
+  
+  /* عند الضغط */
+  .user-info:active {
+    transform: scale(0.97);
+    box-shadow: 0 0 4px #009ad7;
+  }
+  
+  
+  /* الاسم */
+  .user-name {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600;
+    
+  }
+  
+  
+  /* Start (User Menu) 👤 */
+  /* القائمة */
+  .user-menu {
+    position: absolute;
+    top: 100%;
+    left: 10px;
+    /* background: rgba(255, 255, 255, 0.15); */
+    background-color: #0f1923;
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 150px;
+      box-shadow: 0 6px 20px rgba(0, 192, 255, 0.8);
+    z-index: 999;
+  }
+  
+  
+  .user-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .user-menu li {
+    border-radius: 50px;
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .user-menu li:hover {
+    background: rgba(255, 255, 255, 0.1); /* خلفية خفيفة */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3); /* توهج */
+    cursor: pointer;
+    transform: scale(1.03); /* تأثير بسيط للتكبير */
+  }
+  
+  /* 🔹 اللينك الأساسي */
+  .user-menu a {
+    display: block;
+    width: 100%;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  /* 🔹 لما تقف على اللينك نفسه */
+  .user-menu a:hover {
+    color: #00e0ff;
+    text-shadow:
+      0 0 6px #00e0ff,
+      0 0 12px #00e0ff,
+      0 0 24px #00e0ff;
+  }
+  
+  /* ✅ الجديد: لما تقف على الـ li كله */
+  .user-menu li:hover a {
+    color: #00e0ff;
+    text-shadow:
+      0 0 6px #00e0ff,
+      0 0 12px #00e0ff,
+      0 0 24px #00e0ff;
+  }
+  
+  @keyframes fadeDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* End (User Menu) 👤 */
+  
+  
+  /* ------------------- 🔘 End Navbar ------------------- */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* ------------------- Start Cards ------------------- */
+  
+  .glass-bg {
+    width: 90%;
+    margin: 150px auto;
+    padding: 40px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.15); /* شفافية خفيفة */
+    backdrop-filter: blur(12px); /* البلور الزجاجي */
+    -webkit-backdrop-filter: blur(12px); /* دعم Safari */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  
+  /* Start Name-Category */
+  .name-category {
+    text-align: center;
+    margin: 30px 0;
+  }
+  
+  .name-category h2 {
+    display: inline-block;
+    position: relative;
+    font-size: 28px;
+    color: #003366;
+  }
+  
+  .name-category h2::after {
+    content: "";
+    position: absolute;
+    bottom: -20px; /* المسافة بين النص والخط */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px; /* عرض الخط بالنسبة للكلمة */
+    height: 2px;
+    background-color: #0099e6; /* لون الخط */
+    border-radius: 2px;
+  }
+  /* End Name-Category */
+  
+  
+  
+  /* ===========================
+    💊 Cards Section
+  =========================== */
+  .container-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* الشكل يكون ذكي ويتأقلم مع المقاس بدل ما يبوظ في الشاشات الصغيرة */
+    gap: 25px;
+    justify-items: center;
+    align-items: start;
+    padding: 40px;
+  }
+  
+  /* ===== Single Card ===== */
+  .card {
+    width: auto;
+    background: #ffffff;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    box-shadow: 0 5px 15px rgba(0, 154, 215, 0.15);
+    border: 1px solid rgba(0, 154, 215, 0.2);
+  }
+  
+  .card-content {
+    padding: 1.15em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75em;
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* ===============================
+     🖼️ الصورة + تأثير الهوفر
+  =============================== */
+  .card-image {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #fff;
+    transition: all 0.3s ease;
+  }
+  
+  /* عند الهوفر الصورة تغمق */
+  .card-image:hover img {
+    filter: brightness(60%);
+    transform: scale(1.05);
+  }
+  
+  /* طبقة العين */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center; /* عرض */
+    align-items: center;     /* طول */
+  }
+  
+  .card-image:hover .overlay {
+    opacity: 1;
+  }
+  
+  /* شكل الأيكونة */
+  .overlay i {
+    font-size: 28px;
+    color: white;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  
+  /* عند الهوفر على الكرت → تظهر العين */
+  .card:hover .overlay i {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  
+  /* ===============================
+     🧾 النصوص
+  =============================== */
+  .price-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .card__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #009ad7;
+    margin: 5px 0 0;
+    line-height: 1.4;
+  }
+  
+  .card__price {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #00bcd4;
+    margin: 5px 0;
+  }
+  
+  .original-price {
+    font-size: 0.9rem;
+    color: #9e9e9e;
+    text-decoration: line-through;
+    text-decoration-color: #f44336;
+    text-decoration-thickness: 2px;
+  }
+  
+  .discount-badge {
+    background-color: #f44336;
+    color: white;
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-right: 5px;
+    font-weight: bold;
+  }
+  
+  /* ===============================
+     💰 السعر والأزرار
+  =============================== */
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+  
+  .card__price {
+    color: #009ad7;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  
+  .card-footer .buttons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .card-button {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #009ad7, #00b6f1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 154, 215, 0.3);
+    border: none;
+  }
+  
+  .card-button i {
+    color: #fff;
+    font-size: 15px;
+  }
+  
+  .card-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 192, 255, 0.6);
+  }
+  
+  /* ===============================
+     ✨ تأثير الهوفر للكارت
+  =============================== */
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 12px rgba(0, 192, 255, 0.6);
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover .card__title {
+    color: #00e0ff;
+    transition: color 0.3s ease;
+  }
+  
+  .card:hover .card__price {
+    color: #00e0ff;
+    transition: color 0.3s ease;
+  }
+  
+  /* ===============================
+     💬 تصميم نافذة البوب أب
+  =============================== */
+  .nova-popup {
+    display: none; /* مخفي افتراضيًا */
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.693);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+    z-index: 111111;
+  
+    overflow-y: auto; /* لو المحتوى طويل يقدر المستخدم يمرره */
+    padding: 40px 20px;
+  }
+  
+  .nova-content{
+    position: relative;
+    width: 90%;
+    max-width: 500px; /* الحد الأقصى للعرض */
+    min-height: 180px; /* عشان الشكل مايبقاش صغير أوي */
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 40px 35px 30px;
+    border-radius: 20px;
+    text-align: center;
+  
+    /* ✨ تأثير الزجاج */
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    /* ظل ولمعة ناعمة */
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.581),
+    inset 0 0 25px rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fadeIn 0.6s cubic-bezier(0.22, 1.15, 0.4, 1) forwards;
+  }
+  
+  /* شريط علوي خفيف */
+  .nova-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg, #009ad7, #00b6f1);
+    border-radius: 0 0 10px 10px;
+  }
+  
+  /* العنوان */
+  .nova-content h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0, 180, 255, 0.6);
+  }
+  
+  /* النص */
+  .nova-content p {
+    color: #e7e7e7;
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+  
+  /* زر الإغلاق */
+  .nova-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .nova-close-btn:hover {
+    color: #00b6f1;
+    transform: scale(1.2);
+  }
+  
+  /* حركة البوب أب */
+  @keyframes fadeIn {
+    0% {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      filter: blur(20px);
+    }
+    60% {
+      transform: translate(-50%, -50%) scale(1.05);
+      opacity: 1;
+      filter: blur(4px);
+    }
+    80% {
+      transform: translate(-50%, -50%) scale(0.97);
+      filter: blur(0);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* ------------------- End Cards ------------------- */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* ==================== Start Footer ================== */
+  .footer {
+    background: #0f1923;
+    color: #fff;
+    padding: 60px 0 20px;
+    font-family: "Cairo", sans-serif;
+    direction: rtl;
+  position: relative;
+  }
+  
+  /* ===== Footer Content ===== */
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 0 40px;
+  }
+  
+  /* ===== Footer Sections ===== */
+  .footer-section {
+    flex: 1;
+    min-width: 220px;
+  }
+  
+  /* ===== Logo ===== */
+  .footer .logo {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #009ad7;
+    margin-bottom: 15px;
+  }
+  
+  .footer .logo i {
+    margin-left: 8px;
+    color: #009ad7;
+  }
+  
+  /* ===== Text ===== */
+  .footer-section.about p {
+    color: #fff;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  
+  /* ===== Links ===== */
+  .footer-section.links h3,
+  .footer-section.contact h3,
+  .footer-section.social h3 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #009ad7;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+  
+  .footer-section.links ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-section.links ul li {
+    margin-bottom: 10px;
+  }
+  
+  .footer-section.links ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s, transform 0.3s;
+  }
+  
+  .footer-section.links ul li a:hover {
+    color: #009ad7;
+    transform: translateX(-5px);
+  }
+  
+  /* ===== Contact ===== */
+  .footer-section.contact p {
+    margin: 8px 0;
+    font-size: 15px;
+  }
+  
+  .footer-section.contact i {
+    color: #009ad7;
+    margin-left: 10px;
+  }
+  
+  /* ===== Social Icons ===== */
+  .footer-section.social .social-icons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .footer-section.social .social-icons a {
+    color: #fff;
+    font-size: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .footer-section.social .social-icons a:hover {
+    color: #009ad7;
+    transform: scale(1.2);
+  }
+  
+  /* ===== Divider Line ===== */
+  .footer hr {
+    border: none;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 30px 0;
+  }
+  
+  /* ===== Footer Bottom ===== */
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    text-align: center;
+    padding: 0 40px;
+  }
+  
+  .footer-bottom .rights p {
+    color: #fff;
+    font-size: 14px;
+  }
+  
+  .footer-bottom .policy a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .footer-bottom .policy a:hover {
+    color: #009ad7;
+  }
+  
+  /* ==================== End Footer ================== */
+  
+  
+  
+  
+  /* Start Scroll To Top Btn */
+  #scrollToTopBtn {
+    position: fixed;
+    bottom: 70px;
+    left: 40px;
+    z-index: 99999;
+    background-color: #009BD7; /* اللون الطبي */
+    color: white;
+    border: none;
+    outline: none;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    display: none; /* مخفي في البداية */
+    transition: all 0.3s ease;
+  }
+  
+  #scrollToTopBtn:hover {
+    background-color: #007bb0;
+    transform: scale(1.1);
+    border-color: #113543;
+    box-shadow:
+    0 5px 15px #00e0ff,   /* ظل لتحت */
+    5px 0 15px #00e0ff,   /* ظل ناحية اليمين */
+    -5px 0 15px #00ffcc;  /* ظل ناحية الشمال */
+    background: linear-gradient(135deg, #0099ff, #00ffcc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  /* End Scroll To Top Btn */
