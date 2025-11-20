@@ -477,14 +477,69 @@ box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
   color: #00c6ff;
 }
 
-/* زرار متوفر لدي */
+
+
+
+.actions-btn {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* سيلكت الكمية المتوفرة - شكل جديد */
+.btn-select {
+  width: 80%;
+  padding: 12px 15px;
+  background: #556d9e;
+  border: 2px solid #007bff;
+  border-radius: 12px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: center;
+  font-weight: bold;
+
+  /* شكل السيلكت الحديث */
+  appearance: none;
+  position: relative;
+}
+
+/* إضافة سهم شيك */
+.btn-select {
+background-image: url("data:image/svg+xml;utf8,<svg fill='%23ffffff' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: left 0px center;
+  background-size: 20px;
+}
+
+.btn-select:hover {
+  border-color: #005dc2;
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.4);
+  transform: scale(1.04);
+}
+
+.btn-select option[disabled] {
+  color: #000 !important; /* أسود */
+  font-weight: bold;
+}
+
+
+/* عند الفتح */
+.btn-select:focus {
+  outline: none;
+  border-color: #004a92;
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+}
+
+
+/* زرار متوفر لدي — زي ما بعتلي */
 .btn-available {
   width: 80%;
   padding: 10px 0;
   background: linear-gradient(90deg, #00c6ff, #0072ff);
   border: none;
-display: block;
-  margin: 20px auto 0; /* يخليه في النص */
   border-radius: 12px;
   font-size: 18px;
   color: #fff;
@@ -494,14 +549,14 @@ display: block;
 
 .btn-available:hover {
   opacity: 0.85;
-    background-color: #007bb0;
   transform: scale(1.1);
-    box-shadow:
-  0 5px 15px #00e0ff,   /* ظل لتحت */
-  5px 0 15px #00e0ff,   /* ظل ناحية اليمين */
-  -5px 0 15px #00ffcc;  /* ظل ناحية الشمال */
+  box-shadow:
+    0 5px 15px #00e0ff,
+    5px 0 15px #00e0ff,
+    -5px 0 15px #00ffcc;
   background: linear-gradient(135deg, #0099ff, #00ffcc);
 }
+
 
 /* البوب أب */
 .overlay {

@@ -58,22 +58,37 @@
 <!-- العنوان -->
     <h2 class="page-title">• طلبات المستخدمين •</h2>
 
-        <div class="orders-container">
+<div class="orders-container">
 
-            <!-- ====== مثال كارت واحد ====== -->
-            <div class="order-card" data-order-id="101">
+<!-- ====== مثال كارت واحد ====== -->
+<div class="order-card" data-order-id="101">
 
-                <p class="order-title"><span>💊 المطلوب :</span> بانادول </p>
-                <p><span>📦 الكمية :</span> 2 عبوات</p>
-                <p><span>📅 التاريخ :</span> 2025-11-14</p>
-                <p><span>⏰ الوقت :</span> 03:30 م</p>
+  <p class="order-title"><span>💊 المطلوب :</span> بانادول </p>
+  <p><span>📦 الكمية :</span> 2 عبوات</p>
+  <p><span>📅 التاريخ :</span> 2025-11-14</p>
+  <p><span>⏰ الوقت :</span> 03:30 م</p>
 
-                <button class="btn-available">متوفر لدي</button>
+  <div class="actions-btn">
+    
+    <!-- زرار الكمية المتوفرة سيلكت -->
+    <select class="btn-select">
+      <option value="" disabled selected>اختر الكمية المتوفرة</option>
+      <option value="1">شريط واحد</option>
+      <option value="2">شريطين</option>
+      <option value="3">ثلاثة شرائط</option>
+      <option value="4">عبوة واحدة</option>
+      <option value="5">عبوتان</option>
+      <option value="6">ثلاثة عبوات</option>
+    </select>
 
-            </div>
-            <!-- كرّر من قاعدة البيانات -->
+    <!-- زرار متوفر لدي -->
+    <button class="btn-available">متوفر لدي</button>
 
-        </div>
+  </div>
+</div>
+<!-- كرّر من قاعدة البيانات -->
+
+</div>
 
 </section>
 
