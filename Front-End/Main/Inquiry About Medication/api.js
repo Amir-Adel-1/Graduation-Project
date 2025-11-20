@@ -180,6 +180,13 @@ async function getMedicationInfo(query) {
 // Extract text from image using Gemini's vision capabilities
 async function extractTextFromImage(base64Image) {
     try {
+        // Ensure we have valid base64 data
+        let imageData = base64Image;
+        if (typeof base64Image === 'string' && base64Image.startsWith('data:')) {
+            // Extract just the base64 part if it's a data URL
+            imageData = base64Image.split(',')[1];
+        }
+
         const response = await fetch(`${API_URL}?key=${API_KEY}`, {
             method: 'POST',
             headers: {
@@ -192,7 +199,7 @@ async function extractTextFromImage(base64Image) {
                         {
                             inlineData: {
                                 mimeType: "image/jpeg",
-                                data: base64Image.split(',')[1] // Remove the data URL prefix
+                                data: imageData
                             }
                         }
                     ]
@@ -201,11 +208,19 @@ async function extractTextFromImage(base64Image) {
         });
         
         if (!response.ok) {
+            const errorData = await response.json();
+            console.error('API Error:', errorData);
             throw new Error('فشل في قراءة النص من الصورة');
         }
         
         const data = await response.json();
+        console.log('API Response:', data); // Debug log
+        
         let extractedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        
+        if (!extractedText) {
+            throw new Error('لم يتم العثور على نص في الصورة');
+        }
         
         // Clean up the extracted text
         extractedText = extractedText
@@ -214,10 +229,14 @@ async function extractTextFromImage(base64Image) {
             .replace(/\s+/g, ' ')                // Collapse multiple spaces
             .trim();
             
+        if (!extractedText) {
+            throw new Error('النص المستخرج فارغ');
+        }
+            
         return extractedText;
     } catch (error) {
         console.error('OCR Error:', error);
-        throw new Error('فشل في معالجة الصورة');
+        throw new Error('فشل في معالجة الصورة: ' + (error.message || 'حدث خطأ غير معروف'));
     }
 }
 
@@ -403,7 +422,11 @@ function lockChatUI() {
   sendBtn.classList.add('retry-btn');
   sendBtn.style.opacity = '1'; // Reset opacity
   sendBtn.style.cursor = 'pointer'; // Make cursor look clickable
-  sendBtn.onclick = startNewChat;
+  
+  // Set up retry functionality to simply reload the page
+  sendBtn.onclick = function() {
+    window.location.reload();
+  };
 }
 
 // Lock chat UI immediately after user sends message
@@ -509,87 +532,122 @@ async function handleSendMessage() {
   }
 }
 
+// Global flag to prevent multiple file dialogs
+let isProcessingFile = false;
+
+// File input change handler
+async function handleFileChange(event) {
+  const fileInput = event.target;
+  const file = fileInput.files[0];
+  if (!file) return;
+  
+  // Lock UI immediately after file selection
+  lockChatUIImmediate();
+  
+  try {
+    console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size + ' bytes');
+    
+    // 1️⃣ Show the image in the chat first
+    const imageUrl = URL.createObjectURL(file);
+    const imageMessage = `<img src="${imageUrl}" style="max-width: 200px; border-radius: 10px; margin: 10px 0; display: block;">`;
+    await addMessageToChat(imageMessage, 'user');
+    
+    // 2️⃣ After adding the image → Show loading indicator
+    const typingIndicator = showTypingIndicator();
+    
+    try {
+      // Read the file as Base64
+      const base64Image = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          console.log('File successfully read as base64, length:', reader.result.length);
+          resolve(reader.result);
+        };
+        reader.onerror = error => {
+          console.error('Error reading file:', error);
+          reject(new Error('فشل في قراءة ملف الصورة'));
+        };
+        reader.readAsDataURL(file);
+      });
+      
+      console.log('Extracting text from image...');
+      // Extract text from image using OCR
+      const extractedText = await extractTextFromImage(base64Image);
+      console.log('Extracted text:', extractedText);
+      
+      if (!extractedText || extractedText.trim() === '') {
+        throw new Error('لم يتم العثور على نص في الصورة');
+      }
+      
+      console.log('Getting medication info for:', extractedText);
+      // Get medication information based on the extracted text
+      const medicationInfo = await getMedicationInfo(extractedText);
+      
+      // Remove loading indicator
+      typingIndicator.remove();
+      
+      // Show AI response
+      await addMessageToChat(medicationInfo, 'bot');
+      // Change to retry button after AI response
+      lockChatUI();
+      
+    } catch (error) {
+      console.error('Error in image processing:', error);
+      typingIndicator.remove();
+      await addMessageToChat(`عذراً، ${error.message || 'حدث خطأ أثناء معالجة الصورة'}.`, 'bot');
+      // Change to retry button even on error
+      lockChatUI();
+    }
+    
+  } catch (error) {
+    await addMessageToChat('حدث خطأ غير متوقع.', 'bot');
+    // Change to retry button even on error
+    lockChatUI();
+  } finally {
+    const fileInput = document.getElementById('drugFileInput');
+    fileInput.value = '';
+    isProcessingFile = false;
+  }
+}
+
 // Initialize chat
-async function initChat() {
+function initChat() {
   const sendBtn = document.getElementById('drugSendBtn');
   const userInput = document.getElementById('drugInput');
   const attachBtn = document.getElementById('attachDrugBtn');
   const fileInput = document.getElementById('drugFileInput');
   
-  // Flag to prevent multiple file dialogs
-  let isProcessingFile = false;
+  // Remove any existing event listeners to prevent duplicates
+  const newSendBtn = sendBtn.cloneNode(true);
+  const newAttachBtn = attachBtn.cloneNode(true);
+  const newFileInput = fileInput.cloneNode(true);
   
-  sendBtn.addEventListener('click', handleSendMessage);
+  // Replace elements to remove all event listeners
+  sendBtn.parentNode.replaceChild(newSendBtn, sendBtn);
+  attachBtn.parentNode.replaceChild(newAttachBtn, attachBtn);
+  fileInput.parentNode.replaceChild(newFileInput, fileInput);
   
-  // File input change handler
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-    
-    // Lock UI immediately after file selection
-    lockChatUIImmediate();
-    
-    try {
-      // 1️⃣ عرض الصورة في الشات أولاً
-      const imageUrl = URL.createObjectURL(file);
-      const imageMessage = `<img src="${imageUrl}" style="max-width: 200px; border-radius: 10px; margin: 10px 0; display: block;">`;
-      await addMessageToChat(imageMessage, 'user');
-      
-      // 2️⃣ بعد إضافة الصورة → أظهر اللودينج الآن
-      const typingIndicator = showTypingIndicator();
-      
-      // اقرأ الملف Base64
-      const base64Image = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-        reader.readAsDataURL(file);
-      });
-      
-      try {
-        // OCR استخراج النص من الصورة
-        const extractedText = await extractTextFromImage(base64Image);
-        
-        // جلب معلومات الدواء بناء على النص
-        const medicationInfo = await getMedicationInfo(extractedText || 'صورة دواء');
-        
-        // إزالة لودينج
-        typingIndicator.remove();
-        
-        // عرض رد AI
-        await addMessageToChat(medicationInfo, 'bot');
-        // Change to retry button after AI response
-        lockChatUI();
-        
-      } catch (error) {
-        typingIndicator.remove();
-        await addMessageToChat('عذراً، حدث خطأ أثناء معالجة الصورة.', 'bot');
-        // Change to retry button even on error
-        lockChatUI();
-      }
-      
-    } catch (error) {
-      await addMessageToChat('حدث خطأ غير متوقع.', 'bot');
-      // Change to retry button even on error
-      lockChatUI();
-    } finally {
-      fileInput.value = '';
-    }
-  };
+  // Update references to the new elements
+  const updatedSendBtn = document.getElementById('drugSendBtn');
+  const updatedAttachBtn = document.getElementById('attachDrugBtn');
+  const updatedFileInput = document.getElementById('drugFileInput');
+  
+  // Set up event listeners
+  updatedSendBtn.addEventListener('click', handleSendMessage);
   
   // File upload button click handler
-  attachBtn.addEventListener('click', (e) => {
+  updatedAttachBtn.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
     
     if (!isProcessingFile) {
       isProcessingFile = true;
-      fileInput.click();
+      updatedFileInput.click();
     }
   });
   
   // File input change event
-  fileInput.addEventListener('change', handleFileChange);
+  updatedFileInput.addEventListener('change', handleFileChange);
   
   // Handle Enter key in input
   userInput.addEventListener('keypress', (e) => {

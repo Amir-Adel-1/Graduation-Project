@@ -37,12 +37,27 @@ async function generateResponse(userPrompt) {
     loadingIndicator.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
     chatBody.appendChild(loadingIndicator);
 
+    // System prompt to focus on medical-related questions only
+    const systemPrompt = `You are a medical assistant. Only respond to medical-related questions, including:
+    - Symptoms and possible conditions
+    - Medication information and usage
+    - First aid and emergency advice
+    - General health questions
+    - Medical terminology explanations
+    - Treatment options
+    - Preventive care
+    - Health concerns
+    
+    For non-medical questions, politely decline to answer and guide the user to ask medical-related questions only.
+    
+    Always respond in Arabic with clear, professional medical advice. If you're unsure about something, recommend consulting a healthcare professional.`;
+
     // Request body for Gemini
     const requestBody = {
       contents: [
         {
           role: 'user',
-          parts: [{ text: userPrompt }]
+          parts: [{ text: systemPrompt + '\n\nUser: ' + userPrompt }]
         }
       ],
       generationConfig: {
@@ -247,4 +262,14 @@ async function initChat() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', initChat);
+document.addEventListener('DOMContentLoaded', () => {
+  initChat();
+  
+  // Add event listener for the reload button
+  const reloadButton = document.getElementById('reload');
+  if (reloadButton) {
+    reloadButton.addEventListener('click', () => {
+      location.reload();
+    });
+  }
+});
