@@ -1,5 +1,41 @@
 
-  /* ===== Single Card ===== */
+/* Start Card Section */
+
+/* 🔵 قسم العروض والخصومات */
+.offers-cards-section {
+  padding: 60px 20px;
+  text-align: center;
+  background: radial-gradient(circle, #009ad755, #ffffff);
+  color: #333;
+  font-family: "Cairo", sans-serif;
+}
+
+/* العنوان */
+.offers-header h2 {
+  font-size: 2.1em;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.offers-header p {
+  font-size: 1.1em;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+/* الحاوية الأساسية للكروت */
+.container-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* الشكل يكون ذكي ويتأقلم مع المقاس بدل ما يبوظ في الشاشات الصغيرة */
+  gap: 25px;
+  justify-items: center;
+  align-items: start;
+  padding: 10px 200px;
+  box-sizing: border-box;
+}
+
+
+/* ===== Single Card ===== */
   .card {
     width: auto;
     background: #ffffff;
@@ -56,6 +92,7 @@
     display: flex;
     justify-content: center; /* عرض */
     align-items: center;     /* طول */
+    opacity: 0;
   }
   
   .card-image:hover .overlay {
@@ -297,6 +334,48 @@
       opacity: 1;
     }
   }
-  
-  /* ------------------- End Cards ------------------- */
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* زر عرض جميع العروض */
+.offers-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.view-all-btn {
+  background-color: #009ad7;
+  color: #fff;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 192, 255, 0.6);
+  letter-spacing: 0.5px;
+}
+
+.view-all-btn:hover {
+  background-color: #00b6f1;
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(0, 192, 255, 0.8);
+}
+
+/* End Card Section */

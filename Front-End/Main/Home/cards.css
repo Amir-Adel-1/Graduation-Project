@@ -56,6 +56,7 @@
     display: flex;
     justify-content: center; /* عرض */
     align-items: center;     /* طول */
+    opacity: 0;
   }
   
   .card-image:hover .overlay {

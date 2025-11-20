@@ -236,11 +236,13 @@ async function handleSendMessage() {
   await addMessageToChat(text, 'user');
   userInput.value = '';
 
-  const typingIndicator = showTypingIndicator();
+  const typingIndicator = showDotsLoader();
+
 
   const response = await generateResponse(text);
 
-  typingIndicator.remove();
+  hideDotsLoader();
+
 
   await addMessageToChat(response, 'bot');
 }
@@ -273,3 +275,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Start Loading Effect
+
+function showDotsLoader() {
+  const chatBody = document.getElementById('chatBody');
+
+  const loader = document.createElement('div');
+  loader.id = "dotsLoader";
+  loader.className = 'message bot';
+
+  loader.innerHTML = `
+    <div class="bot-dots-loader">
+      <span></span><span></span><span></span>
+    </div>
+  `;
+
+  chatBody.appendChild(loader);
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  return loader;
+}
+
+function hideDotsLoader() {
+  const loader = document.getElementById('dotsLoader');
+  if (loader) loader.remove();
+}
