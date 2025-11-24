@@ -104,22 +104,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// Start Button View Details
-  function openPopup() {
-    document.getElementById("popup").classList.add("active");
-  }
+// Start Btn Tab Pages
+const tabs = document.querySelectorAll(".req-tab");
+const sections = document.querySelectorAll(".req-section");
 
-  document.getElementById("closePopup").addEventListener("click", function () {
-    document.getElementById("popup").classList.remove("active");
-  });
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
 
-  // كمان لو المستخدم ضغط برا البوب أب يقفله
-  document.getElementById("popup").addEventListener("click", function (e) {
+        // tab styling
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        // show section
+        const id = tab.getAttribute("data-tab");
+        sections.forEach(sec => sec.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+
+    });
+});
+
+
+
+
+
+
+
+// Start Button View Details Requests
+
+function openPopup() {
+    const popup = document.getElementById("popup");
+    popup.classList.add("active");
+
+    // منع اسكرول الصفحة
+    document.body.style.overflow = "hidden";
+}
+
+// ===============================
+// زرار الإغلاق
+// ===============================
+document.getElementById("closePopup").addEventListener("click", function () {
+    const popup = document.getElementById("popup");
+    popup.classList.remove("active");
+
+    // رجوع الاسكرول
+    document.body.style.overflow = "auto";
+});
+
+// ===============================
+// إغلاق لو المستخدم ضغط برا المحتوى
+// ===============================
+document.getElementById("popup").addEventListener("click", function (e) {
+
+    // لو داس على الخلفية مش المحتوى
     if (e.target.id === "popup") {
-      document.getElementById("popup").classList.remove("active");
+        this.classList.remove("active");
+
+        // رجوع الاسكرول
+        document.body.style.overflow = "auto";
     }
-  });
-// End Button View Details
+});
+
+// ===============================
+// منع إغلاق البوب لو ضغط جوا المحتوى
+// ===============================
+document.querySelector(".popup-content").addEventListener("click", function (e) {
+    e.stopPropagation();
+});
+
+// End Button View Details Requests
 
 
 
@@ -128,6 +180,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+
+
+
+
+// Start Button View Details Order
+function openOrderPopup(orderId) {
+    // افتح الـ overlay
+    const popup = document.getElementById("orderPopup");
+    popup.style.display = "flex";
+
+    // منع الاسكرول في الصفحة
+    document.body.style.overflow = "hidden";
+
+    // اخفي كل بوبات تفاصيل الأوردر
+    const allOrderPopups = document.querySelectorAll(".order-popup");
+    allOrderPopups.forEach(p => p.style.display = "none");
+
+    // اعرض البوب الخاص بالأوردر اللي اتضغط عليه
+    const targetPopup = document.getElementById(`order-${orderId}`);
+    if (targetPopup) {
+        targetPopup.style.display = "block";
+    }
+}
+
+// قفل البوب
+function closeOrderPopup() {
+    document.getElementById("orderPopup").style.display = "none";
+
+    // رجّع الاسكرول
+    document.body.style.overflow = "auto";
+}
+
+
+// ===============================
+// إغلاق البوب لو دوست برا المحتوى
+// ===============================
+
+// عنصر الـ overlay
+const popupOverlay = document.getElementById("orderPopup");
+
+// لو داس على الخلفية (مش البوب)
+popupOverlay.addEventListener("click", function (e) {
+    if (e.target === this) {
+        closeOrderPopup();
+    }
+});
+
+// منع إغلاق البوب لما تضغط جوة المحتوى
+document.querySelectorAll(".order-popup-content").forEach(popup => {
+    popup.addEventListener("click", function (e) {
+        e.stopPropagation(); // يمنع إغلاقه
+    });
+});
+// End Button View Details Order
 
 
 

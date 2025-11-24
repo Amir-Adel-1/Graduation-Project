@@ -776,80 +776,597 @@ height: 60vh;
 
 
 
-/* Popup Confirm */
 
-/* الخلفية المعتمة */
-.confirm-overlay {
+
+
+/* ========= Start Choose Payment Popup  ========= */
+
+.payment-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
   display: none;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(3px);
-  z-index: 9999;
+  z-index: 99999;
 }
 
-/* صندوق البوب أب */
-.confirm-box {
-  background: #0f172a;
+
+
+/* زر الإغلاق */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 35px;
+  color: #bbb;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close-btn:hover {
+  color: #fff;
+  transform: scale(1.1); /* يكبر بنسبة 10% */
+}
+
+
+
+
+.payment-box {
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(18px);
   padding: 25px 30px;
-  width: 350px;
-  border-radius: 18px;
-  border: 1px solid #00c6ff55;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+  width: 600px;
+  height: 380px;
+  border-radius: 20px;
   text-align: center;
-  animation: popup 0.25s ease;
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  animation: popupShow 0.3s ease;
 }
 
-@keyframes popup {
-  from { transform: scale(0.7); opacity: 0; }
+@keyframes popupShow {
+  from { transform: scale(0.8); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
 
-.confirm-box h3 {
+.payment-title {
+  font-size: 25px;
+  color: #fff;
+  margin-bottom: 50px;
+  font-weight: bold;
+}
+
+/* ========= Payment Options ========= */
+.payment-options {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px;
+}
+
+.payment-option {
+  width: 100%;
+}
+
+/* -------- كرت طريقة الدفع (زرار) -------- */
+
+.option-card {
+  display: flex;
+  flex-direction: column;      /* الأيقونة فوق – النص تحت */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+
+  padding: 40px 10px;
+  width: 100%;
+  border-radius: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+
+  background: rgba(255,255,255,0.15);
+  border: 1px solid transparent;
   color: white;
+
+  transition: 0.25s;
+  outline: none;
+  border: none;
+}
+
+.option-card i {
+  font-size: 38px; /* تكبير الأيقونة */
+  margin-bottom: 10px;
+}
+
+/* تأثير الـ Hover */
+.option-card:hover {
+  border-color: #00eaff;
+  background: rgba(0, 238, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* -------- عند الضغط على الزرار (Active Click) -------- */
+.option-card:active {
+  transform: scale(0.97);
+  background: rgba(0, 238, 255, 0.35);
+}
+
+/* ========= End Choose Payment Popup  ========= */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Start Popup Payment (Visa) */
+
+.payment-overlay-visa {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999999;
+}
+
+.payment-box-visa {
+background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+  padding: 10px;
+  width: 550px;
+  border-radius: 15px;
+  position: relative;
+  box-shadow: 0 6px 25px rgba(0,0,0,0.20);
+}
+
+
+
+
+/* زر الإغلاق */
+.close-btn-visa {
+  position: absolute;
+  top: 13px;
+  right: 17px;
+  font-size: 35px;
+  color: #bbb;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close-btn:hover {
+  color: #fff;
+  transform: scale(1.1); /* يكبر بنسبة 10% */
+}
+
+
+
+.payment-container-visa {
+  max-width: 430px;
+  margin: 25px auto;
+  font-family: "Cairo", sans-serif;
+  direction: rtl;
+}
+
+/* ====== CREDIT CARD ====== */
+.credit-card {
+  width: 430px;
+  height: 220px;                /* الحجم الجديد (متصغر بسيط) */
+  padding: 20px;                /* تقليل بسيط */
+  border-radius: 18px;
+  color: #fff;
+background: linear-gradient(135deg, #3a3a3a, #5c5c5c);
+  position: relative;
+  margin-bottom: 25px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  transform: perspective(700px) rotateY(-8deg);
+  transition: .5s;
+  overflow: hidden;
+}
+
+.credit-card:hover {
+  transform: perspective(700px) rotateY(0deg);
+}
+
+.card-logo {
+  font-size: 26px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.chip {
+  width: 52px;
+  height: 36px;
+  background: linear-gradient(135deg, #d8b65a 0%, #f5e29f 35%, #b78b2e 70%, #f1d67a 100%);
+  border-radius: 8px;
+  position: relative;
+  margin: 18px 0;
+  overflow: hidden;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.4),
+              0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* الخطوط الإلكترونية داخل الشيب */
+.chip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(255,255,255,0.4) 20%,
+      transparent 40%,
+      rgba(0,0,0,0.15) 60%,
+      transparent 80%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.25) 0,
+      rgba(0,0,0,0.25) 1px,
+      transparent 3px,
+      transparent 6px
+    );
+}
+
+/* لمعان دهبي فاخر */
+.chip::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(
+    circle at top left,
+    rgba(255,255,255,0.35) 0%,
+    transparent 70%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+}
+
+
+.card-number {
+  font-size: 20px;               /* كان 22 */
+  letter-spacing: 2px;
+  margin: 10px 0 5px 0;
+}
+
+.card-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.card-info label {
+  font-size: 10px;
+  opacity: .8;
+}
+
+.card-info div > div {
+  font-size: 13px;               /* كان 14 */
+  margin-top: 3px;
+  font-weight: 600;
+}
+
+/* ====== FORM ====== */
+.card-form {
+background: rgba(255, 255, 255, 0.245);
+  padding: 20px;
+  padding-right: 35px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.card-form label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.card-form input {
+  width: 95%;
+  padding: 12px;
+  margin: 8px 0 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: .3s;
+}
+
+.card-form input:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 8px rgba(26,115,232,0.2);
+}
+
+.row {
+  display: flex;
+  gap: 40px;
+  padding-left: 10px;
+}
+
+.col {
+  flex: 1;
+}
+
+.card-form button {
+  width: 96%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e63e9, #3a88ff);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 4px 12px rgba(30, 99, 233, 0.35);
+}
+
+.card-form button:hover {
+   background: linear-gradient(135deg, #3a88ff, #1e63e9);
+  box-shadow: 0 6px 18px rgba(30, 99, 233, 0.45);
+  transform: translateY(-2px);
+}
+
+/* End Popup Payment (Visa) */
+
+
+
+/* زرار الفيزا */
+.confirm-visa-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+/* لمعة عابرة */
+.confirm-visa-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: rgba(255,255,255,0.40);
+  transform: skewX(-25deg);
+  transition: 0.6s;
+}
+
+/* حركة اللمعة عند الهوفر */
+.confirm-visa-btn:hover::before {
+  left: 120%;
+}
+
+
+
+
+/* Start Popup Payment (Cash) */
+
+
+/* خلفية البوب */
+.payment-overlay-cash {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+/* صندوق الدفع */
+.payment-box-cash {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(18px);
+  padding: 30px 35px;
+  width: 480px;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  animation: popupShow 0.3s ease;
+  position: relative;
+}
+
+/* زر الإغلاق */
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 35px;
+  color: #ccc;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close-btn:hover {
+  color: white;
+  transform: scale(1.15);
+}
+
+.cash-title {
+  font-size: 28px;
   margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.cash-msg {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+/* صندوق بيانات الهاتف والعنوان */
+.cash-info {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* صف واحد */
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+/* أنيميشن بسيطة عند المرور */
+.info-row:hover {
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-3px);
+}
+
+/* داير حول الأيقونة */
+.icon-box {
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 238, 255, 0.28);
+  border: 1px solid rgba(0, 238, 255, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 14px;
+  font-size: 22px;
+  color: #00eaff;
+}
+
+.info-row strong {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.info-row p {
   font-size: 20px;
 }
 
-/* الأزرار */
-.confirm-actions {
+
+
+
+/* صندوق ملخص الطلب */
+.order-summary-box {
+  margin-top: 25px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.18);
+  color: #fff;
+  font-size: 18px;
+}
+
+/* كل صف في الملخص */
+.sum-row {
   display: flex;
-  justify-content: center;   /* يخليهم في النص */
-  gap: 25px;                 /* مسافة بينهم */
-  margin-top: 15px;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 17px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255,255,255,0.18);
+}
+
+/* آخر صف بدون خط */
+.sum-row:last-child {
+  border-bottom: none;
+}
+
+/* نص العنوان */
+.sum-row span:first-child {
+  opacity: 0.9;
+}
+
+/* نص القيمة */
+.sum-row span:last-child {
+  font-weight: bold;
+  color: #00eaff;
 }
 
 
-.yes-btn, .no-btn {
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  transition: 0.25s;
-}
 
-/* زر التأكيد */
-.yes-btn {
-  background: #00c6ff;
+
+
+.confirm-cash-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #00eaff, #3af7ff);
   color: #000;
+  padding: 14px 0;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 28px;
+  letter-spacing: 1px;
+
+  /* تأثير اللمعة */
+  box-shadow: 0 6px 18px rgba(0, 234, 255, 0.45),
+              inset 0 0 8px rgba(255,255,255,0.4);
+
+  transition: 0.35s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.yes-btn:hover {
-  background: #00e0ff;
+/* خط لمعة عابر */
+.confirm-cash-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: rgba(255,255,255,0.45);
+  transform: skewX(-25deg);
+  transition: 0.6s;
 }
 
-/* زر الإلغاء */
-.no-btn {
-  background: #ff3b3b;
-  color: white;
+.confirm-cash-btn:hover::before {
+  left: 120%;
 }
 
-.no-btn:hover {
-  background: #ff5252;
+.confirm-cash-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 255, 255, 0.55);
+  background: linear-gradient(135deg, #7affff, #00eaff);
 }
+
+/* End Popup Payment (Cash) */
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

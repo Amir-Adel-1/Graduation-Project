@@ -65,7 +65,7 @@
               </a>
             </li>
 
-            <li><a href="../User_Requests_Page/Requests.html"><i class="fa-regular fa-folder-open"></i> الطلبات</a></li>
+            <li class="active"><a href="../User_Requests_Page/Requests.html"><i class="fa-regular fa-folder-open"></i> الطلبات</a></li>
             <li><a href="#">⚙️ الإعدادات</a></li>
             <li><a id="logout">🚪 تسجيل الخروج</a></li>
           </ul>
@@ -81,14 +81,22 @@
 <section class="my-requests-section">
   <h2>• طلباتي •</h2>
 
-  <div class="requests-container">
-    <div class="request-card">
-      <p><i class="fa-solid fa-hashtag"></i> <strong>رقم الطلب :</strong> 1</p>
-      <h3><i class="fa-solid fa-pills"></i> <strong>اسم الدواء</strong>  : بانادول</h3>
+  <div class="request-tabs">
+    <button class="req-tab active" data-tab="medicines">طلبات الأدوية الناقصة</button>
+    <button class="req-tab" data-tab="orders">طلبات الأوردرات</button>
+  </div>
 
-      <p><i class="fa-solid fa-calendar-day"></i> <strong>التاريخ :</strong> 10-11-2025</p>
-      <p><i class="fa-solid fa-clock"></i> <strong>الوقت :</strong> 03:45 م</p>
-      <p><i class="fa-solid fa-box"></i> <strong>الكمية المطلوبة :</strong> 2 عبوة</p>
+  <!-- قسم الأدوية -->
+<div id="medicines" class="req-section active">
+
+    <div class="request-card">
+      <h3><i class="fa-solid fa-hashtag" style="color: #00ffcc;"></i><strong> رقم الطلب : </strong> 1</h3>
+      <p><strong>💊 اسم الدواء :</strong> بانادول</p>
+      <p><strong>📦 الكمية المطلوبة :</strong> 2 عبوة</p>
+
+
+      <p><strong>📅 التاريخ :</strong> 10-11-2025</p>
+      <p><strong>⏰ الوقت :</strong> 03:45 م</p>
 
       <p><i class="fa-solid fa-clipboard-check"></i> <strong>الحالة :</strong> 
         <span class="status pending">قيد المراجعة</span>
@@ -97,17 +105,128 @@
       <div class="request-actions">
         <button class="btn edit"><i class="fa-solid fa-pen-to-square"></i> تعديل</button>
         <button class="btn delete"><i class="fa-solid fa-trash"></i> حذف</button>
-        <button class="btn view" onclick="openPopup()"><i class="fa-solid fa-eye"></i> عرض التفاصيل</button>
+        <button class="btn view" onclick="openPopup()"><i class="fa-solid fa-eye"></i> التفاصيل</button>
       </div>
     </div>
-  </div>
+    <div class="request-card">
+      <h3><i class="fa-solid fa-hashtag" style="color: #00ffcc;"></i><strong> رقم الطلب : </strong> 1</h3>
+      <p><strong>💊 اسم الدواء :</strong> بانادول</p>
+      <p><strong>📦 الكمية المطلوبة :</strong> 2 عبوة</p>
+
+
+      <p><strong>📅 التاريخ :</strong> 10-11-2025</p>
+      <p><strong>⏰ الوقت :</strong> 03:45 م</p>
+
+      <p><i class="fa-solid fa-clipboard-check"></i> <strong>الحالة :</strong> 
+        <span class="status pending">قيد المراجعة</span>
+      </p>
+
+      <div class="request-actions">
+        <button class="btn edit"><i class="fa-solid fa-pen-to-square"></i> تعديل</button>
+        <button class="btn delete"><i class="fa-solid fa-trash"></i> حذف</button>
+        <button class="btn view" onclick="openPopup()"><i class="fa-solid fa-eye"></i> التفاصيل</button>
+      </div>
+    </div>
+    <div class="request-card">
+      <h3><i class="fa-solid fa-hashtag" style="color: #00ffcc;"></i><strong> رقم الطلب : </strong> 1</h3>
+      <p><strong>💊 اسم الدواء :</strong> بانادول</p>
+      <p><strong>📦 الكمية المطلوبة :</strong> 2 عبوة</p>
+
+
+      <p><strong>📅 التاريخ :</strong> 10-11-2025</p>
+      <p><strong>⏰ الوقت :</strong> 03:45 م</p>
+
+      <p><i class="fa-solid fa-clipboard-check"></i> <strong>الحالة :</strong> 
+        <span class="status pending">قيد المراجعة</span>
+      </p>
+
+      <div class="request-actions">
+        <button class="btn edit"><i class="fa-solid fa-pen-to-square"></i> تعديل</button>
+        <button class="btn delete"><i class="fa-solid fa-trash"></i> حذف</button>
+        <button class="btn view" onclick="openPopup()"><i class="fa-solid fa-eye"></i> التفاصيل</button>
+      </div>
+    </div>
+    <div class="request-card">
+      <h3><i class="fa-solid fa-hashtag" style="color: #00ffcc;"></i><strong> رقم الطلب : </strong> 1</h3>
+      <p><strong>💊 اسم الدواء :</strong> بانادول</p>
+      <p><strong>📦 الكمية المطلوبة :</strong> 2 عبوة</p>
+
+
+      <p><strong>📅 التاريخ :</strong> 10-11-2025</p>
+      <p><strong>⏰ الوقت :</strong> 03:45 م</p>
+
+      <p><i class="fa-solid fa-clipboard-check"></i> <strong>الحالة :</strong> 
+        <span class="status pending">قيد المراجعة</span>
+      </p>
+
+      <div class="request-actions">
+        <button class="btn edit"><i class="fa-solid fa-pen-to-square"></i> تعديل</button>
+        <button class="btn delete"><i class="fa-solid fa-trash"></i> حذف</button>
+        <button class="btn view" onclick="openPopup()"><i class="fa-solid fa-eye"></i> التفاصيل</button>
+      </div>
+    </div>
+
+</div>
+
+
+<!-- قسم الأوردرات -->
+<div id="orders" class="req-section">
+
+    <div class="request-order">
+      <h3><strong>🧾 رقم الاوردر :</strong> 1</h3>
+      <p><strong>🛒 عدد العناصر :</strong> 5</p>
+      <p><strong>💲 السعر الكلي :</strong> 1,700 جنية</p>
+      <p><strong>💵 طريقت الدفع :</strong>
+      <span class="status cash">كاش</span>
+      </p>
+
+      <p><strong>📅 التاريخ :</strong> 10-11-2025</p>
+      <p><strong>⏰ الوقت :</strong> 03:45 م</p>
+
+      <p><i class="fa-solid fa-clipboard-check"></i> <strong>الحالة :</strong>
+        <span class="status pending">قيد المراجعة</span>
+      </p>
+
+      <div class="request-actions">
+        <button class="btn edit"><i class="fa-solid fa-pen-to-square"></i> تعديل</button>
+        <button class="btn delete"><i class="fa-solid fa-trash"></i> حذف</button>
+        <button class="btn view" onclick="openOrderPopup(1)"><i class="fa-solid fa-eye"></i> التفاصيل</button>
+      </div>
+    </div>
+
+    <div class="request-order">
+      <h3><strong>🧾 رقم الاوردر :</strong> 2</h3>
+      <p><strong>🛒 عدد العناصر :</strong> 1</p>
+      <p><strong>💲 السعر الكلي :</strong> 1,700 جنية</p>
+            <p><strong>💵 طريقت الدفع :</strong>
+      <span class="status visa">فيزا</span>
+      </p>
+
+      <p><strong>📅 التاريخ :</strong> 10-11-2025</p>
+      <p><strong>⏰ الوقت :</strong> 03:45 م</p>
+
+      <p><i class="fa-solid fa-clipboard-check"></i> <strong>الحالة :</strong>
+        <span class="status accepted">مقبول</span>
+      </p>
+
+      <div class="request-actions">
+        <button class="btn edit"><i class="fa-solid fa-pen-to-square"></i> تعديل</button>
+        <button class="btn delete"><i class="fa-solid fa-trash"></i> حذف</button>
+        <button class="btn view" onclick="openOrderPopup(2)"><i class="fa-solid fa-eye"></i> التفاصيل</button>
+      </div>
+    </div>
+
+
+</div>
+
+
 </section>
 <!-- End Content -->
 
 
 
 
-<!-- نافذة عرض التفاصيل -->
+<!-- نافذة عرض التفاصيل طلب الدواء-->
 <div class="popup-overlay" id="popup">
   <div class="popup-content">
     <h3>تفاصيل الصيدلية</h3>
@@ -119,6 +238,83 @@
     <button id="closePopup" class="btn close">إغلاق</button>
   </div>
 </div>
+
+
+
+
+<!-- نافذة عرض التفاصيل الاوردرات-->
+<div class="order-popup-overlay" id="orderPopup">
+
+  <!-- محتوى أوردر 1 -->
+  <div class="order-popup-content order-popup" id="order-1">
+    <h3 class="ditails-title">🧾 تفاصيل أوردر 1</h3>
+
+<div class="order-items-wrapper">
+  <div class="order-item">
+  <div class="order-img-box">
+    <img src="../../images/1.jpg" alt="">
+  </div>
+
+  <div class="order-info">
+    <h3 class="med-name">بانادول اكسترا</h3>
+    <p class="med-qty">الكمية: 1</p>
+    <p class="med-price">السعر: 45 جنيه</p>
+  </div>
+  </div>
+  <div class="order-item">
+  <div class="order-img-box">
+    <img src="../../images/1.jpg" alt="">
+  </div>
+
+  <div class="order-info">
+    <h3 class="med-name">بانادول اكسترا</h3>
+    <p class="med-qty">الكمية: 1</p>
+    <p class="med-price">السعر: 45 جنيه</p>
+  </div>
+  </div>
+  <div class="order-item">
+  <div class="order-img-box">
+    <img src="../../images/1.jpg" alt="">
+  </div>
+
+  <div class="order-info">
+    <h3 class="med-name">بانادول اكسترا</h3>
+    <p class="med-qty">الكمية: 1</p>
+    <p class="med-price">السعر: 45 جنيه</p>
+  </div>
+  </div>
+</div>
+
+
+
+    <button class="btn close" onclick="closeOrderPopup()">إغلاق</button>
+  </div>
+
+  <!-- محتوى أوردر 2 -->
+  <div class="order-popup-content order-popup" id="order-2">
+    <h3 class="ditails-title">🧾 تفاصيل أوردر 2</h3>
+
+<div class="order-items-wrapper">
+  <div class="order-item">
+  <div class="order-img-box">
+    <img src="../../images/2.jpg" alt="">
+  </div>
+
+  <div class="order-info">
+    <h3 class="med-name">بانادول اكسترا</h3>
+    <p class="med-qty">الكمية : 1</p>
+    <p class="med-price">السعر : 45 جنيه</p>
+  </div>
+  </div>
+</div>
+
+
+
+    <button class="btn close" onclick="closeOrderPopup()">إغلاق</button>
+  </div>
+
+</div>
+
 
 
 

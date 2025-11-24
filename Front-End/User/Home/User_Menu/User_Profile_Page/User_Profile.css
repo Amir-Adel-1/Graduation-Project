@@ -136,22 +136,7 @@ body {
   animation: pulse 2s ease-in-out infinite alternate;
 }
 
-/* @keyframes glowMove {
-  0% {
-    text-shadow:
-      0 0 5px #009ad7,
-      0 0 10px #009ad7,
-      0 0 20px #009ad7,
-      0 0 40px #00e0ff;
-  }
-  100% {
-    text-shadow:
-      0 0 20px #00e0ff,
-      0 0 40px #00e0ff,
-      0 0 60px #009ad7,
-      0 0 80px #009ad7;
-  }
-} */
+
 
 
 .text-logo {

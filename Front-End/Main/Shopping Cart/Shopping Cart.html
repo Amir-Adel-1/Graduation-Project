@@ -241,17 +241,144 @@
 <!-- End Content -->
 
 
-<!-- Popup Confirm -->
-<div class="confirm-overlay" id="confirmOverlay">
-  <div class="confirm-box">
-    <h3>هل تريد تأكيد عملية الشراء؟</h3>
 
-    <div class="confirm-actions">
-      <button id="confirmYes" class="yes-btn">تأكيد</button>
-      <button id="confirmNo" class="no-btn">إلغاء</button>
+
+<!-- Popup Choose Payment Method -->
+<div class="payment-overlay" id="paymentOverlay">
+  <div class="payment-box">
+
+    <span class="close-btn" id="closePayment">&times;</span>
+
+    <h3 class="payment-title">اختر طريقة الدفع</h3>
+
+    <div class="payment-options">
+    
+<div class="payment-option">
+  <button class="option-card" id="openVisaBtn">
+    <i class="fa-solid fa-credit-card"></i>
+    <span>الدفع بالفيزا</span>
+  </button>
+</div>
+
+<div class="payment-option">
+  <button class="option-card" id="openCashBtn">
+    <i class="fa-solid fa-money-bill-wave"></i>
+    <span>الدفع عند الاستلام</span>
+  </button>
+</div>
+
     </div>
+
+
   </div>
 </div>
+
+
+<!-- ===== Popup Payment (Visa) ===== -->
+<div class="payment-overlay-visa" id="open-payment-visa">
+
+  <div class="payment-box-visa">
+    
+    <span class="close-btn-visa" id="closeVisaPopup">&times;</span>
+    
+<div class="payment-container-visa">
+
+  <div class="credit-card">
+    <div class="card-logo">VISA</div>
+    <div class="chip"></div>
+
+    <div class="card-number" id="preview-number">
+      **** **** **** ****
+    </div>
+
+    <div class="card-info">
+      <div>
+        <label>Card Holder</label>
+        <div id="preview-name">FULL NAME</div>
+      </div>
+
+      <div>
+        <label>Expires</label>
+        <div id="preview-exp">MM/YY</div>
+      </div>
+    </div>
+  </div>
+
+  <form class="card-form">
+
+    <label>رقم البطاقة</label>
+    <input type="text" id="card-number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx">
+
+    <label>اسم صاحب البطاقة</label>
+    <input type="text" id="card-name" autocomplete="off" placeholder="الاسم كما يظهر على البطاقة">
+
+    <div class="row">
+      <div class="col">
+        <label>تاريخ الانتهاء</label>
+        <input type="text" id="card-exp" autocomplete="off" maxlength="5" placeholder="MM/YY">
+      </div>
+
+      <div class="col">
+        <label>CVV</label>
+        <input type="password" maxlength="3" placeholder="***">
+      </div>
+    </div>
+
+    <button type="submit" class="confirm-visa-btn">تأكيد الدفع</button>
+  </form>
+</div>
+
+</div>
+</div>
+
+
+<!-- ===== Popup Payment (Cash) ===== -->
+<div class="payment-overlay-cash" id="cashPopup">
+
+  <div class="payment-box-cash">
+    <span class="close-btn" id="closeCashBtn">&times;</span>
+
+    <h2 class="cash-title">الدفع عند الاستلام</h2>
+
+    <p class="cash-msg">راجع بياناتك قبل تأكيد الطلب -- سيتم التواصل معك لتأكيد موعد التسليم.</p>
+
+    <div class="cash-info">
+
+      <div class="info-row">
+        <div class="icon-box">
+          <i class="fa-solid fa-phone"></i>
+        </div>
+        <p><strong>رقم الهاتف :</strong> 01000000000</p>
+      </div>
+
+      <div class="info-row">
+        <div class="icon-box">
+          <i class="fa-solid fa-location-dot"></i>
+        </div>
+        <p><strong>العنوان :</strong> القاهرة - مصر</p>
+      </div>
+
+    </div>
+
+    <!-- ▬▬▬ ملخص الطلب ▬▬▬ -->
+    <div class="order-summary-box">
+      <div class="sum-row">
+        <span>ملخص الطلب</span>
+        <span>2 منتج - إجمالي 81 جنيه</span>
+      </div>
+
+      <div class="sum-row">
+        <span>رسوم الشحن</span>
+        <span>مجاني</span>
+      </div>
+    </div>
+
+    <button class="confirm-cash-btn">تأكيد الطلب</button>
+  </div>
+
+</div>
+
+
 
 
 

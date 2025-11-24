@@ -507,9 +507,6 @@ body {
 
 
 
-
-
-
 /* ------------------- Start Content ------------------- */
 
 
@@ -535,7 +532,7 @@ body {
 /* العنوان */
 .my-requests-section h2 {
   font-size: 32px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   text-align: center;
   background: linear-gradient(90deg, #00c6ff, #0072ff);
   background-clip: text;
@@ -543,81 +540,107 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* حاوية الكروت */
-.requests-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 كروت في الصف */
-  gap: 25px;
+
+/* Tabs */
+.request-tabs {
+    margin: 0 auto;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.req-tab {
+    padding: 15px 150px;
+    background: #123c48;
+    color: #7de6ff;
+    border: 1px solid #1aa3c8;
+    border-radius: 12px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 0 10px rgba(0,255,255,0.2);
+}
+
+.req-tab:hover {
+    background: rgba(0, 180, 220, 0.22);
+    color: white;
+}
+
+.req-tab.active {
+    background: #0bb7dd;
+    color: #ffffff;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(0,255,255,0.5);
+}
+
+/* Hide / Show Sections */
+.req-section {
+  display: none; /* كل الأقسام مخفية */
   width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 30px;
   justify-items: center;
 }
 
+.req-section.active {
+  display: grid;
+}
+
+
+
+
+
 /* الكارت الواحد */
-.request-card {
-  width: 95%;
-  max-width: 360px;
+.request-card ,
+.request-order {
+  width: 350px;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 20px;
-  padding: 25px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 20px;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.request-card:hover {
+.request-card:hover ,
+.request-order:hover {
 transform: translateY(-7px);
 box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
 }
 
 
 
-/* ------------------- أيقونات النصوص داخل الكارت ------------------- */
+/* نصوص التفاصيل */
 
-.request-info i {
-  font-size: 17px;
-  color: #00c6ff; /* لون الأيقونة */
-  min-width: 20px;
-  text-align: center;
+.request-card h3,
+.request-order h3,
+.request-card h3 strong,
+.request-order h3 strong {
+  color: #00ffcc;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 25px;
 }
 
-/* خلي الأيقونات الخاصة بالحالة ليها لون خاص */
-.status i {
-  color: currentColor;
-  margin-left: 5px;
+.request-card strong ,
+.request-order strong {
+  color: white;
+  font-size: 18px;
 }
 
-
-/* رقم الطلب */
-.request-card p:first-child {
+.request-card p ,
+.request-order p {
   font-size: 16px;
   font-weight: bold;
-  color: white;
-  margin-bottom: 10px;
-}
-
-/* اسم الدواء */
-.request-card h3 strong {
-  color: #43e97b;
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-/* نصوص التفاصيل */
-.request-card p {
-  font-size: 15px;
   margin: 8px 0;
-}
-
-.request-card p strong {
   color: #00c6ff;
 }
 
-/* لون مميز للكمية المطلوبة */
-.request-card p:nth-child(5) strong {
-  color: #43e97b;
-}
+
+/*  أيقونات النصوص داخل الكارت  */
 
 /* الحالة */
 .status {
@@ -633,13 +656,21 @@ box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
 
 .status.accepted {
   background: rgba(40, 167, 69, 0.3);
-  color: #28a745;
+  color: #32d157;
 }
 
-.status.rejected {
-  background: rgba(220, 53, 69, 0.3);
-  color: #dc3545;
+.status.cash {
+background: rgba(40, 167, 70, 0.529);
+color: #fff;
+
 }
+
+.status.visa {
+background: #3498db81;
+color: #fff;
+}
+
+
 
 /* أزرار التحكم */
 .request-actions {
@@ -652,14 +683,19 @@ box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
 
 .btn {
   flex: 1;
-  padding: 10px 15px;
+  padding: 10px 30px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
   color: #fff;
   transition: all 0.3s ease;
+
+  display: flex;             /* <── يخلي المحتوى جنب بعض */
+  align-items: center;        /* <── يوسّط الأيقونة مع النص */
+  justify-content: center;    /* <── يخليهم في النص */
+  gap: 7px;                   /* <── مسافة صغيرة بين الأيقونة والنص */
 }
 
 .btn.edit {
@@ -687,8 +723,6 @@ box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
 }
 
 
-
-
 /* ------------------- End Content ------------------- */
 
 
@@ -702,7 +736,7 @@ box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
 
 
 
-/* Start Button View Details */
+/* Start Button View Details Requests */
 /* خلفية البوب أب */
 .popup-overlay {
   position: fixed;
@@ -790,7 +824,131 @@ box-shadow: 0 10px 20px rgba(0, 192, 255, 0.8);
     opacity: 1;
   }
 }
-/* Start Button View Details */
+/* End Button View Details Requests */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Start Button View Details Orders */
+
+.order-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.65); /* أغمق شوية */
+  backdrop-filter: blur(10px); /* نفس تأثير تسجيل الدخول */
+  -webkit-backdrop-filter: blur(10px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* محتوى البوب */
+.order-popup-content {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 25px;
+  padding: 35px 45px;
+  color: #fff;
+  width: 95%;
+  max-width: 600px;   /* أعرض */
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  animation: fadeIn 0.4s ease forwards;
+  text-align: right;
+  position: relative;
+}
+
+/* العنوان في المنتصف */
+.ditails-title {
+  text-align: center;
+  width: 100%;
+  font-size: 22px;
+}
+
+/* سكروول للكروت */
+.order-items-wrapper {
+  max-height: 350px;
+  overflow-y: auto;
+  margin-top: 20px;
+  padding-right: 10px;
+  padding-left: 8px;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 20px;
+}
+
+/* شكل الكرت */
+.order-item {
+  display: flex;
+  align-items: stretch;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 15px;
+  border-radius: 15px;
+  margin: 15px 0;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* الصندوق اللي شايل الصورة */
+.order-img-box {
+  width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* الصورة */
+.order-img-box img {
+  width: 90px;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* النصوص */
+.order-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.med-name {
+  margin: 0;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+
+/* End Button View Details Orders */
+
+
+
+
+
+
+
+
+
 
 
 

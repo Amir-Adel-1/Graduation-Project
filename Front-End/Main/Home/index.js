@@ -100,3 +100,37 @@ eyeAreas.forEach(area => {
     }
   });
 
+
+
+
+
+
+
+  
+ // ==========================================================
+  // 📌 Testimonials Slider (Auto)
+  // ==========================================================
+  let index = 0;
+  const cards = document.querySelectorAll(".testimonial-card");
+
+  function updateSlider() {
+    cards.forEach((card, i) => {
+      card.classList.remove("active", "prev", "next", "hidden");
+
+      if (i === index) card.classList.add("active");
+      else if (i === (index - 1 + cards.length) % cards.length) card.classList.add("prev");
+      else if (i === (index + 1) % cards.length) card.classList.add("next");
+      else card.classList.add("hidden");
+    });
+  }
+
+  function nextCard() {
+    index = (index + 1) % cards.length;
+    updateSlider();
+  }
+
+  if (cards.length > 0) {
+    updateSlider();
+    setInterval(nextCard, 2000);
+  }
+

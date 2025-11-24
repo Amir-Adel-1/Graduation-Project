@@ -1,30 +1,32 @@
 // عناصر صفحة تسجيل الدخول
-const openLoginButtons = document.querySelectorAll('.open-login');
 const loginOverlay = document.querySelector('.overlay-login');
 const closeLoginPopup = document.querySelector('.close-popup-login');
 
 // دالة لإغلاق جميع النوافذ المنبثقة
 function closeAllOverlays() {
-    // إغلاق جميع النوافذ المنبثقة
-    document.querySelectorAll('.overlay-login, .overlay-signup, .overlay-pharmacist, .account-choice-overlay').forEach(overlay => {
+    document.querySelectorAll(
+        '.overlay-login, .overlay-signup, .overlay-pharmacist, .account-choice-overlay'
+    ).forEach(overlay => {
         overlay.style.display = 'none';
     });
     document.body.style.overflow = "auto";
 }
 
-// تأكد إن العناصر موجودة قبل تشغيل الكود
-if (loginOverlay && closeLoginPopup && openLoginButtons.length > 0) {
-    // فتح نافذة تسجيل الدخول
-    openLoginButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            closeAllOverlays();
-            loginOverlay.style.display = 'flex';
+// --- Event Delegation لمعالجة الضغط على .open-login ---
+document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".open-login");
+    if (btn) {
+        e.preventDefault();
+        closeAllOverlays();
+        if (loginOverlay) {
+            loginOverlay.style.display = "flex";
             document.body.style.overflow = "hidden";
-        });
-    });
+        }
+    }
+});
 
-    // غلق النافذة بزر الإغلاق
+// غلق النافذة بزر الإغلاق
+if (closeLoginPopup && loginOverlay) {
     closeLoginPopup.addEventListener('click', () => {
         loginOverlay.style.display = 'none';
         document.body.style.overflow = "auto";

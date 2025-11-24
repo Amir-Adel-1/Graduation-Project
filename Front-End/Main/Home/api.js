@@ -258,10 +258,10 @@ const searchTerms = [
             <div class="card__price">${priceDisplay}</div>
           </div>
           <div class="buttons">
-            <button class="card-button add-to-cart" data-product-id="${product.id}" data-original-price="${product.price || ''}" data-discounted-price="${priceDisplay.replace(' ج.م', '')}">
+            <button class="card-button add-to-cart  open-login" data-product-id="${product.id}" data-original-price="${product.price || ''}" data-discounted-price="${priceDisplay.replace(' ج.م', '')}">
               <i class="fa-solid fa-cart-shopping"></i>
             </button>
-            <button class="card-button add-to-favorites" data-product-id="${product.id}">
+            <button class="card-button add-to-favorites  open-login" data-product-id="${product.id}">
               <i class="fa-solid fa-heart"></i>
             </button>
           </div>

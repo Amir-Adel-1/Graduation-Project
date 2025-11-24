@@ -723,7 +723,8 @@ body {
 
 
 
-/* 💬 Start Testimonials Section */
+
+/* ========== Start Testimonials Section ========== */
 
 .testimonials {
   text-align: center;
@@ -745,27 +746,60 @@ body {
   font-size: 1.1rem;
 }
 
-.testimonials-container {
+/* ========== Carousel ========== */
+
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 380px;
   display: flex;
   justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
+  align-items: center;
+  perspective: 1200px;
+  overflow: visible;
 }
 
 .testimonial-card {
-  background-color: #fff;
+  position: absolute;
+  width: 330px;
+  background: #fff;
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 30px 20px;
-  width: 320px;
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.8s ease;
+  opacity: 0;
+  transform: scale(0.8);
 }
 
-.testimonial-card:hover {
-  transform: translateY(-8px);
-    box-shadow: 0 4px 12px rgba(0, 192, 255, 0.8);
+/* الكرت الأساسي */
+.testimonial-card.active {
+  z-index: 3;
+  opacity: 1;
+  transform: scale(1) translateX(0);
 }
 
+/* على الشمال */
+.testimonial-card.prev {
+  z-index: 2;
+  opacity: 0.7;
+  transform: scale(0.9) translateX(-400px);
+}
+
+/* على اليمين */
+.testimonial-card.next {
+  z-index: 2;
+  opacity: 0.7;
+  transform: scale(0.9) translateX(400px);
+}
+
+/* خارج العرض */
+.testimonial-card.hidden {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+
+/* شكل الكرت */
 .testimonial-card img {
   width: 80px;
   height: 80px;
@@ -791,8 +825,8 @@ body {
   line-height: 1.6;
   font-size: 0.95rem;
 }
+/* ========== End Testimonials Section ========== */
 
-/* 💬 End Testimonials Section */
 
 
 
@@ -956,6 +990,7 @@ body {
 .footer-section.links ul {
   list-style: none;
   padding: 0;
+  cursor: pointer;
 }
 
 .footer-section.links ul li {
@@ -977,6 +1012,7 @@ body {
 .footer-section.contact p {
   margin: 8px 0;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .footer-section.contact i {
