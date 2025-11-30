@@ -250,6 +250,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+// Start Password EYE
+  const passwordField = document.getElementById("password-field");
+  const eyeOpen = document.getElementById("eye-open");
+  const eyeClosed = document.getElementById("eye-closed");
+
+  document.getElementById("togglePassword").onclick = () => {
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      eyeOpen.classList.add("hidden");
+      eyeClosed.classList.remove("hidden");
+    } else {
+      passwordField.type = "password";
+      eyeClosed.classList.add("hidden");
+      eyeOpen.classList.remove("hidden");
+    }
+  };
+
 
 
 

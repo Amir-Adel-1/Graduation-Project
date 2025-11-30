@@ -75,6 +75,29 @@
       <input type="email" value="example@email.com" readonly />
     </div>
 
+    <div class="profile-field password-wrapper">
+  <label>كلمة المرور:</label>
+
+  <div class="password-box">
+    <input id="password-field" type="password" value="MyPassword123" readonly />
+
+    <span id="togglePassword" class="toggle-icon">
+      <!-- Eye Icon (Visible) -->
+      <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+
+      <!-- Eye Off Icon (Hidden) -->
+      <svg id="eye-closed" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon hidden">
+        <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.77 21.77 0 0 1 5.06-5.94"/>
+        <path d="M1 1l22 22"/>
+        <path d="M9.53 9.53A3 3 0 0 0 12 15a3 3 0 0 0 2.47-4.47"/>
+      </svg>
+    </span>
+  </div>
+    </div>
+
 <!-- رقم الهاتف -->
 <div class="profile-field phone-container">
   <label>رقم الهاتف :</label>

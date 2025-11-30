@@ -543,9 +543,36 @@ body {
   gap: 30px;
   margin-top: 20px;
   align-items: start;
-  
-
 }
+
+/* زرار تفريغ العربة */
+.clear-cart-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+    padding: 0 10px;
+}
+
+.glow-capsule {
+    background: transparent;
+    border: 2px solid #00e5ff;
+    color: #00eaff;
+    padding: 10px 26px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.4) inset;
+}
+
+.glow-capsule:hover {
+    background: #00e5ff;
+    color: #00212a;
+    box-shadow: 0 0 15px #00e5ff, 0 0 25px #00e5ff;
+    transform: translateY(-2px);
+}
+
 
 /* المنتجات */
 .cart-items {
