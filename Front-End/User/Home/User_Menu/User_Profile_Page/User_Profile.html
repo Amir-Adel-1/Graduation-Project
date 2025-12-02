@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="../../../../bootstrap-5.3.8-dist/css/all.min.css" />
     <!-- Google Fonts -->
     <link rel="stylesheet" href="" />
+    <!-- User Profile Script -->
+    <script src="userProfile.js" defer></script>
   </head>
 <body>
 
@@ -85,15 +87,15 @@
     <h3>🧍 البيانات الشخصية</h3>
     <div class="profile-field">
       <label>الاسم الكامل:</label>
-      <input type="text" value="أمير عادل" readonly />
+      <input type="text" id="fullName" value="" readonly />
     </div>
     <div class="profile-field">
       <label>الجنس:</label>
-      <input type="text" value="ذكر" readonly />
+      <input type="text" id="gender" value="" readonly />
     </div>
     <div class="profile-field">
       <label>تاريخ الميلاد:</label>
-      <input type="date" value="2000-01-01" readonly />
+      <input type="date" id="birthDate" value="" readonly />
     </div>
   </div>
 
@@ -103,14 +105,14 @@
 
     <div class="profile-field">
       <label>البريد الإلكتروني:</label>
-      <input type="email" value="example@email.com" readonly />
+      <input type="email" id="email" value="" readonly />
     </div>
 
 <div class="profile-field password-wrapper">
   <label>كلمة المرور:</label>
 
   <div class="password-box">
-    <input id="password-field" type="password" value="MyPassword123" readonly />
+    <input id="password-field" type="password" value="" readonly />
 
     <span id="togglePassword" class="toggle-icon">
       <!-- Eye Icon (Visible) -->
@@ -134,7 +136,7 @@
 <div class="profile-field phone-container">
   <label>رقم الهاتف:</label>
   <div class="input-row single" id="phoneRow">
-    <input type="text" value="01000000000" readonly class="input-field" />
+    <input type="text" id="phone" value="" readonly class="input-field" />
     <button class="add-btn" id="addPhoneBtn">+</button>
   </div>
 </div>
@@ -143,7 +145,7 @@
 <div class="profile-field address-container">
   <label>العنوان:</label>
   <div class="input-row single" id="addressRow">
-    <textarea readonly class="input-field" id="addressInput">القاهرة، مصر</textarea>
+    <textarea readonly class="input-field" id="address"></textarea>
     <button class="add-btn" id="addAddressBtn">+</button>
   </div>
 </div>
@@ -155,19 +157,19 @@
     <h3>⚕️ البيانات الصحية</h3>
     <div class="profile-field">
       <label>الوزن:</label>
-      <input type="number" value="70" readonly />
+      <input type="number" id="weight" value="" readonly />
     </div>
     <div class="profile-field">
       <label>الطول:</label>
-      <input type="number" value="175" readonly />
+      <input type="number" id="height" value="" readonly />
     </div>
     <div class="profile-field">
       <label>فصيلة الدم:</label>
-      <input type="text" value="A+" readonly />
+      <input type="text" id="bloodType" value="" readonly />
     </div>
     <div class="profile-field">
       <label>الحالة الصحية:</label>
-      <input type="text" value="جيدة" readonly />
+      <input type="text" id="healthStatus" value="" readonly />
     </div>
   </div>
 

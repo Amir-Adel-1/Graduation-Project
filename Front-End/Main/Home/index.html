@@ -218,7 +218,7 @@
   <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
           <div class="nebula-input-signup">
-  <input required type="date" name="Weight" autocomplete="off" class="input color" />
+  <input required type="date" name="birthDate" autocomplete="off" class="input color" />
   <label class="user-label-signup">تاريخ الميلاد</label>
   <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
   <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
@@ -228,7 +228,7 @@
   <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
           <div class="nebula-input-signup">
-  <select class="input  color" required>
+  <select class="input color" name="blood_type" required>
     <option value="" disabled selected>اختر فصيلة الدم</option>
     <option value="A+">A+</option>
     <option value="A-">A-</option>
@@ -260,7 +260,7 @@
   <div class="nebula-particl-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
           <div class="nebula-input-signup">
-  <input required type="number" name="Weight" autocomplete="off" class="input" />
+  <input required type="number" name="weight" autocomplete="off" class="input" min="0" step="0.1" />
   <label class="user-label-signup">الوزن (كجم)</label>
   <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
   <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
@@ -270,15 +270,15 @@
   <div class="nebula-particle-signup" style="--x:0.6; --y:0.4; --delay:0.6s"></div>
           </div>
           <div class="nebula-input-signup">
-  <select class="input  color" required>
+  <select class="input color" name="health_status" required>
     <option value="" disabled selected>اختر حالتك الصحية</option>
-    <option value="non-smoker">غير مدخن</option>
-    <option value="smoker">مدخن</option>
-    <option value="former-smoker">مدخن سابق</option>
-    <option value="alcohol">يتناول كحول</option>
-    <option value="healthy">لا يعاني من أي مشاكل صحية</option>
-    <option value="chronic">يعاني من أمراض مزمنة</option>
-    <option value="under-treatment">يتلقى علاج حاليًا</option>
+    <option value="غير مدخن">غير مدخن</option>
+    <option value="مدخن">مدخن</option>
+    <option value="مدخن سابق">مدخن سابق</option>
+    <option value="يتناول كحول">يتناول كحول</option>
+    <option value="لا يعاني من أي مشاكل صحية">لا يعاني من أي مشاكل صحية</option>
+    <option value="يعاني من أمراض مزمنة">يعاني من أمراض مزمنة</option>
+    <option value="يتلقى علاج حاليًا">يتلقى علاج حاليًا</option>
   </select>
     <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
   <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
@@ -292,7 +292,7 @@
         <div class="form-grid-signup two-textareas">
 <!-- الأمراض المزمنة -->
           <div class="nebula-input-signup">
-  <textarea class="input" required placeholder=" "></textarea>
+  <textarea class="input" name="chronic_diseases" required placeholder=" "></textarea>
   <label class="user-label-signup">الأمراض المزمنة</label>
   <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
   <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
@@ -303,7 +303,7 @@
           </div>
           <!-- الحساسية -->
           <div class="nebula-input-signup">
-  <textarea class="input" required placeholder=" "></textarea>
+  <textarea class="input" name="allergies" required placeholder=" "></textarea>
   <label class="user-label-signup">الحساسية إن وجدت</label>
   <div class="nebula-particle-signup" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
   <div class="nebula-particle-signup" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
@@ -746,5 +746,6 @@
     <script src="login and signup/login.js"></script>
     <script src="login and signup/signup.js"></script>
     <script src="api.js"></script>
+    <script src="localStorageAuth.js"></script>
   </body>
 </html>
