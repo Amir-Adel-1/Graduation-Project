@@ -15,7 +15,6 @@ USE Test_Pro300
 Go
 
 CREATE PROCEDURE Register_User
-(
     @First_Name NVARCHAR(15),
     @Last_Name NVARCHAR(15),
     @Gender CHAR(1),
@@ -27,37 +26,72 @@ CREATE PROCEDURE Register_User
     @Height DECIMAL(5,2),
     @Blood_Type CHAR(3),
     @Health_Status NVARCHAR(30)
-)
 AS
 BEGIN
-    INSERT INTO Users
+    SET NOCOUNT ON;
+
+    -- 🔥 1. Check if Email Exists
+    IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
+    BEGIN
+        SELECT 'EmailAlreadyExists' AS Status;
+        RETURN;
+    END
+
+    -- 🔥 2. Insert New User
+    INSERT INTO Users 
     (
-        First_Name, Last_Name, Gender, Date_Of_Birth, Email, Password, Role,
-        Weight, Height, Blood_Type, Health_Status
+        First_Name, Last_Name, Gender, Date_Of_Birth, 
+        Email, Password, Role, Weight, Height, Blood_Type, Health_Status
     )
     VALUES
     (
-        @First_Name, @Last_Name, @Gender, @Date_Of_Birth, @Email, @Password, @Role,
-        @Weight, @Height, @Blood_Type, @Health_Status
+        @First_Name, @Last_Name, @Gender, @Date_Of_Birth,
+        @Email, @Password, @Role, @Weight, @Height, @Blood_Type, @Health_Status
     );
+
+    -- 🔥 3. Return Success + New ID
+    SELECT 'UserCreated' AS Status, SCOPE_IDENTITY() AS Id_User;
 END
+
 
 Go
 
 -- Test SP
 
+-- انشاء حساب مستخدم جديد
+-- Register New User
+
 EXEC Register_User
     @First_Name = N'Ahmed',
-    @Last_Name = N'Ali',
+    @Last_Name = N'Mostafa',
     @Gender = 'M',
-    @Date_Of_Birth = '2000-05-10',
-    @Email = 'test@gmail.com',
+    @Date_Of_Birth = '2000-05-15',
+    @Email = 'ahmed_test@example.com',
     @Password = '123456',
     @Role = N'User',
-    @Weight = 70.5,
-    @Height = 175.3,
+    @Weight = 75.5,
+    @Height = 180.2,
     @Blood_Type = 'A+',
     @Health_Status = N'Good';
+
+-------------------------------------------------
+
+-- انشاء حساب جديد بنفس الايميل 
+-- Test Register SAME Email (Should return EmailAlreadyExists)
+
+
+EXEC Register_User
+    @First_Name = N'Ahmed',
+    @Last_Name = N'Mostafa',
+    @Gender = 'M',
+    @Date_Of_Birth = '2000-05-15',
+    @Email = 'ahmed_test@example.com',  -- نفس الإيميل السابق
+    @Password = '99999',
+    @Role = N'User',
+    @Weight = 70.0,
+    @Height = 165.0,
+    @Blood_Type = 'B+',
+    @Health_Status = N'Perfect';
 
 
 -- ------------------------------------------------------------------------ --
@@ -100,13 +134,10 @@ EXEC Login_User
 
 Go
 
-CREATE PROCEDURE Update_User_Profile
+CREATE OR ALTER PROCEDURE Update_User_Profile
 (
     @Id_User INT,
-    @First_Name NVARCHAR(15),
-    @Last_Name NVARCHAR(15),
-    @Gender CHAR(1),
-    @Date_Of_Birth DATE,
+    @Password VARCHAR(50) = NULL,
     @Weight DECIMAL(5,2),
     @Height DECIMAL(5,2),
     @Blood_Type CHAR(3),
@@ -114,34 +145,62 @@ CREATE PROCEDURE Update_User_Profile
 )
 AS
 BEGIN
+    SET NOCOUNT ON;
+
+    -- Check if user exists
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE Id_User = @Id_User)
+    BEGIN
+        SELECT 'UserNotFound' AS Status;
+        RETURN;
+    END
+
+    -- Update basic info
     UPDATE Users
     SET 
-        First_Name = @First_Name,
-        Last_Name = @Last_Name,
-        Gender = @Gender,
-        Date_Of_Birth = @Date_Of_Birth,
         Weight = @Weight,
         Height = @Height,
         Blood_Type = @Blood_Type,
         Health_Status = @Health_Status
     WHERE Id_User = @Id_User;
+
+
+    -- Update password only if user sent a new one
+    IF @Password IS NOT NULL AND @Password <> ''
+    BEGIN
+        UPDATE Users
+        SET Password = @Password
+        WHERE Id_User = @Id_User;
+    END
+
+    SELECT 'ProfileUpdated' AS Status;
 END
+
 
 Go
 
 -- Test SP
 
+-- تعديل البيانات بدون تغيير الباسورد
+
 EXEC Update_User_Profile
     @Id_User = 9,
-    @First_Name = N'Mohamed',
-    @Last_Name = N'Salah',
-    @Gender = 'M',
-    @Date_Of_Birth = '1999-03-22',
-    @Weight = 75.2,
-    @Height = 178.0,
-    @Blood_Type = 'O+',
-    @Health_Status = N'Excellent';
+    @Password = NULL,        -- مش هيتغير
+    @Weight = 70.5,
+    @Height = 175.2,
+    @Blood_Type = 'A+',
+    @Health_Status = 'Good';
 
+---------------------------------------
+
+-- تعديل البيانات + تغيير الباسورد
+
+EXEC Update_User_Profile
+    @Id_User = 9,
+    @Password = 'NewPass123',  -- هيتغير
+    @Weight = 68.0,
+    @Height = 176.0,
+    @Blood_Type = 'O+',
+    @Health_Status = 'Excellent';
 
 -- ------------------------------------------------------------------------ --
 
@@ -805,28 +864,6 @@ EXEC Create_Request @Id_User = 9, @Medicine_Name = N'Panadol Extra', @Quantity =
 
 -- ------------------------------------------------------------------------ --
 
--- يعني وجوده مربوط بوجود طلب، وبيعني إن الصيدلي وافق على توفير الدواء. 
-
-Go
-
-CREATE TRIGGER TR_Update_Request_Status_On_Availability
-ON Medicine_Availability
-AFTER INSERT
-AS
-BEGIN
-    UPDATE Medicine_Requests
-    SET Order_Status = 'A'
-    WHERE Id_Request IN (SELECT Id_Request FROM INSERTED);
-END
-
-Go
-
--- A = تم الموافقة
--- وتتحدد تلقائيًا لما يتضاف Availability
-
-
--- ------------------------------------------------------------------------ --
-
 
 -- 5.2 : Get_User_Requests
 
@@ -859,6 +896,69 @@ Go
 -- جلب طلبات مستخدم:
 
 EXEC Get_User_Requests @Id_User = 9;
+
+-- ------------------------------------------------------------------------ --
+
+-- 5.3 : Respond_To_Request
+
+-- رد الصيدلي علي الطلب
+
+Go
+
+CREATE PROCEDURE Respond_To_Request
+(
+    @Id_Request INT,
+    @Id_User_PH INT,
+    @Available_Quantity INT
+)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    --👇 1) التحقق أن الطلب موجود
+    IF NOT EXISTS (SELECT 1 FROM Medicine_Requests WHERE Id_Request = @Id_Request)
+    BEGIN
+        RAISERROR ('Request Not Found', 16, 1);
+        RETURN;
+    END
+
+    --👇 2) التحقق أن المستخدم صيدلي فعلاً
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE Id_User = @Id_User_PH AND Role = N'Pharmacy')
+    BEGIN
+        RAISERROR ('User is not a Pharmacist', 16, 1);
+        RETURN;
+    END
+
+    --👇 3) إدخال كمية التوفر
+    INSERT INTO Medicine_Availability (Available_Quantity, Id_Request, Id_User_PH)
+    VALUES (@Available_Quantity, @Id_Request, @Id_User_PH);
+
+    --👇 4) تحديث حالة الطلب → Responded (R)
+    UPDATE Medicine_Requests
+    SET Order_Status = 'R'
+    WHERE Id_Request = @Id_Request;
+
+    --👇 5) إرسال إشعار لصاحب الطلب
+    DECLARE @Id_User_Requester INT;
+
+    SELECT @Id_User_Requester = Id_User
+    FROM Medicine_Requests
+    WHERE Id_Request = @Id_Request;
+
+    INSERT INTO Notifications (Id_User, Id_Request)
+    VALUES (@Id_User_Requester, @Id_Request);
+
+END
+
+Go
+
+-- Test SP
+
+EXEC Respond_To_Request
+    @Id_Request = 5,
+    @Id_User_PH = 5,
+    @Available_Quantity = 3;
+
 
 -- ======================================================================== --
 
@@ -953,6 +1053,10 @@ EXEC Get_User_Notifications @Id_User = 9;
 
 
 -- الأدمن (Block / Unblock User)
+--------------------------------
+
+-- الادمن يحظر مستخدم
+-- Admin Block User
 
 Go
 
@@ -965,11 +1069,41 @@ BEGIN
     WHERE Id_User = @Id_User;
 END
 
-
 Go
+
+-- Test SP
+
+-- حظر مستخدم
+
+EXEC Admin_Block_User @Id_User = 9;
+
 
 -- ------------------------------------------------------------------------ --
 
+-- الادمن فك الحظر عن مستخدم
+-- Admin Unblock User
+
+Go
+
+CREATE PROCEDURE Admin_Unblock_User
+    @Id_User INT
+AS
+BEGIN
+    UPDATE Users
+    SET Block_Status = 'A'
+    WHERE Id_User = @Id_User;
+END
+
+Go
+
+-- Test SP
+
+-- فك الحظر عن المستخدم
+
+EXEC Admin_Unblock_User @Id_User = 9;
+
+
+-- ------------------------------------------------------------------------ --
 
 -- منع اليوزر البلوك من تسجيل الدخول
 
@@ -977,27 +1111,94 @@ Go
 
 Go
 
-ALTER PROCEDURE Login_User
+Create PROCEDURE Login_User
     @Email VARCHAR(255),
     @Password VARCHAR(50)
 AS
 BEGIN
-    IF EXISTS (
-        SELECT 1 FROM Users 
-        WHERE Email = @Email AND Password = @Password AND Block_Status = 'B'
-    )
+    SET NOCOUNT ON;
+
+    --------------------------------------------------
+    -- 1) Check if email exists
+    --------------------------------------------------
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
     BEGIN
-        SELECT 'User is blocked' AS Message;
+        SELECT 'EmailNotFound' AS Status;
         RETURN;
     END
 
-    SELECT Id_User, First_Name, Last_Name, Role
+    --------------------------------------------------
+    -- 2) Check if user is blocked
+    --------------------------------------------------
+    IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email AND Block_Status = 'B')
+    BEGIN
+        SELECT 'UserBlocked' AS Status;
+        RETURN;
+    END
+
+    --------------------------------------------------
+    -- 3) Check password
+    --------------------------------------------------
+    IF NOT EXISTS (SELECT 1 FROM Users WHERE Email = @Email AND Password = @Password)
+    BEGIN
+        SELECT 'WrongPassword' AS Status;
+        RETURN;
+    END
+
+    --------------------------------------------------
+    -- 4) Successful login → return user data
+    --------------------------------------------------
+    SELECT 
+        'LoginSuccess' AS Status,
+        Id_User,
+        First_Name,
+        Last_Name,
+        Role
     FROM Users
     WHERE Email = @Email AND Password = @Password;
-END
-
+END;
 
 Go
+
+-- Test SP
+
+-- الإيميل مش موجود
+-- EmailNotFound
+
+EXEC Login_User
+    @Email = 'NotExist@test.com',
+    @Password = '12345';
+
+-----------------------------------------
+
+-- اليوزر موجود لكنه محظور
+-- UserBlocked
+
+EXEC Login_User
+    @Email = 'ahmed_test@example.com',
+    @Password = '123456';
+
+-----------------------------------------
+
+-- الإيميل موجود لكن الباسورد غلط
+-- WrongPassword
+
+EXEC Login_User
+    @Email = 'test@gmail.com',
+    @Password = 'WrongPassword';
+
+-----------------------------------------
+
+-- تسجيل دخول ناجح
+-- LoginSuccess
+
+EXEC Login_User
+    @Email = 'test@gmail.com',
+    @Password = '123456';
+
+
+-- ======================================================================== --
+
 
 
 

@@ -40,7 +40,7 @@ Create Table Users
 	Blood_Type Char(3) ,
 	Health_Status NVarchar(30) ,
 	Create_At SMALLDATETIME NOT NULL DEFAULT GETDATE() ,
-	Block_Status Char(1) NOT NULL DEFAULT 'A'    -- 'A' = Active  ,  'B' = Blocked
+	Block_Status Char(1) NOT NULL DEFAULT 'A'    -- 'A' = Active  ,  'B' = Block
 )
 
 ------------------------------------------------------
