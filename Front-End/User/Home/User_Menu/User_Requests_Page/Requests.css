@@ -594,7 +594,8 @@ body {
 /* الكارت الواحد */
 .request-card ,
 .request-order {
-  width: 350px;
+  width: 100%;
+  height: max-content;
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -683,7 +684,8 @@ color: #fff;
 
 .btn {
   flex: 1;
-  padding: 10px 30px;
+  padding: 13px 30px;
+  margin-top: 8px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -698,7 +700,7 @@ color: #fff;
   gap: 7px;                   /* <── مسافة صغيرة بين الأيقونة والنص */
 }
 
-.btn.edit {
+/* .btn.edit {
   background: linear-gradient(90deg, #00c6ff, #0072ff);
 }
 
@@ -712,7 +714,7 @@ color: #fff;
 
 .btn.delete:hover {
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
-}
+} */
 
 .btn.view {
   background: linear-gradient(90deg, #43e97b, #38f9d7);
