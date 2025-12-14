@@ -71,7 +71,7 @@
 
             <li><a href="../Home/User_Menu/User_Requests_Page/Requests.html"><i class="fa-regular fa-folder-open"></i> الطلبات</a></li>
             <li><a href="#">⚙️ الإعدادات</a></li>
-            <li><a id="logout">🚪 تسجيل الخروج</a></li>
+            <li><a id="logout" class="btn-logout">🚪 تسجيل الخروج</a></li>
           </ul>
         </div>
       </div>
@@ -284,7 +284,17 @@
     </button>
     <!-- End scroll To Top Btn -->
 
+<script src="../../shared/backendApi.js"></script>
+<script>
+  window.__ROLE_GUARD__ = { allow: ["User"] };
+</script>
+<script src="../../shared/role-guard.js"></script>
 
+<script src="../../shared/logout.js"></script>
+
+
+<script src="../../shared/config.js"></script>
+<script src="../../shared/apiClient.js"></script>
 
     <script src="../Home/User.js"></script>
     <script src="api.js"></script>

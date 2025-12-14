@@ -60,12 +60,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Jwt Service
 builder.Services.AddScoped<JwtService>();
 
-// CORS (for Frontend)
+// ✅ CORS (for Frontend dev server)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("FrontDev", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -119,7 +119,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 {
                     // ✅ علامة نستخدمها في OnChallenge عشان نرجع 403 برسالة
                     context.HttpContext.Items["AUTH_BLOCKED"] = true;
-
                     context.Fail("User is blocked");
                     return;
                 }
@@ -128,7 +127,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             // ✅ هنا هنحوّل blocked إلى 403 + JSON
             OnChallenge = async context =>
             {
-                // لو blocked
                 if (context.HttpContext.Items.ContainsKey("AUTH_BLOCKED"))
                 {
                     context.HandleResponse(); // يمنع الـ 401 الافتراضي
@@ -152,7 +150,9 @@ var app = builder.Build();
 // ======================
 // Middleware pipeline
 // ======================
-app.UseCors("AllowAll");
+
+// ✅ CORS لازم يبقى بدري قبل auth/authorization
+app.UseCors("FrontDev");
 
 if (app.Environment.IsDevelopment())
 {
@@ -160,7 +160,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// ✅ في الديفلوپمنت بلاش HTTPS redirection عشان مايكسرش fetch من live server
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

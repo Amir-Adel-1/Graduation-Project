@@ -90,26 +90,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// Start button to hide
+// عدد الإشعارات (بدل الرقم ده هتجيبه من API)
+let newNotifications = 5;
 
-window.addEventListener("scroll", () => {
-  const arrows = document.querySelectorAll(".tips-navigation a");
-  const glassCard = document.querySelector(".tips-section"); // الكرت اللي فيه الازاز
-  
-  if (!glassCard) return;
+const badge = document.getElementById("notifBadge");
 
-  const rect = glassCard.getBoundingClientRect();
-  const windowHeight = window.innerHeight;
-
-  // لو الكرت طلع لفوق وعدّى نهايته → يخفي الأسهم
-  if (rect.bottom <= windowHeight * 0.8) {
-    arrows.forEach(a => a.classList.add("hidden"));
-  } else {
-    arrows.forEach(a => a.classList.remove("hidden"));
-  }
-});
-
-// End button to hide
-
-
-
+if (newNotifications > 0) {
+    badge.innerText = newNotifications;
+    badge.style.display = "inline-block";
+} else {
+    badge.style.display = "none";
+}

@@ -48,7 +48,7 @@
           <ul>
             <li><a href="../Home/Pharmacy_Menu/Pharmacy_Profile_Page/Pharmacy_Profile.html" class="active">👤 الملف الشخصي</a></li>
             <li><a href="#">⚙️ الإعدادات</a></li>
-            <li><a id="exit">🚪 تسجيل الخروج</a></li>
+            <li><a id="exit" class="btn-logout">🚪 تسجيل الخروج</a></li>
           </ul>
         </div>
       </div>
@@ -236,6 +236,17 @@
     <!-- End scroll To Top Btn -->
 
 
+<script src="../../shared/backendApi.js"></script>
+<script>
+  window.__ROLE_GUARD__ = { allow: ["Pharmacy"] };
+</script>
+<script src="../../shared/role-guard.js"></script>
+
+<script src="../../shared/logout.js"></script>
+
+
+<script src="../../shared/config.js"></script>
+<script src="../../shared/apiClient.js"></script>
 
     <script src="Pharmacy.js"></script>
   </body>
