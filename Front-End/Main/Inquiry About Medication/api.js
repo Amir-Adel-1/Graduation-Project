@@ -1,659 +1,509 @@
-// API Configuration
-const API_KEY = "AIzaSyCzPROI_jnS8pxYDLYqyNRkPFplWpCs2sw";
-const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent";
+// ==========================================================
+// ✅ FREE CONFIG (OCR.space + OpenFDA + Arabic Translation)
+// ==========================================================
+const OCR_API_KEY = "K84011146488957"; // OCR.space key
+const OPENFDA_LABEL_URL = "https://api.fda.gov/drug/label.json";
+const TRANSLATE_TO_AR = true;
 
-// DOM Elements
-const drugInput = document.getElementById('drugInput');
-const drugSendBtn = document.getElementById('drugSendBtn');
-const attachDrugBtn = document.getElementById('attachDrugBtn');
-const drugFileInput = document.getElementById('drugFileInput');
-const drugResult = document.getElementById('drugResult');
+// حد آمن للـ query عشان ما نعديش 500 char بعد الـ encoding
+const MYMEMORY_SAFE_CHUNK = 420;
 
-// State
-let isProcessing = false;
-let currentRequestType = null; // 'text' or 'image'
+// أقصى عدد أدوية نطلعهم من الروشتة (عشان مايبقاش بطئ)
+const MAX_MEDS_FROM_RX = 8;
 
-// Initialize the application
-function init() {
-    setupEventListeners();
+// ==========================================================
+// 🌍 Helpers
+// ==========================================================
+function isMyMemoryErrorText(t) {
+  const s = String(t || "").toLowerCase();
+  return (
+    s.includes("query length limit exceeded") ||
+    s.includes("max allowed query") ||
+    s.includes("invalid language pair") ||
+    s.includes("too many requests") ||
+    s.includes("rate limit") ||
+    s.includes("invalid request")
+  );
 }
 
-// Set up event listeners
-function setupEventListeners() {
-    // Removed duplicate event listeners to prevent conflicts
-    // All event handling is now in Inquiry About Medication.js
-    return;
+function containsArabic(text) {
+  return /[\u0600-\u06FF]/.test(String(text || ""));
 }
 
-// Handle send button click
-async function handleSendClick() {
-    const text = drugInput.value.trim();
-    
-    if (isProcessing) return;
-    
-    if (text) {
-        currentRequestType = 'text';
-        await processMedicationRequest(text);
-    } else if (currentRequestType === 'image') {
-        // Already processing an image
-        return;
-    } else {
-        // No text and no image selected
-        showMessage('الرجاء إدخال اسم الدواء أو رفع صورة', 'error');
+function cleanForOpenFdaQuery(name) {
+  // إزالة علامات ممكن تكسر الـ query + تقليل المسافات
+  return String(name || "")
+    .replace(/["]/g, "")
+    .replace(/[^\w\s\-+]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// ناخد أول N جملة لتقليل الحجم + تحسين الترجمة
+function takeFirstSentences(t, n = 6) {
+  const s = String(t || "").replace(/\r/g, "\n").trim();
+  if (!s) return s;
+
+  const parts = s
+    .split(/(?:\n+|(?<=\.)\s+|;\s+)/g)
+    .map(x => x.trim())
+    .filter(Boolean);
+
+  return parts.slice(0, n).join(" ");
+}
+
+// ==========================================================
+// 🌍 Translate (MyMemory) - SAFE
+// ==========================================================
+async function translateEnToAr(text) {
+  try {
+    const t = String(text || "").trim();
+    if (!t || t === "غير متوفر") return t;
+
+    const clipped =
+      t.length > MYMEMORY_SAFE_CHUNK ? t.slice(0, MYMEMORY_SAFE_CHUNK) + "..." : t;
+
+    const url =
+      "https://api.mymemory.translated.net/get?q=" +
+      encodeURIComponent(clipped) +
+      "&langpair=en|ar";
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data?.responseStatus && data.responseStatus !== 200) {
+      return `⚠️ (تعذّرت الترجمة) ${t}`;
     }
+
+    const translated = data?.responseData?.translatedText;
+    if (!translated) return `⚠️ (تعذّرت الترجمة) ${t}`;
+
+    if (isMyMemoryErrorText(translated)) return `⚠️ (تعذّرت الترجمة) ${t}`;
+    return translated;
+  } catch {
+    return `⚠️ (تعذّرت الترجمة) ${String(text || "")}`;
+  }
 }
 
-// Handle file selection
-async function handleFileSelect(event) {
-    if (isProcessing) return;
-    
-    const file = event.target.files[0];
-    if (!file) return;
-    
-    // Check if file is an image
-    if (!file.type.startsWith('image/')) {
-        showMessage('الرجاء رفع صورة صالحة', 'error');
-        return;
-    }
-    
-    currentRequestType = 'image';
-    updateUIForProcessing(true);
-    
-    try {
-        // Read the image file
-        const base64Image = await readFileAsBase64(file);
-        await processMedicationRequest(null, base64Image);
-    } catch (error) {
-        console.error('Error processing image:', error);
-        showMessage('حدث خطأ أثناء معالجة الصورة', 'error');
-        resetForm();
-    }
+// ترجمة نص طويل EN→AR بتقطيع آمن
+async function translateLongTextEnToAr(text) {
+  const t = String(text || "").trim();
+  if (!t || t === "غير متوفر") return t;
+
+  const parts = t
+    .replace(/\r/g, "\n")
+    .split(/(?:\n+|(?<=\.)\s+|;\s+)/g)
+    .map(p => p.trim())
+    .filter(Boolean);
+
+  const translatedParts = [];
+  for (const part of parts) {
+    const safePart =
+      part.length > MYMEMORY_SAFE_CHUNK ? part.slice(0, MYMEMORY_SAFE_CHUNK) + "..." : part;
+
+    const tr = await translateEnToAr(safePart);
+    translatedParts.push(tr);
+  }
+  return translatedParts.join(" ");
 }
 
-// Process medication request (text or image)
-async function processMedicationRequest(text = null, imageBase64 = null) {
-    if (isProcessing) return;
-    
-    isProcessing = true;
-    updateUIForProcessing(true);
-    
-    try {
-        let response;
-        
-        if (text) {
-            // Process text input
-            response = await getMedicationInfo(text);
-        } else if (imageBase64) {
-            // Process image input
-            // First, we need to extract text from the image using OCR
-            const extractedText = await extractTextFromImage(imageBase64);
-            if (!extractedText) {
-                throw new Error('لم نتمكن من قراءة النص من الصورة');
-            }
-            response = await getMedicationInfo(extractedText);
-        } else {
-            throw new Error('لا يوجد إدخال صالح');
-        }
-        
-        // Display the response
-        displayMedicationInfo(response);
-        updateUIForProcessing(false, true);
-    } catch (error) {
-        console.error('Error:', error);
-        showMessage(error.message || 'حدث خطأ أثناء معالجة طلبك', 'error');
-        resetForm();
-    } finally {
-        isProcessing = false;
-    }
+// (اختياري) ترجمة AR→EN للاسم فقط لو المستخدم كتب بالعربي
+async function translateArToEn(text) {
+  try {
+    const t = String(text || "").trim();
+    if (!t) return t;
+
+    const clipped = t.length > 120 ? t.slice(0, 120) : t;
+
+    const url =
+      "https://api.mymemory.translated.net/get?q=" +
+      encodeURIComponent(clipped) +
+      "&langpair=ar|en";
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data?.responseStatus && data.responseStatus !== 200) return t;
+
+    const translated = data?.responseData?.translatedText;
+    if (!translated) return t;
+
+    if (isMyMemoryErrorText(translated)) return t;
+    return translated;
+  } catch {
+    return text;
+  }
 }
 
-// Get medication information from Gemini API
+// ==========================================================
+// ✅ Better Interaction Extraction (fallback if missing)
+// ==========================================================
+function pickInteractionText(result) {
+  const direct = result?.drug_interactions?.[0];
+  if (direct && String(direct).trim()) return direct;
+
+  const fallback =
+    result?.warnings?.[0] ||
+    result?.precautions?.[0] ||
+    result?.clinical_pharmacology?.[0] ||
+    "";
+
+  if (!fallback) return "";
+
+  const sentences = String(fallback)
+    .replace(/\r/g, "\n")
+    .split(/(?:\n+|(?<=\.)\s+)/g)
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const keys = [
+    "interact", "interaction", "contraind", "avoid",
+    "cyp", "inhibitor", "inducer", "qt", "serotonin",
+    "warfarin", "rifamp", "azole", "grapefruit",
+    "maoi", "ssri", "snri", "opioid", "alcohol"
+  ];
+
+  const picked = sentences.filter(s => {
+    const low = s.toLowerCase();
+    return keys.some(k => low.includes(k));
+  });
+
+  if (!picked.length) return sentences.slice(0, 4).join(" ");
+  return picked.slice(0, 8).join(" ");
+}
+
+// ==========================================================
+// 📷 OCR.space – Extract FULL text from image (for prescriptions)
+// ==========================================================
+async function extractFullTextFromImage(fileOrBase64) {
+  let file = fileOrBase64;
+
+  if (typeof fileOrBase64 === "string" && fileOrBase64.startsWith("data:")) {
+    const res = await fetch(fileOrBase64);
+    const blob = await res.blob();
+    file = new File([blob], "image.jpg", { type: blob.type || "image/jpeg" });
+  }
+
+  const formData = new FormData();
+  formData.append("apikey", OCR_API_KEY);
+
+  // لو روشتك أحيانًا عربي، تقدري تغيّريها لـ "ara" أو تعملي switch من UI
+  formData.append("language", "eng");
+
+  formData.append("isOverlayRequired", "false");
+  formData.append("OCREngine", "2");
+  formData.append("file", file);
+
+  const response = await fetch("https://api.ocr.space/parse/image", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (data?.IsErroredOnProcessing) {
+    throw new Error(data?.ErrorMessage?.[0] || "OCR failed");
+  }
+
+  let extractedText = data?.ParsedResults?.[0]?.ParsedText || "";
+  extractedText = extractedText.replace(/\r/g, "\n").trim();
+
+  if (!extractedText) throw new Error("لم يتم العثور على نص في الصورة");
+  return extractedText;
+}
+
+// ==========================================================
+// 🧾 Extract drug list from OCR text (روشتة)
+// ==========================================================
+function extractDrugNamesFromPrescription(ocrText) {
+  const raw = String(ocrText || "").replace(/\r/g, "\n");
+
+  const stop = new Set([
+    "tab", "tabs", "tablet", "tablets", "cap", "caps", "capsule", "capsules",
+    "syrup", "cream", "ointment", "drop", "drops", "spray", "amp", "amps",
+    "once", "twice", "daily", "bid", "tid", "qid", "prn", "before", "after",
+    "meal", "meals", "morning", "night", "noon", "mg", "g", "mcg", "ml",
+    "take", "use", "x", "for", "days", "day"
+  ]);
+
+  const lines = raw
+    .split("\n")
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const candidates = [];
+
+  for (let line of lines) {
+    line = line
+      .replace(/\b\d+\s*(mg|g|mcg|ml)\b/gi, " ")
+      .replace(/\b\d+\/\d+\b/g, " ")
+      .replace(/\b\d+\b/g, " ")
+      .replace(/[^\w\s\-]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (!line) continue;
+
+    const hasLatin = /[a-zA-Z]/.test(line);
+    if (!hasLatin) continue;
+
+    const words = line.split(" ").filter(Boolean);
+
+    const filtered = words
+      .map(w => w.trim())
+      .filter(w => w.length >= 3)
+      .filter(w => !stop.has(w.toLowerCase()));
+
+    if (!filtered.length) continue;
+
+    const name = filtered.slice(0, 3).join(" ").trim();
+
+    if (name.length < 3 || name.length > 40) continue;
+
+    candidates.push(name);
+  }
+
+  const unique = [];
+  const seen = new Set();
+  for (const c of candidates) {
+    const key = c.toLowerCase();
+    if (!seen.has(key)) {
+      seen.add(key);
+      unique.push(c);
+    }
+  }
+
+  return unique.slice(0, MAX_MEDS_FROM_RX);
+}
+
+// ==========================================================
+// 💊 OpenFDA – Medication Info (Arabic) — one drug
+// ==========================================================
 async function getMedicationInfo(query) {
-    try {
-        const prompt = `
-        ابحث عن المعلومات الطبية للدواء: "${query}"
-        
-        أجب دائمًا بنفس التنسيق التالي بالضبط:
-        
-        <div class="medication-info">
-            <strong>الاسم التجاري:</strong> [الاسم التجاري]
-            <strong>الاسم العلمي:</strong> [الاسم العلمي]
-            <strong>الاستخدامات:</strong> [الاستخدامات الطبية]
-            <strong>الجرعة:</strong> [الجرعات الموصى بها]
-            <strong>الآثار الجانبية:</strong> [الآثار الجانبية الشائعة]
-            <strong>التحذيرات:</strong> [التحذيرات الهامة]
-            <strong>التفاعلات الدوائية:</strong> [التفاعلات المهمة]
-        </div>
-        
-        ملاحظات مهمة:
-        1. لا تكرر اسم الدواء في البداية
-        2. لا تستخدم علامات الماركداون مثل ** أو ##
-        3. أجب بالعربية الفصحى فقط
-        `;
-        
-        // If this is an image analysis request, use the vision model
-        if (query === 'صورة دواء') {
-            const extractedText = await extractTextFromImage(query);
-            return getMedicationInfo(extractedText || 'دواء');
-        }
-        
-        const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{
-                        text: prompt
-                    }]
-                }],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 1024,
-                }
-            })
-        });
-        
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error?.message || 'فشل في الحصول على معلومات الدواء');
-        }
-        
-        const data = await response.json();
-        let result = data.candidates?.[0]?.content?.parts?.[0]?.text || 'لم يتم العثور على معلومات لهذا الدواء';
-        
-        // Clean up any remaining markdown
-        result = result
-            .replace(/\*\*/g, '')  // Remove **
-            .replace(/##/g, '')     // Remove ##
-            .replace(/\n\n/g, '<br><br>') // Ensure proper line breaks
-            .replace(/\n/g, '<br>');
-            
-        return result;
-    } catch (error) {
-        console.error('Error getting medication info:', error);
-        return 'عذراً، حدث خطأ أثناء البحث عن معلومات الدواء. يرجى المحاولة مرة أخرى.';
+  try {
+    let name = String(query || "").trim();
+    if (!name) return "❌ اسم الدواء غير صالح.";
+
+    // لو الاسم عربي → نحاول نحوله لإنجليزي (عشان OpenFDA)
+    if (containsArabic(name)) {
+      const en = await translateArToEn(name);
+      name = en || name;
     }
-}
 
-// Extract text from image using Gemini's vision capabilities
-async function extractTextFromImage(base64Image) {
-    try {
-        // Ensure we have valid base64 data
-        let imageData = base64Image;
-        if (typeof base64Image === 'string' && base64Image.startsWith('data:')) {
-            // Extract just the base64 part if it's a data URL
-            imageData = base64Image.split(',')[1];
-        }
+    const safe = cleanForOpenFdaQuery(name);
+    if (!safe) return "❌ اسم الدواء غير صالح.";
 
-        const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [
-                        { text: "اقرأ النص الموجود في صورة الدواء. أعد كتابة أسماء الأدوية أو المكونات النشطة فقط، من فضلك لا تقدم أي تفسيرات أو نصوص إضافية." },
-                        {
-                            inlineData: {
-                                mimeType: "image/jpeg",
-                                data: imageData
-                            }
-                        }
-                    ]
-                }]
-            })
-        });
-        
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('API Error:', errorData);
-            throw new Error('فشل في قراءة النص من الصورة');
-        }
-        
-        const data = await response.json();
-        console.log('API Response:', data); // Debug log
-        
-        let extractedText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        
-        if (!extractedText) {
-            throw new Error('لم يتم العثور على نص في الصورة');
-        }
-        
-        // Clean up the extracted text
-        extractedText = extractedText
-            .replace(/^['"\s]+|['"\s]+$/g, '') // Remove surrounding quotes and whitespace
-            .replace(/\n/g, ' ')                 // Replace newlines with spaces
-            .replace(/\s+/g, ' ')                // Collapse multiple spaces
-            .trim();
-            
-        if (!extractedText) {
-            throw new Error('النص المستخرج فارغ');
-        }
-            
-        return extractedText;
-    } catch (error) {
-        console.error('OCR Error:', error);
-        throw new Error('فشل في معالجة الصورة: ' + (error.message || 'حدث خطأ غير معروف'));
+    // ✅ بحث أقوى (Exact + Wildcard + Full-text fallback)
+    const searches = [
+      `openfda.brand_name:"${safe}"`,
+      `openfda.generic_name:"${safe}"`,
+      `openfda.brand_name:${safe}*`,
+      `openfda.generic_name:${safe}*`,
+      `${safe}`
+    ];
+
+    let result = null;
+
+    for (const s of searches) {
+      const url = `${OPENFDA_LABEL_URL}?search=${encodeURIComponent(s)}&limit=1`;
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (data?.results?.length) {
+        result = data.results[0];
+        break;
+      }
     }
-}
 
-// Display medication information in the result area
-function displayMedicationInfo(info) {
-    if (!info) return;
-    
-    // Check if the response indicates it's not a medication
-    if (info.includes('هذا ليس دواءً معروفًا') || info.includes('ليس دواء')) {
-        showMessage('هذا ليس دواءً معروفًا. يرجى التحقق من الاسم والمحاولة مرة أخرى.', 'error');
-        return;
+    if (!result) {
+      return `❌ لم يتم العثور على هذا الدواء في OpenFDA.
+جرّب اسم تاني/كتابة أدق بالإنجليزي.
+(الاسم: ${safe})`;
     }
-    
-    // Convert markdown to HTML
-    const htmlContent = marked.parse(info);
-    
-    // Display the result
-    drugResult.innerHTML = `
-        <div class="medication-info">
-            <div class="medication-content">${htmlContent}</div>
-        </div>
-    `;
-}
 
-// Show a message to the user
-function showMessage(message, type = 'info') {
-    drugResult.innerHTML = `
-        <div class="message ${type}">
-            <p>${message}</p>
-        </div>
-    `;
-}
+    const brand = result?.openfda?.brand_name?.[0] || safe;
+    const generic = result?.openfda?.generic_name?.[0] || "غير متوفر";
 
-// Update UI based on processing state
-function updateUIForProcessing(isProcessing, isComplete = false) {
-    if (isProcessing) {
-        drugSendBtn.disabled = true;
-        drugInput.disabled = true;
-        attachDrugBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        drugResult.innerHTML = '<div class="loading">جاري البحث عن معلومات الدواء...</div>';
-    } else if (isComplete) {
-        // Processing complete, show retry button
-        attachDrugBtn.innerHTML = '<i class="fa-solid fa-rotate-left"></i>';
-        attachDrugBtn.title = 'إعادة المحاولة';
-        drugInput.value = '';
-        drugInput.placeholder = 'يمكنك البحث عن دواء آخر...';
-        drugSendBtn.disabled = false;
-        drugInput.disabled = false;
-    } else {
-        // Reset to initial state
-        resetForm();
+    // ✅ خدي أول كام جملة لتقليل الضخامة + تحسين الترجمة
+    let uses = takeFirstSentences(result?.indications_and_usage?.[0] || "غير متوفر", 6);
+    let dosage = takeFirstSentences(result?.dosage_and_administration?.[0] || "غير متوفر", 6);
+    let adverse = takeFirstSentences(result?.adverse_reactions?.[0] || "غير متوفر", 6);
+    let warnings = takeFirstSentences(
+      result?.warnings?.[0] || result?.boxed_warning?.[0] || "غير متوفر",
+      6
+    );
+    let interactions = takeFirstSentences(pickInteractionText(result) || "غير متوفر", 6);
+
+    if (TRANSLATE_TO_AR) {
+      uses = await translateLongTextEnToAr(uses);
+      dosage = await translateLongTextEnToAr(dosage);
+      adverse = await translateLongTextEnToAr(adverse);
+      warnings = await translateLongTextEnToAr(warnings);
+      interactions = await translateLongTextEnToAr(interactions);
     }
+
+    const footer = "تنبيه: المعلومات هنا للتوعية ولا تُغني عن استشارة الطبيب أو الصيدلي.";
+
+    return `
+==============================
+💊 ${brand}
+==============================
+الاسم العلمي: ${generic}
+
+الاستخدامات:
+${uses}
+
+الجرعة:
+${dosage}
+
+الآثار الجانبية:
+${adverse}
+
+التحذيرات:
+${warnings}
+
+التفاعلات الدوائية:
+${interactions}
+
+${footer}
+`.trim();
+  } catch {
+    return "❌ حدث خطأ أثناء جلب معلومات الدواء.";
+  }
 }
-
-// Reset the form to its initial state
-function resetForm() {
-    drugInput.value = '';
-    drugInput.placeholder = '💊 اكتب اسم الدواء هنا...';
-    drugFileInput.value = '';
-    attachDrugBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
-    attachDrugBtn.title = 'إضافة مرفق';
-    drugSendBtn.disabled = false;
-    drugInput.disabled = false;
-    currentRequestType = null;
-    isProcessing = false;
-    
-    // Reset the file input to allow selecting the same file again
-    drugFileInput.type = '';
-    drugFileInput.type = 'file';
-}
-
-// Helper function to read file as base64
-function readFileAsBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
-
-// Initialize the application when the DOM is loaded
-document.addEventListener('DOMContentLoaded', init);
-
-
-
-
-
-
 
 // ==========================================================
-// 📌  الجزء الثالث: نظام الدردشة مع typewriter effect
+// 💬 Chat UI + Typewriter
 // ==========================================================
-
-// Simple markdown parser for typewriter effect
 function parseMarkdown(text) {
-  if (!text) return '';
-  
-  return text
-    // Headers (###)
-    .replace(/### (.*)/g, '<h3>$1</h3>')
-    // Bold (***text*** or **text**)
-    .replace(/\*\*\*(.*?)\*\*\*/g, '<strong>$1</strong>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    // Italic (*text*)
-    .replace(/\*(?!\*)(.*?)\*(?!\*)/g, '<em>$1</em>')
-    // Line breaks
-    .replace(/\n/g, '<br>');
+  return String(text || "").replace(/\n/g, "<br>");
 }
-  
-  // Typewriter effect for AI responses with markdown support
-  function typeWriter(element, text, speed = 8) {
-    return new Promise((resolve) => {
-      // Parse markdown first
-      const parsedText = parseMarkdown(text);
-      let i = 0;
-      element.innerHTML = '';
-      
-      function type() {
-        if (i < parsedText.length) {
-          // Add characters one by one
-          element.innerHTML = parsedText.substring(0, i + 1);
-          i++;
-          
-          // Scroll to bottom as new content appears
-          const chatBody = document.getElementById('drugChatBody');
-          chatBody.scrollTop = chatBody.scrollHeight;
-          
-          // Vary the speed slightly for more natural effect
-          const delay = speed + (Math.random() * 10 - 5);
-          setTimeout(type, delay);
-        } else {
-          // Mark as complete to hide cursor
-          element.classList.add('typing-complete');
-          resolve();
-        }
-      }
-      
-      type();
-    });
-  }
-  
-  // Add message to chat with typewriter effect for bot messages
-async function addMessageToChat(text, sender = 'bot') {
-    const chatBody = document.getElementById('drugChatBody');
-    if (!chatBody) return;
 
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${sender}`;
-    
-    const messageContent = document.createElement('p');
-    messageDiv.appendChild(messageContent);
-    
-    chatBody.appendChild(messageDiv);
-    
-    if (sender === 'bot') {
-      await typeWriter(messageContent, text);
-    } else {
-      if (text.includes('<img')) {
-        messageContent.innerHTML = text;
-      } else {
-        messageContent.textContent = text;
-      }
+function typeWriter(element, text, speed = 8) {
+  return new Promise((resolve) => {
+    const parsedText = parseMarkdown(text);
+    let i = 0;
+    element.innerHTML = "";
+
+    function type() {
+      if (i < parsedText.length) {
+        element.innerHTML = parsedText.substring(0, i + 1);
+        i++;
+        const chatBody = document.getElementById("drugChatBody");
+        if (chatBody) chatBody.scrollTop = chatBody.scrollHeight;
+        setTimeout(type, speed);
+      } else resolve();
     }
-    
-    chatBody.scrollTop = chatBody.scrollHeight;
+    type();
+  });
 }
 
-// Lock chat UI and show retry button
-function lockChatUI() {
-  const sendBtn = document.getElementById('drugSendBtn');
-  const userInput = document.getElementById('drugInput');
-  const attachBtn = document.getElementById('attachDrugBtn');
-  
-  // Lock input and attach button
-  userInput.disabled = true;
-  attachBtn.disabled = true;
-  userInput.style.opacity = '0.5';
-  attachBtn.style.opacity = '0.5';
-  
-  // Change send button to retry icon and make it look clickable
-  sendBtn.innerHTML = '<i class="fa-solid fa-arrow-rotate-right"></i>';
-  sendBtn.classList.add('retry-btn');
-  sendBtn.style.opacity = '1'; // Reset opacity
-  sendBtn.style.cursor = 'pointer'; // Make cursor look clickable
-  
-  // Set up retry functionality to simply reload the page
-  sendBtn.onclick = function() {
-    window.location.reload();
-  };
+async function addMessageToChat(text, sender = "bot") {
+  const chatBody = document.getElementById("drugChatBody");
+  if (!chatBody) return;
+
+  const div = document.createElement("div");
+  div.className = `message ${sender}`;
+  const p = document.createElement("p");
+  div.appendChild(p);
+  chatBody.appendChild(div);
+
+  if (sender === "bot") {
+    await typeWriter(p, text);
+  } else {
+    p.innerHTML = String(text).includes("<img") ? text : text;
+  }
+
+  chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-// Lock chat UI immediately after user sends message
-function lockChatUIImmediate() {
-  const sendBtn = document.getElementById('drugSendBtn');
-  const userInput = document.getElementById('drugInput');
-  const attachBtn = document.getElementById('attachDrugBtn');
-  
-  // Lock input and attach button immediately
-  userInput.disabled = true;
-  attachBtn.disabled = true;
-  userInput.style.opacity = '0.5';
-  attachBtn.style.opacity = '0.5';
-  
-  // Change send button to loading state (keep send icon but don't disable)
-  sendBtn.style.opacity = '0.7';
-  sendBtn.style.cursor = 'not-allowed';
-  // Temporarily change onclick to prevent clicks during processing
-  sendBtn.onclick = null;
-}
-
-// Start a new chat session
-function startNewChat() {
-  const chatBody = document.getElementById('drugChatBody');
-  const sendBtn = document.getElementById('drugSendBtn');
-  const userInput = document.getElementById('drugInput');
-  const attachBtn = document.getElementById('attachDrugBtn');
-  
-  // Clear chat
-  chatBody.innerHTML = '';
-  
-  // Unlock UI
-  userInput.disabled = false;
-  attachBtn.disabled = false;
-  userInput.style.opacity = '1';
-  attachBtn.style.opacity = '1';
-  
-  // Reset send button to original send icon
-  sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>';
-  sendBtn.classList.remove('retry-btn');
-  sendBtn.onclick = handleSendMessage;
-  
-  // Focus input
-  userInput.focus();
-}
-
-// Typing indicator
+// 🔵 Typing Indicator (3 dots – زي ما كانت)
 function showTypingIndicator() {
-    const chatBody = document.getElementById('drugChatBody');
-  
-    const indicator = document.createElement('div');
-    indicator.className = 'message bot typing-indicator';
-    indicator.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-  
-    chatBody.appendChild(indicator);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  
-    return indicator;
-  }
-  
-  // Generate AI response - this is now just a wrapper for the API call
-  async function generateResponse(userPrompt) {
-    try {
-      // Delegate to the API function
-      return await getMedicationInfo(userPrompt);
-    } catch (error) {
-      console.error('Error in generateResponse:', error);
-      return 'عذراً، حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.';
-    }
-  }
-  
-  // Send message handler
+  const chatBody = document.getElementById("drugChatBody");
+
+  const indicator = document.createElement("div");
+  indicator.className = "message bot typing-indicator";
+  indicator.innerHTML = `
+    <div class="typing">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  `;
+
+  chatBody.appendChild(indicator);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  return indicator;
+}
+
+// ==========================================================
+// 🎯 Handlers
+// ==========================================================
 async function handleSendMessage() {
-  const userInput = document.getElementById('drugInput');
-  const message = userInput.value.trim();
-  
-  if (message === '') return;
-  
-  // Lock UI immediately after sending
-  lockChatUIImmediate();
-  
-  // Add user message to chat
-  await addMessageToChat(message, 'user');
-  
-  // Clear input
-  userInput.value = '';
-  
-  // Show typing indicator
-  const typingIndicator = showTypingIndicator();
-  
-  try {
-    // Generate and display AI response
-    const response = await generateResponse(message);
-    typingIndicator.remove();
-    await addMessageToChat(response, 'bot');
-    // Change to retry button after AI response
-    lockChatUI();
-  } catch (error) {
-    typingIndicator.remove();
-    await addMessageToChat('عذراً، حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.', 'bot');
-    // Change to retry button even on error
-    lockChatUI();
-  }
+  const input = document.getElementById("drugInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  await addMessageToChat(text, "user");
+  input.value = "";
+
+  const typing = showTypingIndicator();
+  const response = await getMedicationInfo(text);
+  typing.remove();
+  await addMessageToChat(response, "bot");
 }
 
-// Global flag to prevent multiple file dialogs
-let isProcessingFile = false;
-
-// File input change handler
-async function handleFileChange(event) {
-  const fileInput = event.target;
-  const file = fileInput.files[0];
+async function handleFileChange(e) {
+  const file = e.target.files?.[0];
   if (!file) return;
-  
-  // Lock UI immediately after file selection
-  lockChatUIImmediate();
-  
+
+  const imgURL = URL.createObjectURL(file);
+  await addMessageToChat(
+    `<img src="${imgURL}" style="max-width:200px;border-radius:10px;margin:10px 0;display:block;">`,
+    "user"
+  );
+
+  const typing = showTypingIndicator();
+
   try {
-    console.log('File selected:', file.name, 'Type:', file.type, 'Size:', file.size + ' bytes');
-    
-    // 1️⃣ Show the image in the chat first
-    const imageUrl = URL.createObjectURL(file);
-    const imageMessage = `<img src="${imageUrl}" style="max-width: 200px; border-radius: 10px; margin: 10px 0; display: block;">`;
-    await addMessageToChat(imageMessage, 'user');
-    
-    // 2️⃣ After adding the image → Show loading indicator
-    const typingIndicator = showTypingIndicator();
-    
-    try {
-      // Read the file as Base64
-      const base64Image = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          console.log('File successfully read as base64, length:', reader.result.length);
-          resolve(reader.result);
-        };
-        reader.onerror = error => {
-          console.error('Error reading file:', error);
-          reject(new Error('فشل في قراءة ملف الصورة'));
-        };
-        reader.readAsDataURL(file);
-      });
-      
-      console.log('Extracting text from image...');
-      // Extract text from image using OCR
-      const extractedText = await extractTextFromImage(base64Image);
-      console.log('Extracted text:', extractedText);
-      
-      if (!extractedText || extractedText.trim() === '') {
-        throw new Error('لم يتم العثور على نص في الصورة');
-      }
-      
-      console.log('Getting medication info for:', extractedText);
-      // Get medication information based on the extracted text
-      const medicationInfo = await getMedicationInfo(extractedText);
-      
-      // Remove loading indicator
-      typingIndicator.remove();
-      
-      // Show AI response
-      await addMessageToChat(medicationInfo, 'bot');
-      // Change to retry button after AI response
-      lockChatUI();
-      
-    } catch (error) {
-      console.error('Error in image processing:', error);
-      typingIndicator.remove();
-      await addMessageToChat(`عذراً، ${error.message || 'حدث خطأ أثناء معالجة الصورة'}.`, 'bot');
-      // Change to retry button even on error
-      lockChatUI();
+    const fullText = await extractFullTextFromImage(file);
+    const meds = extractDrugNamesFromPrescription(fullText);
+
+    if (!meds.length) {
+      typing.remove();
+      await addMessageToChat(
+        "❌ لم أستطع استخراج أسماء أدوية من الروشتة.\nجرّب صورة أوضح أو تكون الأسماء بالإنجليزي.",
+        "bot"
+      );
+      return;
     }
-    
-  } catch (error) {
-    await addMessageToChat('حدث خطأ غير متوقع.', 'bot');
-    // Change to retry button even on error
-    lockChatUI();
+
+    let combined = `🧾 تم التعرف على ${meds.length} دواء من الروشتة:\n- ${meds.join("\n- ")}\n\n`;
+
+    for (let i = 0; i < meds.length; i++) {
+      const medName = meds[i];
+      const info = await getMedicationInfo(medName);
+      combined += `\n\n${info}\n`;
+    }
+
+    typing.remove();
+    await addMessageToChat(combined.trim(), "bot");
+  } catch (err) {
+    typing.remove();
+    await addMessageToChat("❌ حصل خطأ أثناء قراءة الروشتة. جرّب صورة أوضح.", "bot");
   } finally {
-    const fileInput = document.getElementById('drugFileInput');
-    fileInput.value = '';
-    isProcessingFile = false;
+    const fi = document.getElementById("drugFileInput");
+    if (fi) fi.value = "";
   }
 }
 
-// Initialize chat
-function initChat() {
-  const sendBtn = document.getElementById('drugSendBtn');
-  const userInput = document.getElementById('drugInput');
-  const attachBtn = document.getElementById('attachDrugBtn');
-  const fileInput = document.getElementById('drugFileInput');
-  
-  // Remove any existing event listeners to prevent duplicates
-  const newSendBtn = sendBtn.cloneNode(true);
-  const newAttachBtn = attachBtn.cloneNode(true);
-  const newFileInput = fileInput.cloneNode(true);
-  
-  // Replace elements to remove all event listeners
-  sendBtn.parentNode.replaceChild(newSendBtn, sendBtn);
-  attachBtn.parentNode.replaceChild(newAttachBtn, attachBtn);
-  fileInput.parentNode.replaceChild(newFileInput, fileInput);
-  
-  // Update references to the new elements
-  const updatedSendBtn = document.getElementById('drugSendBtn');
-  const updatedAttachBtn = document.getElementById('attachDrugBtn');
-  const updatedFileInput = document.getElementById('drugFileInput');
-  
-  // Set up event listeners
-  updatedSendBtn.addEventListener('click', handleSendMessage);
-  
-  // File upload button click handler
-  updatedAttachBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (!isProcessingFile) {
-      isProcessingFile = true;
-      updatedFileInput.click();
-    }
-  });
-  
-  // File input change event
-  updatedFileInput.addEventListener('change', handleFileChange);
-  
-  // Handle Enter key in input
-  userInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleSendMessage();
-  });
-}
-
-// Start the chat system
-initChat();
+// ==========================================================
+// 🚀 Init
+// ==========================================================
+document.getElementById("drugSendBtn")?.addEventListener("click", handleSendMessage);
+document.getElementById("drugInput")?.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") handleSendMessage();
+});
+document.getElementById("attachDrugBtn")?.addEventListener("click", () =>
+  document.getElementById("drugFileInput")?.click()
+);
+document.getElementById("drugFileInput")?.addEventListener("change", handleFileChange);
