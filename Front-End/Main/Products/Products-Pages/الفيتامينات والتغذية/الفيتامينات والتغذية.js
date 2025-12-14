@@ -1,152 +1,222 @@
-// Search terms from the image
+// Search terms
 const searchTerms = [
-  'vitamin',
-  'vitamin c',
-  'vitamin d',
-  'supplement',
-  'energy',
-  'iron',
-  'calcium',
-  'zinc',
-  'omega'
+  "feminine",
+  "intimate",
+  "pads",
+  "deodorant",
+  "woman cream",
+  "women supplement",
+  "multivitamin women",
+  "perfume women",
 ];
 
 // Function to decode Unicode escape sequences
 const decodeText = (str) => {
-  if (!str) return '';
+  if (!str) return "";
   return str.replace(/\\u([\dA-F]{4})/gi, (match, grp) =>
     String.fromCharCode(parseInt(grp, 16))
   );
 };
 
-// Function to fetch products from the API
-async function fetchProducts(searchTerm) {
-  const apiUrl = `https://moelshafey.xyz/API/MD/search.php?name=${encodeURIComponent(searchTerm)}`;
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
-  
-  try {
-    const response = await fetch(proxyUrl);
-    let text = await response.text();
-    
-    // Try to parse the JSON response
-    let data;
-    try {
-      data = JSON.parse(text);
-      if (data && data.contents) {
-        data = JSON.parse(data.contents);
-      }
-    } catch (e) {
-      console.warn("Parsing JSON failed, trying fallback:", e);
-      const match = text.match(/\{.*\}/s);
-      if (match) data = JSON.parse(match[0]);
-    }
+// ==============================
+// Proxy helpers
+// ==============================
+function getProxyBase() {
+  const isLocal =
+    location.hostname === "localhost" || location.hostname === "127.0.0.1";
+  return isLocal ? "http://localhost:3000" : "";
+}
 
-    if (!data || !Array.isArray(data.products) || data.products.length === 0) {
-      console.warn(`No products found for search term: ${searchTerm}`);
+function normalizeProducts(data) {
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.products)) return data.products;
+  if (data && Array.isArray(data.data)) return data.data;
+
+  if (data && typeof data.contents === "string") {
+    try {
+      return normalizeProducts(JSON.parse(data.contents));
+    } catch (_) {}
+  }
+
+  return [];
+}
+
+function pickDetailsText(details) {
+  if (!details) return null;
+
+  if (typeof details === "string") return details.replace(/&nbsp;/g, " ");
+
+  let direct =
+    details.msg ||
+    details.message ||
+    details.description ||
+    details.info ||
+    details.details ||
+    details.content ||
+    details.desc ||
+    details.text;
+
+  if (direct) return String(direct).replace(/&nbsp;/g, " ");
+
+  const nested =
+    details.data?.msg ||
+    details.data?.description ||
+    details.data?.info ||
+    details.data?.content ||
+    details.product?.description ||
+    details.product?.info ||
+    details.product?.content ||
+    details.result?.description ||
+    details.result?.info;
+
+  return nested ? String(nested).replace(/&nbsp;/g, " ") : null;
+}
+
+// ==============================
+// API Calls via Proxy
+// ==============================
+async function fetchProducts(searchTerm) {
+  const base = getProxyBase();
+  const url = `${base}/api/search?q=${encodeURIComponent(searchTerm)}`;
+
+  try {
+    const response = await fetch(url, {
+      headers: { Accept: "application/json" }, // شيلنا Content-Type لأنه GET
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("Search failed:", error);
       return [];
     }
 
-    return data.products;
+    const data = await response.json();
+    console.log("Search results:", data);
+
+    return normalizeProducts(data);
   } catch (error) {
     console.error(`Error fetching products for ${searchTerm}:`, error);
     return [];
   }
 }
 
-// Function to get product details by ID
 async function getProductDetails(productId) {
-  const apiUrl = `https://moelshafey.xyz/API/MD/info.php?id=${productId}`;
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
-  
+  const base = getProxyBase();
+  const url = `${base}/api/info?id=${encodeURIComponent(productId)}`;
+
   try {
-    const response = await fetch(proxyUrl);
-    const data = await response.json();
-    return data;
+    const response = await fetch(url, {
+      headers: { Accept: "application/json" },
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error(`Info failed (${response.status}):`, text);
+      return null;
+    }
+
+    const text = await response.text();
+    if (!text) return null;
+    if (text.trim() === "null") return null;
+
+    try {
+      return JSON.parse(text);
+    } catch (_) {
+      return { msg: text };
+    }
   } catch (error) {
     console.error(`Error fetching details for product ${productId}:`, error);
     return null;
   }
 }
 
-// Function to safely decode and sanitize HTML
+// ==============================
+// HTML sanitize + popup
+// ==============================
 function decodeAndSanitize(html) {
-  if (!html) return '';
-  
-  // First decode any HTML entities
-  const textarea = document.createElement('textarea');
+  if (!html) return "";
+
+  const textarea = document.createElement("textarea");
   textarea.innerHTML = html;
   let decoded = textarea.value;
-  
-  // Decode any Unicode escape sequences
+
   decoded = decodeText(decoded);
-  
-  // Basic HTML sanitization (allow common safe tags)
-  const allowedTags = ['p', 'br', 'b', 'strong', 'i', 'em', 'u', 'ul', 'ol', 'li', 'div', 'span'];
-  const doc = new DOMParser().parseFromString(decoded, 'text/html');
-  
-  // Remove any potentially dangerous tags and attributes
+
+  const allowedTags = [
+    "p",
+    "br",
+    "b",
+    "strong",
+    "i",
+    "em",
+    "u",
+    "ul",
+    "ol",
+    "li",
+    "div",
+    "span",
+  ];
+  const doc = new DOMParser().parseFromString(decoded, "text/html");
+
   const walker = document.createTreeWalker(
     doc.body,
     NodeFilter.SHOW_ELEMENT,
     null,
     false
   );
-  
+
   const nodesToRemove = [];
   let node;
-  
-  while (node = walker.nextNode()) {
-    // Remove disallowed tags
+
+  while ((node = walker.nextNode())) {
     if (!allowedTags.includes(node.tagName.toLowerCase())) {
       nodesToRemove.push(node);
       continue;
     }
-    
-    // Remove all attributes except for class and style
+
     for (let i = node.attributes.length - 1; i >= 0; i--) {
       const attr = node.attributes[i];
-      if (!['class', 'style'].includes(attr.name.toLowerCase())) {
+      if (!["class", "style"].includes(attr.name.toLowerCase())) {
         node.removeAttribute(attr.name);
       }
     }
   }
-  
-  // Remove disallowed nodes
-  nodesToRemove.forEach(node => node.parentNode?.removeChild(node));
-  
-  return doc.body.innerHTML || 'لا توجد تفاصيل متاحة';
+
+  nodesToRemove.forEach((n) => n.parentNode?.removeChild(n));
+
+  return doc.body.innerHTML || "لا توجد تفاصيل متاحة";
 }
 
-// Function to create a popup element
-function createPopup(product, details) {
-  const popup = document.createElement('div');
-  popup.className = 'nova-popup';
+function createPopup(product, detailsHtmlOrText) {
+  const popup = document.createElement("div");
+  popup.className = "nova-popup";
   popup.id = `popup-${product.id}`;
-  
-  const name = decodeText(product.name) || 'اسم المنتج غير متوفر';
-  const detailsText = details ? (details.msg || details.description || details.info || 'لا توجد تفاصيل متاحة') : 'جاري تحميل التفاصيل...';
-  
+
+  const name = decodeText(product.name) || "اسم المنتج غير متوفر";
+
   popup.innerHTML = `
     <div class="nova-content">
       <span class="nova-close-btn">&times;</span>
       <h3>${name}</h3>
-      <div class="popup-details">${details ? decodeAndSanitize(detailsText) : 'جاري تحميل التفاصيل...'}</div>
+      <div class="popup-details">${detailsHtmlOrText || "جاري تحميل التفاصيل..."}</div>
     </div>
   `;
-  
+
   document.body.appendChild(popup);
   return popup;
 }
 
-// Function to create a product card
+// ==============================
+// Card UI
+// ==============================
 function createProductCard(product) {
-  const card = document.createElement('div');
-  card.className = 'card';
-  
-  const name = decodeText(product.name) || 'اسم المنتج غير متوفر';
-  const price = product.price ? `${product.price} ج.م` : 'السعر غير متوفر';
-  const image = product.image || 'placeholder-image.jpg';
-  
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const name = decodeText(product.name) || "اسم المنتج غير متوفر";
+  const price = product.price ? `${product.price} ج.م` : "السعر غير متوفر";
+  const image = product.image || "placeholder-image.jpg";
+
   card.innerHTML = `
     <div class="card-content">
       <div class="card-image">
@@ -172,131 +242,122 @@ function createProductCard(product) {
     </div>
   `;
 
-  // Add click handler for the eye icon
-  const overlay = card.querySelector('.overlay');
-  overlay.addEventListener('click', async () => {
-    // Show loading state
-    const popup = createPopup(product, null);
-    popup.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    
+  const overlay = card.querySelector(".overlay");
+  overlay.addEventListener("click", async () => {
+    const popup = createPopup(product, "جاري تحميل التفاصيل...");
+    popup.style.display = "flex";
+    document.body.style.overflow = "hidden";
+
+    const detailsElement = popup.querySelector(".popup-details");
+
     try {
-      // Load product details
+      console.log("INFO REQUEST ID:", product.id);
+
       const details = await getProductDetails(product.id);
-      const detailsText = details?.msg || details?.description || details?.info || 'لا توجد تفاصيل متاحة';
-      const detailsElement = popup.querySelector('.popup-details');
-      if (detailsElement) {
+      console.log("INFO RESPONSE:", details);
+
+      if (details == null) {
+        detailsElement.textContent = "لا توجد تفاصيل متاحة لهذا المنتج";
+        return;
+      }
+
+      const detailsText = pickDetailsText(details);
+
+      if (detailsText) {
         detailsElement.innerHTML = decodeAndSanitize(detailsText);
+      } else {
+        detailsElement.textContent = "لا توجد تفاصيل متاحة لهذا المنتج";
       }
     } catch (error) {
-      console.error('Error fetching product details:', error);
-      const detailsElement = popup.querySelector('.popup-details');
-      if (detailsElement) {
-        detailsElement.textContent = 'حدث خطأ في تحميل التفاصيل';
-      }
+      console.error("Error fetching product details:", error);
+      detailsElement.textContent = "حدث خطأ في تحميل التفاصيل";
     }
   });
 
   return card;
 }
 
-
-// Function to display all products
+// ==============================
+// Display products
+// ==============================
 async function displayAllProducts() {
-  const container = document.querySelector('.container-cards');
+  const container = document.querySelector(".container-cards");
   if (!container) {
-    console.error('Container element not found');
+    console.error("Container element not found");
     return;
   }
 
-  // Show loading state
   container.innerHTML = '<div class="loading">جاري تحميل المنتجات...</div>';
-  
-  // Use Set to avoid duplicate products
+
   const uniqueProducts = new Map();
-  
+
   try {
-    // Fetch products for each search term
     for (const term of searchTerms) {
       const products = await fetchProducts(term);
-      
-      // Add products to the map using their ID as the key to avoid duplicates
-      products.forEach(product => {
+
+      products.forEach((product) => {
         if (product.id && !uniqueProducts.has(product.id)) {
           uniqueProducts.set(product.id, product);
         }
       });
-      
-      // If we've already found some products, we can break early
-      if (uniqueProducts.size >= 20) break; // Limit to 20 products
+
+      if (uniqueProducts.size >= 20) break;
     }
-    
-    // Clear loading state
-    container.innerHTML = '';
-    
-    // Add each product to the container
+
+    container.innerHTML = "";
+
     for (const product of uniqueProducts.values()) {
       const card = createProductCard(product);
       container.appendChild(card);
     }
-    
-    // If no products found
+
     if (uniqueProducts.size === 0) {
-      container.innerHTML = '<div class="no-products">لا توجد منتجات متاحة حالياً</div>';
+      container.innerHTML =
+        '<div class="no-products">لا توجد منتجات متاحة حالياً</div>';
     }
-    
-    // Add event listeners to the new buttons
+
     addEventListeners();
-    
   } catch (error) {
-    console.error('Error displaying products:', error);
-    container.innerHTML = '<div class="error">حدث خطأ أثناء تحميل المنتجات. يرجى المحاولة مرة أخرى لاحقاً.</div>';
+    console.error("Error displaying products:", error);
+    container.innerHTML =
+      '<div class="error">حدث خطأ أثناء تحميل المنتجات. يرجى المحاولة مرة أخرى لاحقاً.</div>';
   }
 }
 
-// Function to add event listeners
+// ==============================
+// Events
+// ==============================
 function addEventListeners() {
-  // Add to cart functionality
-  document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', (e) => {
+  document.querySelectorAll(".add-to-cart").forEach((button) => {
+    button.addEventListener("click", (e) => {
       const productId = e.currentTarget.dataset.productId;
-      // Add your add to cart logic here
-      console.log('Added to cart:', productId);
-      // You can update the cart count here
+      console.log("Added to cart:", productId);
     });
   });
-  
-  // Add to favorites functionality
-  document.querySelectorAll('.add-to-favorites').forEach(button => {
-    button.addEventListener('click', (e) => {
+
+  document.querySelectorAll(".add-to-favorites").forEach((button) => {
+    button.addEventListener("click", (e) => {
       const productId = e.currentTarget.dataset.productId;
-      // Add your add to favorites logic here
-      console.log('Added to favorites:', productId);
-      // You can update the favorites count here
+      console.log("Added to favorites:", productId);
     });
   });
-  
-  // Close popup when clicking the close button or outside
-  document.addEventListener('click', (e) => {
-    // Close when clicking the close button
-    if (e.target.classList.contains('nova-close-btn')) {
-      const popup = e.target.closest('.nova-popup');
+
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("nova-close-btn")) {
+      const popup = e.target.closest(".nova-popup");
       if (popup) {
         popup.remove();
         document.body.style.overflow = "";
       }
-    }
-    // Close when clicking outside the popup content
-    else if (e.target.classList.contains('nova-popup')) {
+    } else if (e.target.classList.contains("nova-popup")) {
       e.target.remove();
       document.body.style.overflow = "";
     }
   });
 
-  // Close popup with ESC key
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      const popup = document.querySelector('.nova-popup');
+      const popup = document.querySelector(".nova-popup");
       if (popup) {
         popup.remove();
         document.body.style.overflow = "";
@@ -306,15 +367,13 @@ function addEventListeners() {
 }
 
 // Initialize the page when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   displayAllProducts();
 });
 
-
-
-document.addEventListener('click', (e) => {
-  const card = e.target.closest('.card-image');
+document.addEventListener("click", (e) => {
+  const card = e.target.closest(".card-image");
   if (card) {
-    card.classList.toggle('flipped');
+    card.classList.toggle("flipped");
   }
 });

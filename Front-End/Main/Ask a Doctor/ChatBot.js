@@ -1,6 +1,6 @@
 // API Configuration
-const API_KEY = "AIzaSyCzPROI_jnS8pxYDLYqyNRkPFplWpCs2sw";
-const API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent";
+
+const API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 // Rate limiting variables
 let lastRequestTime = 0;
@@ -38,46 +38,50 @@ async function generateResponse(userPrompt) {
     chatBody.appendChild(loadingIndicator);
 
     // System prompt to focus on medical-related questions only
-    const systemPrompt = `You are a medical assistant. Only respond to medical-related questions, including:
-    - Symptoms and possible conditions
-    - Medication information and usage
-    - First aid and emergency advice
-    - General health questions
-    - Medical terminology explanations
-    - Treatment options
-    - Preventive care
-    - Health concerns
+    const systemPrompt = `You are a medical assistant. Your responses should include:
+    - For symptoms: List possible conditions and recommend appropriate over-the-counter medications with dosage (if applicable)
+    - For medication questions: Provide clear information about usage, dosage, and potential side effects
+    - For emergencies: Provide first aid instructions and advise seeking immediate medical attention
     
-    For non-medical questions, politely decline to answer and guide the user to ask medical-related questions only.
+    When someone mentions they are sick or have specific symptoms:
+    1. Ask follow-up questions to better understand their condition
+    2. Suggest appropriate over-the-counter medications (if applicable)
+    3. Provide dosage instructions based on age/weight when possible
+    4. List common side effects to watch for
+    5. Indicate when professional medical help should be sought
+    
+    Example response for common conditions:
+    "لألم الحلق، يمكنك تناول الباراسيتامول (500-1000 مجم كل 6 ساعات) أو الإيبوبروفين (200-400 مجم كل 6-8 ساعات) لتخفيف الألم. 
+    كما يمكنك الغرغرة بالماء المالح الدافئ. إذا استمر الألم أكثر من يومين أو صاحبه ارتفاع في درجة الحرارة، 
+    يرجى استشارة الطبيب."
     
     Always respond in Arabic with clear, professional medical advice. If you're unsure about something, recommend consulting a healthcare professional.`;
 
-    // Request body for Gemini
+    // Request body for Groq API
     const requestBody = {
-      contents: [
+      model: "llama-3.3-70b-versatile",
+      messages: [
         {
-          role: 'user',
-          parts: [{ text: systemPrompt + '\n\nUser: ' + userPrompt }]
+          role: "system",
+          content: systemPrompt
+        },
+        {
+          role: "user",
+          content: userPrompt
         }
       ],
-      generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 2048
-      },
-      safetySettings: [
-        { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
-        { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
-        { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
-        { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' }
-      ]
+      temperature: 0.7,
+      max_tokens: 2048,
+      top_p: 0.95
     };
 
     // Fetch API with auto retry on overload
-    let response = await fetch(`${API_URL}?key=${API_KEY}`, {
+    let response = await fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${API_KEY}`
+      },
       body: JSON.stringify(requestBody)
     });
 
@@ -85,9 +89,12 @@ async function generateResponse(userPrompt) {
     if (response.status === 503) {
       console.warn("Model overloaded. Retrying...");
       await new Promise((res) => setTimeout(res, 1500));
-      response = await fetch(`${API_URL}?key=${API_KEY}`, {
+      response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`
+        },
         body: JSON.stringify(requestBody)
       });
     }
@@ -118,8 +125,8 @@ async function generateResponse(userPrompt) {
     console.log("API Response:", data);
 
     let responseText =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
-      data.candidates?.[0]?.text ||
+      data.choices?.[0]?.message?.content ||
+      data.choices?.[0]?.text ||
       data.text ||
       "عذراً، لم أتمكن من فهم طلبك.";
 
