@@ -449,3 +449,9 @@ END;
 
 
 DELETE FROM Users WHERE Id_User = 1
+
+
+
+
+
+SELECT * FROM Users

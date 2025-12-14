@@ -618,13 +618,13 @@ background: #1E293B;   /* 🔵 لون ثابت لا يحتوي شفافية */
 
 
 /* تعديل */
-.btn-action.edit {
+/* .btn-action.edit {
   background: #f39c12;
   color: #fff;
 }
 .btn-action.edit:hover {
   background: #d8870b;
-}
+} */
 
 /* حذف */
 .btn-action.delete {
