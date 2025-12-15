@@ -1,4 +1,11 @@
-// API Configurationconst API_URL = "https://api.groq.com/openai/v1/chat/completions";
+
+
+
+// API Configuration
+
+const API_URL = "https://api.groq.com/openai/v1/chat/completions";
+
+
 
 // Rate limiting variables
 let lastRequestTime = 0;
