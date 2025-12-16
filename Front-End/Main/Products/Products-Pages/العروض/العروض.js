@@ -1,9 +1,5 @@
 // Search terms
-const searchTerms = [
-  "شامبو",
-  "زيت",
-  "البشرة",
-];
+const searchTerms = ["شامبو", "زيت", "البشرة"];
 
 // Function to decode Unicode escape sequences
 const decodeText = (str) => {
@@ -72,13 +68,12 @@ function pickDetailsText(details) {
 async function isValidImageUrl(url) {
   if (!url || typeof url !== "string") return false;
 
-  // ends with / or not image extension
-  if (url.endsWith("/") || !/\.(jpg|jpeg|png|webp|gif)$/i.test(url)) {
-    return false;
-  }
+  if (url.endsWith("/") || !/\.(jpg|jpeg|png|webp|gif)$/i.test(url)) return false;
 
-  // known invalid pattern (optional rule from your code)
-  if (url.includes("/uploads/") && !url.match(/\/\d+\.(jpg|jpeg|png|webp|gif)$/i)) {
+  if (
+    url.includes("/uploads/") &&
+    !url.match(/\/\d+\.(jpg|jpeg|png|webp|gif)$/i)
+  ) {
     return false;
   }
 
@@ -105,21 +100,13 @@ async function fetchProducts(searchTerm) {
 
     const data = await response.json();
     const products = normalizeProducts(data);
-    console.log("Search results:", data);
 
-    if (!products || products.length === 0) {
-      console.warn(`No products found for search term: ${searchTerm}`);
-      return [];
-    }
+    if (!products || products.length === 0) return [];
 
-    // Filter out invalid images (keep your logic)
+    // Filter out invalid images
     const validProducts = [];
     for (const product of products) {
-      if (await isValidImageUrl(product.image)) {
-        validProducts.push(product);
-      } else {
-        console.log("Filtered out product with invalid image URL:", product.image);
-      }
+      if (await isValidImageUrl(product.image)) validProducts.push(product);
     }
 
     return validProducts;
@@ -129,7 +116,7 @@ async function fetchProducts(searchTerm) {
   }
 }
 
-// Get product details by ID (NEW API via proxy)
+// Get product details by ID
 async function getProductDetails(productId) {
   const base = getProxyBase();
   const url = `${base}/api/info?id=${encodeURIComponent(productId)}`;
@@ -146,13 +133,11 @@ async function getProductDetails(productId) {
     }
 
     const text = await response.text();
-    if (!text) return null;
-    if (text.trim() === "null") return null;
+    if (!text || text.trim() === "null") return null;
 
     try {
       return JSON.parse(text);
     } catch (_) {
-      // لو رجع نص مش JSON
       return { msg: text };
     }
   } catch (error) {
@@ -174,8 +159,18 @@ function decodeAndSanitize(html) {
   decoded = decodeText(decoded);
 
   const allowedTags = [
-    "p", "br", "b", "strong", "i", "em", "u",
-    "ul", "ol", "li", "div", "span"
+    "p",
+    "br",
+    "b",
+    "strong",
+    "i",
+    "em",
+    "u",
+    "ul",
+    "ol",
+    "li",
+    "div",
+    "span",
   ];
   const doc = new DOMParser().parseFromString(decoded, "text/html");
 
@@ -228,6 +223,47 @@ function createPopup(product, detailsHtmlOrText) {
 }
 
 // ==============================
+// ✅ Cart helpers
+// ==============================
+function parsePrice(product) {
+  const n = Number(product?.price);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function productToCartPayload(product) {
+  const name = decodeText(product?.name) || "Unknown";
+  const price = parsePrice(product);
+
+  const imageUrl =
+    product?.image ||
+    product?.img ||
+    product?.image_url ||
+    product?.imageUrl ||
+    product?.photo ||
+    product?.thumbnail ||
+    "";
+
+  return { name, price, imageUrl };
+}
+
+// ✅ Favorites payload (نفس داتا الجدول)
+function productToFavoritePayload(product) {
+  const productApiName = decodeText(product?.name) || "Unknown";
+  const price = parsePrice(product);
+
+  const imageUrl =
+    product?.image ||
+    product?.img ||
+    product?.image_url ||
+    product?.imageUrl ||
+    product?.photo ||
+    product?.thumbnail ||
+    "";
+
+  return { productApiName, price, imageUrl: imageUrl || null };
+}
+
+// ==============================
 // Card UI
 // ==============================
 function createProductCard(product) {
@@ -236,15 +272,14 @@ function createProductCard(product) {
 
   const name = decodeText(product.name) || "اسم المنتج غير متوفر";
 
-  // Calculate discounted price (10% off)
+  // 10% discount display (UI only)
   let priceDisplay = "السعر غير متوفر";
   let originalPrice = "";
 
   if (product.price) {
     const price = parseFloat(product.price);
     if (!isNaN(price)) {
-      const discount = price * 0.1;
-      const discountedPrice = price - discount;
+      const discountedPrice = price - price * 0.1;
       originalPrice = `
         <span class="original-price">${price.toFixed(2)} ج.م</span>
         <span class="discount-badge">خصم 10%</span>
@@ -255,7 +290,6 @@ function createProductCard(product) {
     }
   }
 
-  // Use placeholder if no valid image URL
   const image =
     product.image &&
     product.image.endsWith &&
@@ -273,21 +307,22 @@ function createProductCard(product) {
           <i class="fa-solid fa-eye"></i>
         </div>
       </div>
+
       <div class="card-text">
         <p class="card__title">${name}</p>
       </div>
+
       <div class="card-footer">
         <div class="price-container">
           ${originalPrice}
           <div class="card__price">${priceDisplay}</div>
         </div>
+
         <div class="buttons">
-          <button class="card-button add-to-cart"
-                  data-product-id="${product.id}"
-                  data-original-price="${product.price || ""}"
-                  data-discounted-price="${priceDisplay.replace(" ج.م", "")}">
+          <button class="card-button add-to-cart" data-product-id="${product.id}">
             <i class="fa-solid fa-cart-shopping"></i>
           </button>
+
           <button class="card-button add-to-favorites" data-product-id="${product.id}">
             <i class="fa-solid fa-heart"></i>
           </button>
@@ -306,10 +341,7 @@ function createProductCard(product) {
     const detailsElement = popup.querySelector(".popup-details");
 
     try {
-      console.log("INFO REQUEST ID:", product.id);
-
       const details = await getProductDetails(product.id);
-      console.log("INFO RESPONSE:", details);
 
       if (details == null) {
         detailsElement.textContent = "لا توجد تفاصيل متاحة لهذا المنتج";
@@ -317,15 +349,11 @@ function createProductCard(product) {
       }
 
       const detailsText = pickDetailsText(details);
-
-      if (detailsText) {
-        detailsElement.innerHTML = decodeAndSanitize(detailsText);
-      } else {
-        detailsElement.textContent = "لا توجد تفاصيل متاحة لهذا المنتج";
-      }
+      if (detailsText) detailsElement.innerHTML = decodeAndSanitize(detailsText);
+      else detailsElement.textContent = "لا توجد تفاصيل متاحة لهذا المنتج";
     } catch (error) {
       console.error("Error fetching product details:", error);
-      if (detailsElement) detailsElement.textContent = "حدث خطأ في تحميل التفاصيل";
+      detailsElement.textContent = "حدث خطأ في تحميل التفاصيل";
     }
   });
 
@@ -351,8 +379,8 @@ async function displayAllProducts() {
       const products = await fetchProducts(term);
 
       products.forEach((product) => {
-        if (product.id && !uniqueProducts.has(product.id)) {
-          uniqueProducts.set(product.id, product);
+        if (product.id && !uniqueProducts.has(String(product.id))) {
+          uniqueProducts.set(String(product.id), product);
         }
       });
 
@@ -362,15 +390,19 @@ async function displayAllProducts() {
     container.innerHTML = "";
 
     for (const product of uniqueProducts.values()) {
-      const card = createProductCard(product);
-      container.appendChild(card);
+      container.appendChild(createProductCard(product));
     }
 
     if (uniqueProducts.size === 0) {
-      container.innerHTML = '<div class="no-products">لا توجد منتجات متاحة حالياً</div>';
+      container.innerHTML =
+        '<div class="no-products">لا توجد منتجات متاحة حالياً</div>';
     }
 
-    addEventListeners();
+    addEventListeners(uniqueProducts);
+
+    // ✅ تحديث العدادات أول ما الصفحة تحمل
+    await window.refreshCartBadge?.();
+    await window.refreshFavBadge?.();
   } catch (error) {
     console.error("Error displaying products:", error);
     container.innerHTML =
@@ -381,21 +413,96 @@ async function displayAllProducts() {
 // ==============================
 // Events
 // ==============================
-function addEventListeners() {
+function addEventListeners(uniqueProductsMap) {
+  // ✅ Add to cart الحقيقي + رسائل ui.js + تحديث العداد
   document.querySelectorAll(".add-to-cart").forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const productId = e.currentTarget.dataset.productId;
-      console.log("Added to cart:", productId);
+    button.addEventListener("click", async (e) => {
+      const productId = String(e.currentTarget.dataset.productId || "");
+      const product =
+        uniqueProductsMap.get(productId) ||
+        [...uniqueProductsMap.values()].find(
+          (p) => String(p.id) === String(productId)
+        );
+
+      if (!product) {
+        window.showErrorMessage?.("المنتج غير موجود");
+        return;
+      }
+
+      if (!window.cartApi) {
+        window.showErrorMessage?.("cartApi.js مش متحمّل");
+        return;
+      }
+
+      try {
+        const payload = productToCartPayload(product);
+        await cartApi.addItem(payload, 1);
+
+        // ✅ تحديث العداد
+        await window.refreshCartBadge?.();
+
+        // ✅ رسالة نجاح (من ui.js)
+        window.showSuccessMessage?.("تم إضافة المنتج للكارت بنجاح");
+      } catch (err) {
+        console.error("ADD TO CART ERROR:", err);
+        window.showErrorMessage?.("حصل خطأ أثناء الإضافة للكارت");
+      }
     });
   });
 
+  // ✅ Favorites الحقيقي + تحديث عداد المفضلة
   document.querySelectorAll(".add-to-favorites").forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const productId = e.currentTarget.dataset.productId;
-      console.log("Added to favorites:", productId);
+    button.addEventListener("click", async (e) => {
+      const btn = e.currentTarget;
+
+      const productId = String(btn.dataset.productId || "");
+      const product =
+        uniqueProductsMap.get(productId) ||
+        [...uniqueProductsMap.values()].find(
+          (p) => String(p.id) === String(productId)
+        );
+
+      if (!product) {
+        window.showErrorMessage?.("المنتج غير موجود");
+        return;
+      }
+
+      if (!window.favoritesApi?.add) {
+        window.showErrorMessage?.("favoritesApi.js مش متحمّل");
+        return;
+      }
+
+      const payload = productToFavoritePayload(product);
+      const oldHtml = btn.innerHTML;
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+
+        await window.favoritesApi.add(payload);
+
+        // ✅ تحديث العداد الحقيقي
+        await window.refreshFavBadge?.();
+
+        window.showSuccessMessage?.("تم إضافة المنتج للمفضلة ❤️");
+        btn.classList.add("is-fav");
+      } catch (err) {
+        console.error("ADD TO FAVORITES ERROR:", err);
+
+        const msg = String(err?.message || "");
+        if (msg.toLowerCase().includes("already") || msg.includes("موجود")) {
+          window.showErrorMessage?.("المنتج موجود بالفعل في المفضلة");
+        } else {
+          window.showErrorMessage?.("حصل خطأ أثناء الإضافة للمفضلة");
+        }
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = oldHtml;
+      }
     });
   });
 
+  // Close popup
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("nova-close-btn")) {
       const popup = e.target.closest(".nova-popup");
@@ -409,6 +516,7 @@ function addEventListeners() {
     }
   });
 
+  // Close popup on ESC
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       const popup = document.querySelector(".nova-popup");
@@ -423,6 +531,10 @@ function addEventListeners() {
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   displayAllProducts();
+
+  // ✅ تحديث العدادات أول ما الصفحة تفتح
+  window.refreshCartBadge?.();
+  window.refreshFavBadge?.();
 });
 
 // Flip image

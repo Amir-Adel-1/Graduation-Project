@@ -60,19 +60,27 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("Cart_Items");
 
-            entity.Property(e => e.IdCartItem).HasColumnName("Id_Cart_Item");
-            entity.Property(e => e.IdCart).HasColumnName("Id_Cart");
+            entity.Property(e => e.IdCartItem)
+                .HasColumnName("Id_Cart_Item");
+
+            entity.Property(e => e.IdCart)
+                .HasColumnName("Id_Cart");
+
+            entity.Property(e => e.Quantity)
+                .HasColumnName("Quantity");
 
             entity.Property(e => e.Price)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("Price");
 
-            entity.Property(e => e.Quantity)
-                .HasColumnName("Quantity");
-
             entity.Property(e => e.ProductApiName)
                 .HasMaxLength(255)
                 .HasColumnName("Product_API_Name");
+
+            // ✅ NEW — صورة المنتج (لينك جاي من API خارجي)
+            entity.Property(e => e.ImageUrl)
+                .HasMaxLength(500)
+                .HasColumnName("Image_Url");
 
             entity.HasOne(d => d.IdCartNavigation)
                 .WithMany(p => p.CartItems)
@@ -80,7 +88,7 @@ public partial class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // ===================== Favorite =====================
+        // ===================== Favorite ✅ (رجعناه تاني) =====================
         modelBuilder.Entity<Favorite>(entity =>
         {
             entity.HasKey(e => e.IdFavorite);
@@ -137,36 +145,34 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<MedicineAvailability>(entity =>
         {
             entity.HasKey(e => new { e.IdRequest, e.IdUserPh });
-
             entity.ToTable("Medicine_Availability");
 
             entity.Property(e => e.IdRequest).HasColumnName("Id_Request");
             entity.Property(e => e.IdUserPh).HasColumnName("Id_User_PH");
             entity.Property(e => e.AvailableQuantity).HasColumnName("Available_Quantity");
 
-            // ✅ ربط الطلب بالـ Collection الموجودة داخل MedicineRequest
             entity.HasOne(d => d.IdRequestNavigation)
                 .WithMany(p => p.MedicineAvailabilities)
                 .HasForeignKey(d => d.IdRequest)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ✅ ربط الصيدلي (User) - مفيش Collection في User لِـ MedicineAvailability
             entity.HasOne(d => d.IdUserPhNavigation)
                 .WithMany()
                 .HasForeignKey(d => d.IdUserPh)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // ===================== Notifications ✅ FIXED =====================
+
+
+
+
+        // ===================== Notifications ✅ FIXED + NEW =====================
         modelBuilder.Entity<Notification>(entity =>
         {
             entity.HasKey(e => e.IdNotification);
-
             entity.ToTable("Notifications");
 
-            entity.Property(e => e.IdNotification)
-                .HasColumnName("Id_Notification");
-
+            entity.Property(e => e.IdNotification).HasColumnName("Id_Notification");
             entity.Property(e => e.CreateAt)
                 .HasColumnType("smalldatetime")
                 .HasColumnName("Create_At")
@@ -175,18 +181,30 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.IdUser).HasColumnName("Id_User");
             entity.Property(e => e.IdRequest).HasColumnName("Id_Request");
 
-            // ✅ اربط Notification بالـ User عبر الـ Collection الموجودة داخل User
+            // ✅ مهم
+            entity.Property(e => e.IdUserPh).HasColumnName("Id_User_PH");
+            entity.Property(e => e.IsRead).HasColumnName("IsRead");
+
             entity.HasOne(d => d.IdUserNavigation)
                 .WithMany(u => u.Notifications)
                 .HasForeignKey(d => d.IdUser)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ✅ اربط Notification بالـ Request عبر الـ Collection الموجودة داخل MedicineRequest
             entity.HasOne(d => d.IdRequestNavigation)
                 .WithMany(r => r.Notifications)
                 .HasForeignKey(d => d.IdRequest)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // ✅ الصيدلي
+            entity.HasOne(d => d.IdUserPhNavigation)
+                .WithMany()
+                .HasForeignKey(d => d.IdUserPh)
+                .OnDelete(DeleteBehavior.Restrict);
         });
+
+
+
+
 
         // ===================== Order =====================
         modelBuilder.Entity<Order>(entity =>

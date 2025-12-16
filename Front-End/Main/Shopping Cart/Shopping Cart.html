@@ -95,118 +95,10 @@
 
     <!-- زرار تفريغ العربة هنا -->
     <div class="clear-cart-container">
-      <button class="clear-cart-btn glow-capsule">
-          تفريغ العربة
-      </button>
+      <button class="clear-cart-btn glow-capsule" id="btnClearCart">تفريغ العربة</button>
     </div>
 
-    <!-- عنصر واحد -->
-    <div class="cart-item">
-      <img src="../Home/images/1.jpg" class="item-img">
-
-      <div class="item-info">
-        <h3 class="item-name">اوميجا 3 بلس</h3>
-        <button class="remove-btn">
-          <i class="fa-solid fa-trash"></i>
-            إزالة
-        </button>
-      </div>
-
-      <div class="item-price">
-        <span class="price">255 جنيه</span>
-
-        <div class="qty-box">
-          <button class="qty-btn">-</button>
-          <span class="qty">1</span>
-          <button class="qty-btn">+</button>
-        </div>
-      </div>
-    </div>
-    <!-- عنصر تاني نسخة -->
-    <div class="cart-item">
-      <img src="../Home/images/2.jpg" class="item-img">
-
-      <div class="item-info">
-        <h3 class="item-name">أسبرين</h3>
-        <button class="remove-btn">
-          <i class="fa-solid fa-trash"></i>
-            إزالة
-        </button>
-      </div>
-
-      <div class="item-price">
-        <span class="price">75 جنيه</span>
-
-        <div class="qty-box">
-          <button class="qty-btn">-</button>
-          <span class="qty">2</span>
-          <button class="qty-btn">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="cart-item">
-      <img src="../Home/images/4.jpg" class="item-img">
-
-      <div class="item-info">
-        <h3 class="item-name">بنادول إكسترا</h3>
-        <button class="remove-btn">
-          <i class="fa-solid fa-trash"></i>
-            إزالة
-        </button>
-      </div>
-
-      <div class="item-price">
-        <span class="price">145 جنيه</span>
-
-        <div class="qty-box">
-          <button class="qty-btn">-</button>
-          <span class="qty">2</span>
-          <button class="qty-btn">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="cart-item">
-      <img src="../Home/images/4.jpg" class="item-img">
-
-      <div class="item-info">
-        <h3 class="item-name">دواء آخر</h3>
-        <button class="remove-btn">
-          <i class="fa-solid fa-trash"></i>
-            إزالة
-        </button>
-      </div>
-
-      <div class="item-price">
-        <span class="price">36 جنيه</span>
-
-        <div class="qty-box">
-          <button class="qty-btn">-</button>
-          <span class="qty">2</span>
-          <button class="qty-btn">+</button>
-        </div>
-      </div>
-    </div>
-    <div class="cart-item">
-      <img src="img/med2.png" class="item-img">
-
-      <div class="item-info">
-        <h3 class="item-name">دواء آخر</h3>
-        <button class="remove-btn">
-          <i class="fa-solid fa-trash"></i>
-            إزالة
-        </button>
-      </div>
-
-      <div class="item-price">
-        <span class="price">36 جنيه</span>
-
-        <div class="qty-box">
-          <button class="qty-btn">-</button>
-          <span class="qty">2</span>
-          <button class="qty-btn">+</button>
-        </div>
-      </div>
-    </div>
+<div id="cartItemsList"></div>
 
 
   </div>
@@ -239,7 +131,7 @@
       <small>(شامل ضريبة القيمة المضافة)</small>
     </div>
 
-    <button class="checkout-btn">إتمام الشراء</button>
+    <button id="checkoutBtn" class="checkout-btn">إتمام الشراء</button>
   </div>
 
 </div>
@@ -253,7 +145,7 @@
 
 
 <!-- Popup Choose Payment Method -->
-<div class="payment-overlay" id="paymentOverlay">
+<div class="payment-overlay  payment-methods" id="paymentOverlay">
   <div class="payment-box">
 
     <span class="close-btn" id="closePayment">&times;</span>
@@ -351,36 +243,33 @@
 
     <p class="cash-msg">راجع بياناتك قبل تأكيد الطلب -- سيتم التواصل معك لتأكيد موعد التسليم.</p>
 
-    <div class="cash-info">
-
-      <div class="info-row">
-        <div class="icon-box">
-          <i class="fa-solid fa-phone"></i>
-        </div>
-        <p><strong>رقم الهاتف :</strong> 01000000000</p>
-      </div>
-
-      <div class="info-row">
-        <div class="icon-box">
-          <i class="fa-solid fa-location-dot"></i>
-        </div>
-        <p><strong>العنوان :</strong> القاهرة - مصر</p>
-      </div>
-
+<div class="cash-info">
+  <div class="info-row">
+    <div class="icon-box">
+      <i class="fa-solid fa-phone"></i>
     </div>
+    <p><strong>رقم الهاتف :</strong> <span id="cashPhone">—</span></p>
+  </div>
 
-    <!-- ▬▬▬ ملخص الطلب ▬▬▬ -->
-    <div class="order-summary-box">
-      <div class="sum-row">
-        <span>ملخص الطلب</span>
-        <span>2 منتج - إجمالي 81 جنيه</span>
-      </div>
-
-      <div class="sum-row">
-        <span>رسوم الشحن</span>
-        <span>مجاني</span>
-      </div>
+  <div class="info-row">
+    <div class="icon-box">
+      <i class="fa-solid fa-location-dot"></i>
     </div>
+    <p><strong>العنوان :</strong> <span id="cashAddress">—</span></p>
+  </div>
+</div>
+
+<div class="order-summary-box">
+  <div class="sum-row">
+    <span>ملخص الطلب</span>
+    <span id="cashOrderSummary">—</span>
+  </div>
+
+  <div class="sum-row">
+    <span>رسوم الشحن</span>
+    <span>مجاني</span>
+  </div>
+</div>
 
     <button class="confirm-cash-btn">تأكيد الطلب</button>
   </div>
@@ -455,9 +344,18 @@
     </button>
     <!-- End scroll To Top Btn -->
 
+<script src="../../shared/cartApi.js"></script>
+<script src="../../shared/ordersApi.js"></script>
+
+<script src="../../shared/favoritesApi.js"></script>
+<script src="../../shared/notificationsApi.js"></script>
+
+<script src="../../shared/ui.js"></script>
+
 <script src="../../shared/config.js"></script>
 <script src="../../shared/apiClient.js"></script>
 
+<script src="../../shared/usersApi.js"></script>
 <script src="Shopping Cart.js"></script>
 </body>
 </html>

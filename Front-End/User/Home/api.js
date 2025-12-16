@@ -1,7 +1,12 @@
-// Search terms from the image
+// ==========================================================
+// Se7ty - Home Offers Cards (4 products) + Popup + Add To Cart
+// Depends on: cartApi.js + ui.js
+// ==========================================================
+
+// Search terms
 const searchTerms = ["شامبو", "زيت", "البشرة"];
 
-// Function to decode Unicode escape sequences
+// Decode Unicode escape
 const decodeText = (str) => {
   if (!str) return "";
   return str.replace(/\\u([\dA-F]{4})/gi, (match, grp) =>
@@ -10,22 +15,14 @@ const decodeText = (str) => {
 };
 
 // ==============================
-// ✅ Image filter (remove uploads/ and non-images)
+// ✅ Image filter
 // ==============================
 function isValidImageUrl(url) {
   if (!url || typeof url !== "string") return false;
 
   const u = url.toLowerCase().trim();
-
-  // ❌ لو اللينك منتهي بـ /
   if (u.endsWith("/")) return false;
-
-  // ❌ لو فيه uploads ومفيش امتداد صورة
-  if (u.includes("/uploads") && !u.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
-    return false;
-  }
-
-  // ❌ لازم يكون صورة فعلًا
+  if (u.includes("/uploads") && !u.match(/\.(jpg|jpeg|png|webp|gif)$/i)) return false;
   if (!u.match(/\.(jpg|jpeg|png|webp|gif)$/i)) return false;
 
   return true;
@@ -56,7 +53,6 @@ function normalizeProducts(data) {
 
 function pickDetailsText(details) {
   if (!details) return null;
-
   if (typeof details === "string") return details.replace(/&nbsp;/g, " ");
 
   const direct =
@@ -86,7 +82,7 @@ function pickDetailsText(details) {
 }
 
 // ==============================
-// ✅ Fetch products via NEW proxy
+// API Calls
 // ==============================
 async function fetchProducts(searchTerm) {
   try {
@@ -94,12 +90,10 @@ async function fetchProducts(searchTerm) {
     const base = getProxyBase();
     const url = `${base}/api/search?q=${encodeURIComponent(normalizedTerm)}`;
 
-    const response = await fetch(url, {
-      headers: { Accept: "application/json" },
-    });
+    const response = await fetch(url, { headers: { Accept: "application/json" } });
 
     if (!response.ok) {
-      const err = await response.text();
+      const err = await response.text().catch(() => "");
       console.error("Search failed:", err);
       return [];
     }
@@ -107,7 +101,6 @@ async function fetchProducts(searchTerm) {
     const data = await response.json();
     const products = normalizeProducts(data);
 
-    // ✅ فلترة المنتجات اللي صورها uploads/ أو بدون امتداد أو منتهية بـ /
     return products.filter((p) => isValidImageUrl(p.image));
   } catch (error) {
     console.error(`Error fetching products for ${searchTerm}:`, error);
@@ -115,25 +108,20 @@ async function fetchProducts(searchTerm) {
   }
 }
 
-// ==============================
-// ✅ Product details via NEW proxy
-// ==============================
 async function getProductDetails(productId) {
   const base = getProxyBase();
   const url = `${base}/api/info?id=${encodeURIComponent(productId)}`;
 
   try {
-    const response = await fetch(url, {
-      headers: { Accept: "application/json" },
-    });
+    const response = await fetch(url, { headers: { Accept: "application/json" } });
 
     if (!response.ok) {
-      const text = await response.text();
+      const text = await response.text().catch(() => "");
       console.error(`Info failed (${response.status}):`, text);
       return null;
     }
 
-    const text = await response.text();
+    const text = await response.text().catch(() => "");
     if (!text || text.trim() === "null") return null;
 
     try {
@@ -147,7 +135,9 @@ async function getProductDetails(productId) {
   }
 }
 
-// Function to safely decode and sanitize HTML
+// ==============================
+// HTML sanitize
+// ==============================
 function decodeAndSanitize(html) {
   if (!html) return "";
 
@@ -157,28 +147,9 @@ function decodeAndSanitize(html) {
 
   decoded = decodeText(decoded);
 
-  const allowedTags = [
-    "p",
-    "br",
-    "b",
-    "strong",
-    "i",
-    "em",
-    "u",
-    "ul",
-    "ol",
-    "li",
-    "div",
-    "span",
-  ];
+  const allowedTags = ["p","br","b","strong","i","em","u","ul","ol","li","div","span"];
   const doc = new DOMParser().parseFromString(decoded, "text/html");
-
-  const walker = document.createTreeWalker(
-    doc.body,
-    NodeFilter.SHOW_ELEMENT,
-    null,
-    false
-  );
+  const walker = document.createTreeWalker(doc.body, NodeFilter.SHOW_ELEMENT);
 
   const nodesToRemove = [];
   let node;
@@ -188,7 +159,6 @@ function decodeAndSanitize(html) {
       nodesToRemove.push(node);
       continue;
     }
-
     for (let i = node.attributes.length - 1; i >= 0; i--) {
       const attr = node.attributes[i];
       if (!["class", "style"].includes(attr.name.toLowerCase())) {
@@ -198,15 +168,15 @@ function decodeAndSanitize(html) {
   }
 
   nodesToRemove.forEach((n) => n.parentNode?.removeChild(n));
-
   return doc.body.innerHTML || "لا توجد تفاصيل متاحة";
 }
 
-// Function to create a popup element
+// ==============================
+// Popup
+// ==============================
 function createPopup(product, detailsHtmlOrText) {
   const popup = document.createElement("div");
   popup.className = "nova-popup";
-  popup.id = `popup-${product.id}`;
 
   const name = decodeText(product.name) || "اسم المنتج غير متوفر";
 
@@ -222,14 +192,42 @@ function createPopup(product, detailsHtmlOrText) {
   return popup;
 }
 
-// Function to create a product card
+// ==============================
+// Cart helpers
+// ==============================
+function parsePrice(product) {
+  const n = Number(product?.price);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function productToCartPayload(product) {
+  const name = decodeText(product?.name) || "Unknown";
+
+  // السعر بعد خصم 10% لو موجود
+  let price = parsePrice(product);
+  if (price > 0) price = +(price - price * 0.1).toFixed(2);
+
+  const imageUrl =
+    product?.image ||
+    product?.img ||
+    product?.image_url ||
+    product?.imageUrl ||
+    product?.photo ||
+    product?.thumbnail ||
+    "";
+
+  return { name, price, imageUrl };
+}
+
+// ==============================
+// Card UI
+// ==============================
 function createProductCard(product) {
   const card = document.createElement("div");
   card.className = "card";
 
   const name = decodeText(product.name) || "اسم المنتج غير متوفر";
 
-  // Calculate discounted price (10% off)
   let priceDisplay = "السعر غير متوفر";
   let originalPrice = "";
 
@@ -247,7 +245,6 @@ function createProductCard(product) {
     }
   }
 
-  // ✅ الصورة هنا سليمة لأننا فلترنا قبل العرض
   const image = product.image;
 
   card.innerHTML = `
@@ -258,21 +255,23 @@ function createProductCard(product) {
           <i class="fa-solid fa-eye"></i>
         </div>
       </div>
+
       <div class="card-text">
         <p class="card__title">${name}</p>
       </div>
+
       <div class="card-footer">
         <div class="price-container">
           ${originalPrice}
           <div class="card__price">${priceDisplay}</div>
         </div>
+
         <div class="buttons">
-          <button class="card-button add-to-cart" data-product-id="${product.id}"
-            data-original-price="${product.price || ""}"
-            data-discounted-price="${priceDisplay.replace(" ج.م", "")}">
+          <button class="card-button add-to-cart" type="button" data-product-id="${product.id}">
             <i class="fa-solid fa-cart-shopping"></i>
           </button>
-          <button class="card-button add-to-favorites" data-product-id="${product.id}">
+
+          <button class="card-button add-to-favorites" type="button" data-product-id="${product.id}">
             <i class="fa-solid fa-heart"></i>
           </button>
         </div>
@@ -280,7 +279,7 @@ function createProductCard(product) {
     </div>
   `;
 
-  // Add click handler for the eye icon
+  // Eye -> details popup
   const overlay = card.querySelector(".overlay");
   overlay.addEventListener("click", async () => {
     const popup = createPopup(product, "جاري تحميل التفاصيل...");
@@ -291,9 +290,7 @@ function createProductCard(product) {
       const details = await getProductDetails(product.id);
       const detailsText = pickDetailsText(details) || "لا توجد تفاصيل متاحة";
       const detailsElement = popup.querySelector(".popup-details");
-      if (detailsElement) {
-        detailsElement.innerHTML = decodeAndSanitize(detailsText);
-      }
+      if (detailsElement) detailsElement.innerHTML = decodeAndSanitize(detailsText);
     } catch (error) {
       console.error("Error fetching product details:", error);
       const detailsElement = popup.querySelector(".popup-details");
@@ -304,13 +301,12 @@ function createProductCard(product) {
   return card;
 }
 
-// Function to display all products
+// ==============================
+// Render products
+// ==============================
 async function displayAllProducts() {
   const container = document.querySelector(".container-cards");
-  if (!container) {
-    console.error("Container element not found");
-    return;
-  }
+  if (!container) return;
 
   container.innerHTML = '<div class="loading">جاري تحميل المنتجات...</div>';
 
@@ -324,8 +320,9 @@ async function displayAllProducts() {
       const products = await fetchProducts(term);
 
       for (const product of products) {
-        if (product.id && !uniqueProducts.has(product.id)) {
-          uniqueProducts.set(product.id, product);
+        const id = String(product.id || "");
+        if (id && !uniqueProducts.has(id)) {
+          uniqueProducts.set(id, product);
           if (uniqueProducts.size >= maxProducts) break;
         }
       }
@@ -341,11 +338,10 @@ async function displayAllProducts() {
     }
 
     if (uniqueProducts.size === 0) {
-      container.innerHTML =
-        '<div class="no-products">لا توجد منتجات متاحة حالياً</div>';
+      container.innerHTML = '<div class="no-products">لا توجد منتجات متاحة حالياً</div>';
     }
 
-    addEventListeners();
+    bindGlobalEvents(uniqueProducts);
   } catch (error) {
     console.error("Error displaying products:", error);
     container.innerHTML =
@@ -353,33 +349,77 @@ async function displayAllProducts() {
   }
 }
 
-// ===== علشان ما نكررش listeners بتوع البوب-اب =====
-let popupListenersAdded = false;
+// ==============================
+// Global events (once)
+// ==============================
+let globalEventsBound = false;
 
-function addEventListeners() {
-  if (popupListenersAdded) return;
-  popupListenersAdded = true;
+function bindGlobalEvents(productsMap) {
+  window.__se7tyProductsMap = productsMap;
 
-  document.addEventListener("click", (e) => {
+  if (globalEventsBound) return;
+  globalEventsBound = true;
+
+  document.addEventListener("click", async (e) => {
+    // Close popup
     if (e.target.classList.contains("nova-close-btn")) {
       const popup = e.target.closest(".nova-popup");
-      if (popup) {
-        popup.remove();
-        document.body.style.overflow = "";
-      }
-    } else if (e.target.classList.contains("nova-popup")) {
+      popup?.remove();
+      document.body.style.overflow = "";
+      return;
+    }
+    if (e.target.classList.contains("nova-popup")) {
       e.target.remove();
       document.body.style.overflow = "";
+      return;
+    }
+
+    // Add to cart
+    const addBtn = e.target.closest(".add-to-cart");
+    if (addBtn) {
+      const id = String(addBtn.dataset.productId || "");
+      const product = window.__se7tyProductsMap?.get(id);
+
+      if (!product) {
+        window.showErrorMessage?.("المنتج غير موجود");
+        return;
+      }
+
+      if (!window.cartApi) {
+        window.showErrorMessage?.("cartApi.js مش متحمّل");
+        return;
+      }
+
+      try {
+        const payload = productToCartPayload(product);
+        await window.cartApi.addItem(payload, 1);
+
+        await window.refreshCartBadge?.();
+
+        // ✅ الرسائل حسب الاتفاق
+        window.showSuccessMessage?.("تم إضافة المنتج للكارت بنجاح");
+      } catch (err) {
+        console.error("ADD TO CART ERROR:", err);
+        window.showErrorMessage?.(err?.message || "حصل خطأ أثناء الإضافة للكارت");
+      }
+
+      return;
+    }
+
+    // Favorites placeholder
+    const favBtn = e.target.closest(".add-to-favorites");
+    if (favBtn) {
+      console.log("Added to favorites:", favBtn.dataset.productId);
+      return;
     }
   });
 
+  // Close popup on ESC
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       const popup = document.querySelector(".nova-popup");
-      if (popup) {
-        popup.remove();
-        document.body.style.overflow = "";
-      }
+      popup?.remove();
+      document.body.style.overflow = "";
     }
   });
 }
@@ -387,11 +427,5 @@ function addEventListeners() {
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   displayAllProducts();
-});
-
-document.addEventListener("click", (e) => {
-  const card = e.target.closest(".card-image");
-  if (card) {
-    card.classList.toggle("flipped");
-  }
+  window.refreshCartBadge?.();
 });

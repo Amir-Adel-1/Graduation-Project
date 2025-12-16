@@ -18,9 +18,8 @@
     <!-- Google Fonts -->
     <link rel="stylesheet" href="" />
   </head>
-<body>
 
-
+  <body>
     <!--  Start NavBar -->
     <nav class="navbar" id="navbar">
       <div class="logo">
@@ -41,17 +40,23 @@
       <div class="actions">
         <div class="icons">
           <div class="icon">
-            <a href="../../../../Main/Shopping Cart/Shopping Cart.html"><i class="fa-solid fa-cart-shopping "></i></a>
+            <a href="../../../../Main/Shopping Cart/Shopping Cart.html">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </a>
             <span class="count" id="cart_clr">0</span>
           </div>
           <div class="icon">
-            <a href="../../../../Main/Favorites/Favorites.html"><i class="fa-solid fa-heart "></i></a>
+            <a href="../../../../Main/Favorites/Favorites.html">
+              <i class="fa-solid fa-heart"></i>
+            </a>
             <span class="count" id="fav_clr">0</span>
           </div>
         </div>
+
         <div class="user-info" id="userInfo">
-          <span  id="userName" class="user-name"></span>
+          <span id="userName" class="user-name"></span>
         </div>
+
         <!-- القائمة المنسدلة -->
         <div class="user-menu" id="userMenu">
           <ul>
@@ -60,12 +65,16 @@
             <li>
               <a href="../User_Notification_Page/User_Notification.html" class="notif-link">
                 <i class="fa-solid fa-bell"></i>
-              الإشعارات
-              <span class="notif-badge" id="notifBadge">0</span>
+                الإشعارات
+                <span class="notif-badge" id="notifBadge">0</span>
               </a>
             </li>
 
-            <li class="active"><a href="../User_Requests_Page/Requests.html"><i class="fa-regular fa-folder-open"></i> الطلبات</a></li>
+            <li class="active">
+              <a href="../User_Requests_Page/Requests.html">
+                <i class="fa-regular fa-folder-open"></i> الطلبات
+              </a>
+            </li>
             <li><a href="#">⚙️ الإعدادات</a></li>
             <li><a id="logout">🚪 تسجيل الخروج</a></li>
           </ul>
@@ -74,186 +83,39 @@
     </nav>
     <!--  End NavBar -->
 
+    <!-- Start Content -->
+    <section class="my-requests-section">
+      <h2>• طلباتي •</h2>
 
-
-
-<!-- Start Content -->
-<section class="my-requests-section">
-  <h2>• طلباتي •</h2>
-
-  <div class="request-tabs">
-    <button class="req-tab active" data-tab="medicines">طلبات الأدوية الناقصة</button>
-    <button class="req-tab" data-tab="orders">طلبات الأوردرات</button>
-  </div>
-
-  <!-- قسم الأدوية -->
-<div id="medicines" class="req-section active">
-
-    <div class="request-card">
-      <h3><i class="fa-solid fa-hashtag" style="color: #00ffcc;"></i><strong> رقم الطلب : </strong> 1</h3>
-      <p><strong>💊 اسم الدواء :</strong> بانادول</p>
-      <p><strong>📦 الكمية المطلوبة :</strong> 2 عبوة</p>
-
-
-      <p><strong>📅 التاريخ :</strong> 10-11-2025</p>
-      <p><strong>⏰ الوقت :</strong> 03:45 م</p>
-
-      <p><i class="fa-solid fa-clipboard-check"></i> <strong>الحالة :</strong> 
-        <span class="status accepted">مقبول</span>
-      </p>
-
-      <div class="request-actions">
-        <button class="btn view" onclick="openPopup()"><i class="fa-solid fa-eye"></i> التفاصيل</button>
+      <div class="request-tabs">
+        <button class="req-tab active" data-tab="medicines">طلبات الأدوية الناقصة</button>
+        <button class="req-tab" data-tab="orders">طلبات الأوردرات</button>
       </div>
-    </div>
-    <div class="request-card">
-      <h3><i class="fa-solid fa-hashtag" style="color: #00ffcc;"></i><strong> رقم الطلب : </strong> 2</h3>
-      <p><strong>💊 اسم الدواء :</strong> أسبرين</p>
-      <p><strong>📦 الكمية المطلوبة :</strong> 1 عبوة</p>
+
+      <!-- قسم الأدوية (ديناميكي من Requests.js) -->
+      <div id="medicines" class="req-section active"></div>
+
+      <!-- قسم الأوردرات (ديناميكي من Requests.js) -->
+      <div id="orders" class="req-section"></div>
+    </section>
+    <!-- End Content -->
 
 
-      <p><strong>📅 التاريخ :</strong> 11-12-2025</p>
-      <p><strong>⏰ الوقت :</strong> 09:00 م</p>
-
-      <p><i class="fa-solid fa-clipboard-check"></i> <strong>الحالة :</strong> 
-        <span class="status pending">قيد المراجعة</span>
-      </p>
-
-      <div class="request-actions">
-        <button class="btn view" onclick="openPopup()"><i class="fa-solid fa-eye"></i> التفاصيل</button>
-      </div>
-    </div>
-
-
-</div>
-
-
-<!-- قسم الأوردرات -->
-<div id="orders" class="req-section">
-
-    <div class="request-order">
-      <h3><strong>🧾 رقم الاوردر :</strong> 1</h3>
-      <p><strong>🛒 عدد العناصر :</strong> 3</p>
-      <p><strong>💲 السعر الكلي :</strong> 475,00 جنية</p>
-            <p><strong>💵 طريقت الدفع :</strong>
-      <span class="status visa">فيزا</span>
-      </p>
-
-      <p><strong>📅 التاريخ :</strong> 10-11-2025</p>
-      <p><strong>⏰ الوقت :</strong> 03:45 م</p>
-
-      <p><i class="fa-solid fa-clipboard-check"></i> <strong>الحالة :</strong>
-        <span class="status accepted">مقبول</span>
-      </p>
-
-      <div class="request-actions">
-        <button class="btn view" onclick="openOrderPopup(2)"><i class="fa-solid fa-eye"></i> التفاصيل</button>
-      </div>
-    </div>
-
-
-</div>
-
-
-</section>
-<!-- End Content -->
-
-
-
-
-<!-- نافذة عرض التفاصيل طلب الدواء-->
-<div class="popup-overlay" id="popup">
+<!-- نافذة عرض التفاصيل طلب الدواء (تفاصيل الصيدليات) -->
+<div class="popup-overlay" id="popup" style="display:none;">
   <div class="popup-content">
-    <h3>تفاصيل الصيدلية</h3>
-    <p><strong>الاسم :</strong> صيدلية الشفاء</p>
-    <p><strong>العنوان :</strong> ١٢ شارع التحرير، القاهرة</p>
-    <p><strong>رقم الهاتف :</strong> 01012345678</p>
-    <p><strong>البريد الإلكتروني :</strong> pharmacy@gmail.com</p>
-    <p><strong>الكمية المتاحة لديه :</strong> عبوتان</p>
+    <h3>تفاصيل الصيدليات</h3>
+
+    <!-- ✅ هنا الداتا الحقيقية هتتحط -->
+    <div id="popupBody"></div>
+
     <button id="closePopup" class="btn close">إغلاق</button>
   </div>
 </div>
 
 
-
-
-<!-- نافذة عرض التفاصيل الاوردرات-->
-<div class="order-popup-overlay" id="orderPopup">
-
-  <!-- محتوى أوردر 1 -->
-  <div class="order-popup-content order-popup" id="order-1">
-    <h3 class="ditails-title">🧾 تفاصيل أوردر 1</h3>
-
-<div class="order-items-wrapper">
-  <div class="order-item">
-  <div class="order-img-box">
-    <img src="../../images/1.jpg" alt="">
-  </div>
-
-  <div class="order-info">
-    <h3 class="med-name">بانادول اكسترا</h3>
-    <p class="med-qty">الكمية: 1</p>
-    <p class="med-price">السعر: 45 جنيه</p>
-  </div>
-  </div>
-  <div class="order-item">
-  <div class="order-img-box">
-    <img src="../../images/1.jpg" alt="">
-  </div>
-
-  <div class="order-info">
-    <h3 class="med-name">بانادول اكسترا</h3>
-    <p class="med-qty">الكمية: 1</p>
-    <p class="med-price">السعر: 45 جنيه</p>
-  </div>
-  </div>
-  <div class="order-item">
-  <div class="order-img-box">
-    <img src="../../images/1.jpg" alt="">
-  </div>
-
-  <div class="order-info">
-    <h3 class="med-name">بانادول اكسترا</h3>
-    <p class="med-qty">الكمية: 1</p>
-    <p class="med-price">السعر: 45 جنيه</p>
-  </div>
-  </div>
-</div>
-
-
-
-    <button class="btn close" onclick="closeOrderPopup()">إغلاق</button>
-  </div>
-
-  <!-- محتوى أوردر 2 -->
-  <div class="order-popup-content order-popup" id="order-2">
-    <h3 class="ditails-title">🧾 تفاصيل أوردر 2</h3>
-
-<div class="order-items-wrapper">
-  <div class="order-item">
-  <div class="order-img-box">
-    <img src="../../images/2.jpg" alt="">
-  </div>
-
-  <div class="order-info">
-    <h3 class="med-name">بانادول اكسترا</h3>
-    <p class="med-qty">الكمية : 1</p>
-    <p class="med-price">السعر : 45 جنيه</p>
-  </div>
-  </div>
-</div>
-
-
-
-    <button class="btn close" onclick="closeOrderPopup()">إغلاق</button>
-  </div>
-
-</div>
-
-
-
-
-
+    <!-- نافذة عرض التفاصيل الاوردرات (ديناميكية) -->
+    <div class="order-popup-overlay" id="orderPopup" style="display:none;"></div>
 
     <!-- Start Footer -->
     <footer class="footer">
@@ -269,13 +131,13 @@
         <div class="footer-section links">
           <h3>روابط سريعة</h3>
           <ul>
-        <li><a href="../../../../User/Home/User.html">الرئيسية</a></li>
-        <li><a href="../../../../Main/About Us/About Us.html">نبذة عنا</a></li>
-        <li><a href="../../../../Main/Products/Products.html">المنتجات</a></li>
-        <li><a href="../../../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
-        <li><a href="../../../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
-        <li><a href="../../../../Main/Inquiry About Medication/Inquiry About Medication.html">الآستفسار عن دواء</a></li>
-        <li><a href="../../../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
+            <li><a href="../../../../User/Home/User.html">الرئيسية</a></li>
+            <li><a href="../../../../Main/About Us/About Us.html">نبذة عنا</a></li>
+            <li><a href="../../../../Main/Products/Products.html">المنتجات</a></li>
+            <li><a href="../../../../Main/Health tips/Health Tips.html">نصائح صحية</a></li>
+            <li><a href="../../../../Main/Ask a Doctor/Ask a Doctor.html">اسأل طبيب</a></li>
+            <li><a href="../../../../Main/Inquiry About Medication/Inquiry About Medication.html">الآستفسار عن دواء</a></li>
+            <li><a href="../../../../Main/Medicine Requests/Medicine Requests.html">طلبات الأدوية الناقصة</a></li>
           </ul>
         </div>
 
@@ -301,7 +163,6 @@
       <div class="footer-bottom">
         <div class="rights">
           <p>© 2026 <bdi>Se7ty</bdi>. جميع الحقوق محفوظة.</p>
-          <!-- يعني بيخلي الكلمة الإنجليزية تبقى معزولة عن اتجاه النص العربي (bdi) -->
         </div>
         <div class="policy">
           <a href="#">سياسة الخصوصية</a>
@@ -311,18 +172,26 @@
     </footer>
     <!-- End Footer -->
 
-
-
     <!-- Start scroll To Top Btn -->
     <button id="scrollToTopBtn" title="Go to top">
       <i class="fa-solid fa-arrow-up-from-bracket"></i>
     </button>
     <!-- End scroll To Top Btn -->
 
+    <!-- ✅ ترتيب السكربتات الصح -->
+    <script src="../../../../shared/config.js"></script>
+    <script src="../../../../shared/apiClient.js"></script>
+    <script src="../../../../shared/ui.js"></script>
 
-<script src="../../../../shared/config.js"></script>
-<script src="../../../../shared/apiClient.js"></script>
+    <script src="../../../../shared/cartApi.js"></script>
+    <script src="../../../../shared/favoritesApi.js"></script>
+    <script src="../../../../shared/notificationsApi.js"></script>
 
-<script src="Requests.js"></script>
-</body>
+    <!-- ✅ APIs المطلوبة للصفحة -->
+    <script src="../../../../shared/medicineRequestsApi.js"></script>
+    <script src="../../../../shared/ordersApi.js"></script>
+
+    <!-- ✅ الصفحة نفسها -->
+    <script src="Requests.js"></script>
+  </body>
 </html>

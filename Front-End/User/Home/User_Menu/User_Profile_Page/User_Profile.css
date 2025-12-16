@@ -280,8 +280,8 @@ body {
 
 .count {
   position: absolute;
-  top: -6px;
-  right: -8px;
+  top: -11px;
+  right: -11px;
   font-size: 11px;
   color: #009ad7;
   border-radius: 50%;

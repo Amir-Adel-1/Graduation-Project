@@ -123,7 +123,8 @@ Create Table Cart_Items
 	Quantity Int Not Null ,
 	Price Decimal(10,2) Not Null ,
 	Product_API_Name NVarchar(255) Not Null ,
-	Id_Cart Int References Cart(Id_Cart)
+	Id_Cart Int References Cart(Id_Cart) ,
+	Image_Url NVARCHAR(500)
 )
 
 ------------------------------------------------------
@@ -134,8 +135,14 @@ Create Table Favorite
 (
 	Id_Favorite Int Primary Key Identity(1,1) ,
 	Product_API_Name NVarchar(255) Not Null ,
-	Id_User Int References Users(Id_User)
+	Id_User Int References Users(Id_User) ,
+	Price DECIMAL(18,2) NOT NULL DEFAULT 0 ,
+    Image_Url NVARCHAR(500) NULL
 )
+
+
+CREATE UNIQUE INDEX UX_Favorite_User_Product
+ON Favorite (Id_User, Product_API_Name);
 
 ------------------------------------------------------
 
@@ -146,8 +153,14 @@ Create Table Notifications
 	Id_Notification Int Primary Key Identity(1,1) ,
 	Create_At SMALLDATETIME NOT NULL DEFAULT GETDATE() ,
 	Id_User Int References Users(Id_User) ,
-	Id_Request Int References Medicine_Requests(Id_Request)
+	Id_Request Int References Medicine_Requests(Id_Request) ,
+	Id_User_PH INT NULL REFERENCES Users(Id_User) ,
+	IsRead BIT NOT NULL CONSTRAINT DF_Notifications_IsRead DEFAULT(0)
 )
+
+CREATE UNIQUE INDEX UX_Notifications_Request_Ph
+ON Notifications (Id_Request, Id_User_PH);
+
 
 ------------------------------------------------------
 
@@ -200,7 +213,7 @@ Values
 	('صيدلية' , 'الحياة' , Null , Null , 'alhayah@gmail.com' , 'alhayah1900' , 'Pharmacy' , Null , Null , Null , Null , 'A') ,
 	('صيدلية' , 'Chefaa' , Null , Null , 'chefaa@gmail.com' , 'chefaa888' , 'Pharmacy' , Null , Null , Null , Null , 'A') ,
 	('صيدلية' , 'Hkeema' , Null , Null , 'hkeema@gmail.com' , 'hkeema9191' , 'Pharmacy' , Null , Null , Null , Null , 'A')
- 
+
 
 -- -------------------------------------------------------------
 
@@ -278,7 +291,7 @@ Values
 Insert Into Medicine_Availability
 (Available_Quantity , Id_Request , Id_User_PH)
 Values
-	(1 , 1 , 5 ) ,
+	(1 , 8 , 12 )
 	(2 , 2 , 6 ) ,
 	(1 , 3 , 7 )
 
@@ -448,10 +461,144 @@ END;
 
 
 
-DELETE FROM Users WHERE Id_User = 1
+
+
+SELECT Id_User, First_Name, Role
+FROM Users;
+
+
+
+INSERT INTO Medicine_Requests
+(
+    Medicine_Name,
+    Quantity,
+    Order_Status,
+    Id_User
+)
+VALUES
+(
+    N'بانادول',
+    N'2 علبة',
+    'P',
+    1
+);
+
+
+
+SELECT * FROM Medicine_Requests;
+
+
+
+INSERT INTO Medicine_Availability
+(
+    Id_Request,
+    Id_User_PH,
+    Available_Quantity
+)
+VALUES
+(
+    10,   -- Id_Request
+    12,   -- Id_User_PH (الصيدلي)
+    1
+);
+
+
+
+
+INSERT INTO Notifications
+(
+    Id_User,       -- صاحب الطلب (المريض)
+    Id_Request,    -- الطلب
+    Id_User_PH     -- الصيدلي اللي رد
+)
+VALUES
+(
+    1,  -- المستخدم
+    10,  -- الطلب
+    15   -- الصيدلي
+);
+
+
+
+
+SELECT 
+    N.Id_Notification,
+    N.Create_At,
+    U.First_Name AS UserName,
+    PH.First_Name AS PharmacyName,
+    N.IsRead
+FROM Notifications N
+JOIN Users U ON N.Id_User = U.Id_User
+LEFT JOIN Users PH ON N.Id_User_PH = PH.Id_User
+ORDER BY N.Create_At DESC;
+
+
+
+SELECT * FROM Medicine_Requests WHERE Id_Request = 10;
+
+
+
+-- رد الصيدلي
+IF EXISTS (SELECT 1 FROM Medicine_Availability WHERE Id_Request=10 AND Id_User_PH=15)
+BEGIN
+  UPDATE Medicine_Availability
+  SET Available_Quantity = 3
+  WHERE Id_Request=10 AND Id_User_PH=15;
+END
+ELSE
+BEGIN
+  INSERT INTO Medicine_Availability (Available_Quantity, Id_Request, Id_User_PH)
+  VALUES (3, 10, 15);
+END
+
+
+INSERT INTO Notifications (Id_User, Id_Request, Id_User_PH, IsRead)
+SELECT r.Id_User, r.Id_Request, 15, 0
+FROM Medicine_Requests r
+WHERE r.Id_Request = 10;
+
+
+
+SELECT * FROM Notifications
+WHERE Id_Request = 10
+ORDER BY Id_Notification DESC;
+
+
+
+SELECT Id_Request, Id_User_PH, COUNT(*) AS Cnt
+FROM Notifications
+GROUP BY Id_Request, Id_User_PH
+HAVING COUNT(*) > 1;
+
+
+
+
+WITH CTE AS (
+    SELECT *,
+           ROW_NUMBER() OVER (
+               PARTITION BY Id_Request, Id_User_PH
+               ORDER BY Create_At DESC
+           ) AS rn
+    FROM Notifications
+)
+DELETE FROM CTE
+WHERE rn > 1;
+
+
+
+SELECT Id_Request, Id_User_PH, COUNT(*)
+FROM Notifications
+GROUP BY Id_Request, Id_User_PH
+HAVING COUNT(*) > 1;
 
 
 
 
 
-SELECT * FROM Users
+-- افترض user صاحب الطلب = 1 ، request = 10 ، صيدلي = 5
+INSERT INTO Notifications (Id_User, Id_Request, Id_User_PH, IsRead)
+VALUES (1, 10, 12, 0);
+
+-- صيدلي تاني = 7
+INSERT INTO Notifications (Id_User, Id_Request, Id_User_PH, IsRead)
+VALUES (1, 10, 16, 0);

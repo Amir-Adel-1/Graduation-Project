@@ -1,18 +1,39 @@
 // ==========================================================
-// ✅ FREE CONFIG (OCR.space + OpenFDA + Arabic Translation)
+// ✅ FINAL FULL FILE (OCR.space + OpenFDA Label+NDC + Arabic ONLY + Single Drug Fix)
 // ==========================================================
-const OCR_API_KEY = "K84011146488957"; // OCR.space key
+const OCR_API_KEY = "K84011146488957";
 const OPENFDA_LABEL_URL = "https://api.fda.gov/drug/label.json";
+const OPENFDA_NDC_URL = "https://api.fda.gov/drug/ndc.json";
+
 const TRANSLATE_TO_AR = true;
 
-// حد آمن للـ query عشان ما نعديش 500 char بعد الـ encoding
 const MYMEMORY_SAFE_CHUNK = 420;
-
-// أقصى عدد أدوية نطلعهم من الروشتة (عشان مايبقاش بطئ)
 const MAX_MEDS_FROM_RX = 8;
 
+// نجيب نتائج أكتر ونختار أفضل Match
+const OPENFDA_LIMIT = 10;
+
+// ✅ للصور: اعرض دواء واحد فقط (أفضل نتيجة)
+// لو عايزة تعرض كل الأدوية من الصورة خليها false
+const IMAGE_SINGLE_MED_MODE = true;
+
 // ==========================================================
-// 🌍 Helpers
+// ✅ Helpers
+// ==========================================================
+function containsArabic(text) {
+  return /[\u0600-\u06FF]/.test(String(text || ""));
+}
+
+function cleanForOpenFdaQuery(name) {
+  return String(name || "")
+    .replace(/["]/g, "")
+    .replace(/[^\w\s\-+]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// ==========================================================
+// 🌍 Translation (MyMemory) — returns null on failure
 // ==========================================================
 function isMyMemoryErrorText(t) {
   const s = String(t || "").toLowerCase();
@@ -22,27 +43,246 @@ function isMyMemoryErrorText(t) {
     s.includes("invalid language pair") ||
     s.includes("too many requests") ||
     s.includes("rate limit") ||
-    s.includes("invalid request")
+    s.includes("invalid request") ||
+    s.includes("limit")
   );
 }
 
-function containsArabic(text) {
-  return /[\u0600-\u06FF]/.test(String(text || ""));
+async function translateTextOrNull(from, to, text) {
+  try {
+    const t = String(text || "").trim();
+    if (!t || t === "غير متوفر") return t;
+
+    const clipped = t.length > MYMEMORY_SAFE_CHUNK ? t.slice(0, MYMEMORY_SAFE_CHUNK) + "..." : t;
+
+    const url =
+      "https://api.mymemory.translated.net/get?q=" +
+      encodeURIComponent(clipped) +
+      `&langpair=${from}|${to}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data?.responseStatus && data.responseStatus !== 200) return null;
+
+    const translated = data?.responseData?.translatedText;
+    if (!translated) return null;
+    if (isMyMemoryErrorText(translated)) return null;
+
+    return translated;
+  } catch {
+    return null;
+  }
 }
 
-function cleanForOpenFdaQuery(name) {
-  // إزالة علامات ممكن تكسر الـ query + تقليل المسافات
-  return String(name || "")
-    .replace(/["]/g, "")
-    .replace(/[^\w\s\-+]/g, " ")
+async function translateEnToArOrNull(text) {
+  return translateTextOrNull("en", "ar", text);
+}
+async function translateArToEnOrNull(text) {
+  return translateTextOrNull("ar", "en", text);
+}
+
+// ==========================================================
+// ✅ Arabic fallback (NO ENGLISH OUTPUT EVER)
+// ==========================================================
+function keywordToArabic(eng) {
+  const s = String(eng || "").toLowerCase();
+
+  const map = [
+    ["hypertension", "ارتفاع ضغط الدم"],
+    ["blood pressure", "ضغط الدم"],
+    ["heart failure", "قصور القلب"],
+    ["post-myocardial infarction", "بعد الجلطة القلبية"],
+    ["myocardial infarction", "جلطة قلبية"],
+    ["stroke", "سكتة دماغية"],
+    ["headache", "صداع"],
+    ["fever", "حمّى"],
+    ["cough", "سعال"],
+    ["sore throat", "ألم/التهاب الحلق"],
+    ["runny nose", "سيلان الأنف"],
+    ["nasal congestion", "احتقان الأنف"],
+    ["congestion", "احتقان"],
+    ["aches", "آلام بالجسم"],
+    ["pain", "ألم"],
+    ["dizziness", "دوخة/دوار"],
+    ["fatigue", "إرهاق"],
+    ["diarrhea", "إسهال"],
+    ["abdominal pain", "ألم بالبطن"],
+    ["hypotension", "هبوط ضغط"],
+    ["hyperkalemia", "ارتفاع البوتاسيوم"],
+    ["allergy", "حساسية"],
+    ["rash", "طفح جلدي"],
+    ["blisters", "فقاعات جلدية"],
+    ["liver", "الكبد"],
+    ["kidney", "الكلى"],
+    ["renal", "الكلى/وظائف الكلى"],
+    ["pregnancy", "الحمل"],
+    ["fetal", "الجنين"],
+    ["acetaminophen", "باراسيتامول/أسيتامينوفين"],
+    ["diphenhydramine", "ديفينهيدرامين (مسبب للنعاس)"],
+    ["valsartan", "فالسارتان"],
+    ["nicotine", "نيكوتين"],
+    ["warfarin", "وارفارين (مميع دم)"],
+    ["maoi", "مثبطات MAO"],
+    ["alcohol", "كحول"],
+    ["glaucoma", "جلوكوما"],
+    ["bronchitis", "التهاب شعب مزمن"],
+    ["emphysema", "انتفاخ رئة"],
+    ["prostate", "تضخم البروستاتا"],
+    ["driving", "القيادة/تشغيل الآلات"],
+    ["nsaid", "مضادات الالتهاب غير الستيرويدية (NSAIDs)"],
+    ["ibuprofen", "إيبوبروفين"],
+    ["naproxen", "نابروكسين"],
+    ["potassium", "بوتاسيوم"],
+    ["diuretics", "مدرات بول"],
+    ["salt substitutes", "بدائل الملح"],
+    ["electrolytes", "الأملاح/الإلكتروليتات"],
+    ["creatinine", "كرياتينين"]
+  ];
+
+  const hits = [];
+  for (const [k, ar] of map) if (s.includes(k)) hits.push(ar);
+  return [...new Set(hits)];
+}
+
+function fallbackArabicSummary(section, englishText) {
+  const hits = keywordToArabic(englishText);
+
+  if (section === "general") {
+    return hits.length ? `ملخص (حسب النص): ${hits.join("، ")}.` : "غير متاح بالعربي حاليًا.";
+  }
+
+  if (section === "dosage") {
+    const doseMatch = englishText.match(/take\s+(\d+)\s+(caplets|tablets|capsules|softgels)/i);
+    const mgMatch = englishText.match(/(\d+)\s*mg/i);
+    const onceDaily = /once\s+daily/i.test(englishText);
+    const twiceDaily = /twice\s+daily/i.test(englishText);
+    const bedtime = /bedtime/i.test(englishText);
+
+    let line = "الجرعة: اتبع تعليمات الطبيب/العبوة ولا تتجاوز الجرعة الموصى بها.";
+    if (doseMatch) line = `الجرعة المذكورة: ${doseMatch[1]} قرص/كبسولة.`;
+    else if (mgMatch) line = `الجرعة المذكورة: ${mgMatch[1]} مجم (تقريبًا حسب النص).`;
+
+    if (onceDaily) line += " مرة يوميًا.";
+    if (twiceDaily) line += " مرتين يوميًا.";
+    if (bedtime) line += " قبل النوم.";
+    return line;
+  }
+
+  if (section === "uses") {
+    return hits.length ? `الاستخدامات المحتملة (حسب النص): ${hits.join("، ")}.` : "الاستخدامات: حسب تعليمات الطبيب/العبوة.";
+  }
+
+  if (section === "adverse") {
+    return hits.length ? `الآثار الجانبية المحتملة (حسب النص): ${hits.join("، ")}.` : "الآثار الجانبية: استشر الطبيب/الصيدلي عند ظهور أعراض غير معتادة.";
+  }
+
+  if (section === "warnings") {
+    const lines = [];
+    if (/pregnan|fetal/i.test(englishText)) lines.push("تحذير مهم: قد يسبب ضررًا للجنين أثناء الحمل — استشيري الطبيب فورًا.");
+    if (/renal|kidney/i.test(englishText)) lines.push("تحذير يتعلق بوظائف الكلى — قد يلزم متابعة الطبيب.");
+    if (/liver/i.test(englishText)) lines.push("تحذير يتعلق بالكبد — راجعي الطبيب عند وجود مرض كبدي.");
+    if (/drowsiness/i.test(englishText)) lines.push("قد يسبب نعاسًا — تجنبي القيادة/الآلات.");
+    if (!lines.length && hits.length) lines.push(`تنبيهات عامة (حسب النص): ${hits.join("، ")}.`);
+    if (!lines.length) lines.push("تحذيرات: اتبع تعليمات الطبيب/العبوة.");
+    return lines.join(" ");
+  }
+
+  if (section === "interactions") {
+    const lines = [];
+    if (/nsaid/i.test(englishText) || /ibuprofen|naproxen/i.test(englishText)) {
+      lines.push("قد يتداخل مع مسكنات/NSAIDs وقد يؤثر على الكلى أو يقلل تأثير الدواء — استشيري الطبيب.");
+    }
+    if (/potassium|salt substitutes/i.test(englishText)) {
+      lines.push("الحذر مع مكملات البوتاسيوم/بدائل الملح (قد ترفع البوتاسيوم) — يلزم متابعة.");
+    }
+    if (/warfarin/i.test(englishText)) lines.push("قد يتداخل مع الوارفارين — راجعي الطبيب/الصيدلي.");
+    if (!lines.length && hits.length) lines.push(`تداخلات محتملة (حسب النص): ${hits.join("، ")}.`);
+    if (!lines.length) lines.push("التفاعلات الدوائية: استشيري الصيدلي قبل الجمع مع أدوية أخرى.");
+    return lines.join(" ");
+  }
+
+  return "غير متاح بالعربي حاليًا.";
+}
+
+async function translateLongTextEnToAr(text, sectionForFallback = "general") {
+  const t = String(text || "").trim();
+  if (!t || t === "غير متوفر") return t;
+
+  const parts = t
+    .replace(/\r/g, "\n")
+    .split(/(?:\n+|(?<=\.)\s+|;\s+)/g)
+    .map(p => p.trim())
+    .filter(Boolean)
+    .slice(0, 18);
+
+  const out = [];
+  for (const part of parts) {
+    const safePart = part.length > MYMEMORY_SAFE_CHUNK ? part.slice(0, MYMEMORY_SAFE_CHUNK) + "..." : part;
+    const tr = await translateEnToArOrNull(safePart);
+    out.push(tr && containsArabic(tr) ? tr : fallbackArabicSummary(sectionForFallback, safePart));
+  }
+  return out.join(" ");
+}
+
+// ==========================================================
+// ✅ Similarity (avoid wrong meds + dedupe candidates)
+// ==========================================================
+function normalizeName(s) {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
-// ناخد أول N جملة لتقليل الحجم + تحسين الترجمة
-function takeFirstSentences(t, n = 6) {
+function tokenSet(s) {
+  return new Set(normalizeName(s).split(" ").filter(w => w.length >= 3));
+}
+
+function jaccard(a, b) {
+  const A = tokenSet(a);
+  const B = tokenSet(b);
+  if (!A.size || !B.size) return 0;
+
+  let inter = 0;
+  for (const x of A) if (B.has(x)) inter++;
+
+  const union = A.size + B.size - inter;
+  return union ? inter / union : 0;
+}
+
+// ✅ دمج المرشحات المتشابهة جدًا (ده اللي بيمنع "دواء واحد => 2")
+function dedupeCandidates(cands) {
+  const out = [];
+  for (const c of cands) {
+    if (!out.some(x => jaccard(x, c) >= 0.70)) out.push(c);
+  }
+  return out;
+}
+
+function bestMatchByScore(candidate, results, brandGetter, genericGetter) {
+  let best = null;
+  let bestScore = 0;
+
+  for (const r of results || []) {
+    const brand = brandGetter(r) || "";
+    const generic = genericGetter(r) || "";
+    const score = Math.max(jaccard(candidate, brand), jaccard(candidate, generic));
+    if (score > bestScore) {
+      bestScore = score;
+      best = r;
+    }
+  }
+  return { best, bestScore };
+}
+
+// ==========================================================
+// ✅ Text extraction helpers
+// ==========================================================
+function takeFirstSentences(t, n = 12) {
   const s = String(t || "").replace(/\r/g, "\n").trim();
-  if (!s) return s;
+  if (!s) return "غير متوفر";
 
   const parts = s
     .split(/(?:\n+|(?<=\.)\s+|;\s+)/g)
@@ -52,92 +292,6 @@ function takeFirstSentences(t, n = 6) {
   return parts.slice(0, n).join(" ");
 }
 
-// ==========================================================
-// 🌍 Translate (MyMemory) - SAFE
-// ==========================================================
-async function translateEnToAr(text) {
-  try {
-    const t = String(text || "").trim();
-    if (!t || t === "غير متوفر") return t;
-
-    const clipped =
-      t.length > MYMEMORY_SAFE_CHUNK ? t.slice(0, MYMEMORY_SAFE_CHUNK) + "..." : t;
-
-    const url =
-      "https://api.mymemory.translated.net/get?q=" +
-      encodeURIComponent(clipped) +
-      "&langpair=en|ar";
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (data?.responseStatus && data.responseStatus !== 200) {
-      return `⚠️ (تعذّرت الترجمة) ${t}`;
-    }
-
-    const translated = data?.responseData?.translatedText;
-    if (!translated) return `⚠️ (تعذّرت الترجمة) ${t}`;
-
-    if (isMyMemoryErrorText(translated)) return `⚠️ (تعذّرت الترجمة) ${t}`;
-    return translated;
-  } catch {
-    return `⚠️ (تعذّرت الترجمة) ${String(text || "")}`;
-  }
-}
-
-// ترجمة نص طويل EN→AR بتقطيع آمن
-async function translateLongTextEnToAr(text) {
-  const t = String(text || "").trim();
-  if (!t || t === "غير متوفر") return t;
-
-  const parts = t
-    .replace(/\r/g, "\n")
-    .split(/(?:\n+|(?<=\.)\s+|;\s+)/g)
-    .map(p => p.trim())
-    .filter(Boolean);
-
-  const translatedParts = [];
-  for (const part of parts) {
-    const safePart =
-      part.length > MYMEMORY_SAFE_CHUNK ? part.slice(0, MYMEMORY_SAFE_CHUNK) + "..." : part;
-
-    const tr = await translateEnToAr(safePart);
-    translatedParts.push(tr);
-  }
-  return translatedParts.join(" ");
-}
-
-// (اختياري) ترجمة AR→EN للاسم فقط لو المستخدم كتب بالعربي
-async function translateArToEn(text) {
-  try {
-    const t = String(text || "").trim();
-    if (!t) return t;
-
-    const clipped = t.length > 120 ? t.slice(0, 120) : t;
-
-    const url =
-      "https://api.mymemory.translated.net/get?q=" +
-      encodeURIComponent(clipped) +
-      "&langpair=ar|en";
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (data?.responseStatus && data.responseStatus !== 200) return t;
-
-    const translated = data?.responseData?.translatedText;
-    if (!translated) return t;
-
-    if (isMyMemoryErrorText(translated)) return t;
-    return translated;
-  } catch {
-    return text;
-  }
-}
-
-// ==========================================================
-// ✅ Better Interaction Extraction (fallback if missing)
-// ==========================================================
 function pickInteractionText(result) {
   const direct = result?.drug_interactions?.[0];
   if (direct && String(direct).trim()) return direct;
@@ -157,10 +311,10 @@ function pickInteractionText(result) {
     .filter(Boolean);
 
   const keys = [
-    "interact", "interaction", "contraind", "avoid",
-    "cyp", "inhibitor", "inducer", "qt", "serotonin",
-    "warfarin", "rifamp", "azole", "grapefruit",
-    "maoi", "ssri", "snri", "opioid", "alcohol"
+    "interaction", "interact", "contraind", "avoid",
+    "warfarin", "maoi", "alcohol", "sedatives", "tranquilizers",
+    "nsaid", "ibuprofen", "naproxen",
+    "potassium", "salt substitutes", "creatinine", "renal"
   ];
 
   const picked = sentences.filter(s => {
@@ -168,12 +322,12 @@ function pickInteractionText(result) {
     return keys.some(k => low.includes(k));
   });
 
-  if (!picked.length) return sentences.slice(0, 4).join(" ");
-  return picked.slice(0, 8).join(" ");
+  if (!picked.length) return sentences.slice(0, 6).join(" ");
+  return picked.slice(0, 10).join(" ");
 }
 
 // ==========================================================
-// 📷 OCR.space – Extract FULL text from image (for prescriptions)
+// 📷 OCR.space
 // ==========================================================
 async function extractFullTextFromImage(fileOrBase64) {
   let file = fileOrBase64;
@@ -186,10 +340,7 @@ async function extractFullTextFromImage(fileOrBase64) {
 
   const formData = new FormData();
   formData.append("apikey", OCR_API_KEY);
-
-  // لو روشتك أحيانًا عربي، تقدري تغيّريها لـ "ara" أو تعملي switch من UI
   formData.append("language", "eng");
-
   formData.append("isOverlayRequired", "false");
   formData.append("OCREngine", "2");
   formData.append("file", file);
@@ -200,37 +351,31 @@ async function extractFullTextFromImage(fileOrBase64) {
   });
 
   const data = await response.json();
+  if (data?.IsErroredOnProcessing) throw new Error(data?.ErrorMessage?.[0] || "OCR failed");
 
-  if (data?.IsErroredOnProcessing) {
-    throw new Error(data?.ErrorMessage?.[0] || "OCR failed");
-  }
-
-  let extractedText = data?.ParsedResults?.[0]?.ParsedText || "";
-  extractedText = extractedText.replace(/\r/g, "\n").trim();
-
+  const extractedText = (data?.ParsedResults?.[0]?.ParsedText || "").replace(/\r/g, "\n").trim();
   if (!extractedText) throw new Error("لم يتم العثور على نص في الصورة");
   return extractedText;
 }
 
 // ==========================================================
-// 🧾 Extract drug list from OCR text (روشتة)
+// 🧾 Candidate extraction (reduce marketing/symptoms)
 // ==========================================================
-function extractDrugNamesFromPrescription(ocrText) {
+function extractDrugNameCandidates(ocrText) {
   const raw = String(ocrText || "").replace(/\r/g, "\n");
 
-  const stop = new Set([
-    "tab", "tabs", "tablet", "tablets", "cap", "caps", "capsule", "capsules",
-    "syrup", "cream", "ointment", "drop", "drops", "spray", "amp", "amps",
-    "once", "twice", "daily", "bid", "tid", "qid", "prn", "before", "after",
-    "meal", "meals", "morning", "night", "noon", "mg", "g", "mcg", "ml",
-    "take", "use", "x", "for", "days", "day"
+  const bad = new Set([
+    "cold","flu","relief","non","drowsy","non-drowsy","daytime","nighttime",
+    "effective","from","blocked","runny","nose","headache","body","ache",
+    "fever","cough","sore","throat","congestion","sinus","pain","pressure",
+    "children","childrens","child","adult","directions","warnings","uses",
+    "take","use","daily","morning","night","before","after","meal","hours",
+    "tablet","tablets","tab","tabs","cap","caps","capsule","capsules",
+    "caplets","syrup","cream","ointment","drop","drops","spray","amp","amps",
+    "mg","g","mcg","ml"
   ]);
 
-  const lines = raw
-    .split("\n")
-    .map(s => s.trim())
-    .filter(Boolean);
-
+  const lines = raw.split("\n").map(s => s.trim()).filter(Boolean);
   const candidates = [];
 
   for (let line of lines) {
@@ -243,22 +388,19 @@ function extractDrugNamesFromPrescription(ocrText) {
       .trim();
 
     if (!line) continue;
-
-    const hasLatin = /[a-zA-Z]/.test(line);
-    if (!hasLatin) continue;
+    if (!/[a-zA-Z]/.test(line)) continue;
 
     const words = line.split(" ").filter(Boolean);
+    if (words.length > 6) continue;
 
     const filtered = words
-      .map(w => w.trim())
       .filter(w => w.length >= 3)
-      .filter(w => !stop.has(w.toLowerCase()));
+      .filter(w => !bad.has(w.toLowerCase()));
 
     if (!filtered.length) continue;
 
     const name = filtered.slice(0, 3).join(" ").trim();
-
-    if (name.length < 3 || name.length > 40) continue;
+    if (name.length < 4 || name.length > 45) continue;
 
     candidates.push(name);
   }
@@ -277,73 +419,130 @@ function extractDrugNamesFromPrescription(ocrText) {
 }
 
 // ==========================================================
-// 💊 OpenFDA – Medication Info (Arabic) — one drug
+// 🔎 OpenFDA: Label + NDC fallback
 // ==========================================================
-async function getMedicationInfo(query) {
-  try {
-    let name = String(query || "").trim();
-    if (!name) return "❌ اسم الدواء غير صالح.";
+async function labelSearchList(query) {
+  const url = `${OPENFDA_LABEL_URL}?search=${encodeURIComponent(query)}&limit=${OPENFDA_LIMIT}`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+  return data?.results || [];
+}
 
-    // لو الاسم عربي → نحاول نحوله لإنجليزي (عشان OpenFDA)
-    if (containsArabic(name)) {
-      const en = await translateArToEn(name);
-      name = en || name;
-    }
+async function ndcSearchList(query) {
+  const url = `${OPENFDA_NDC_URL}?search=${encodeURIComponent(query)}&limit=${OPENFDA_LIMIT}`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+  return data?.results || [];
+}
 
-    const safe = cleanForOpenFdaQuery(name);
-    if (!safe) return "❌ اسم الدواء غير صالح.";
+async function searchOpenFdaBest(name) {
+  const safe = cleanForOpenFdaQuery(name);
+  if (!safe) return null;
 
-    // ✅ بحث أقوى (Exact + Wildcard + Full-text fallback)
-    const searches = [
-      `openfda.brand_name:"${safe}"`,
-      `openfda.generic_name:"${safe}"`,
-      `openfda.brand_name:${safe}*`,
-      `openfda.generic_name:${safe}*`,
-      `${safe}`
-    ];
+  const labelQueries = [
+    `openfda.brand_name:"${safe}"`,
+    `openfda.generic_name:"${safe}"`,
+    `openfda.brand_name:${safe}*`,
+    `openfda.generic_name:${safe}*`,
+    `${safe}`
+  ];
 
-    let result = null;
+  for (const q of labelQueries) {
+    const list = await labelSearchList(q);
+    if (!list.length) continue;
 
-    for (const s of searches) {
-      const url = `${OPENFDA_LABEL_URL}?search=${encodeURIComponent(s)}&limit=1`;
-      const resp = await fetch(url);
-      const data = await resp.json();
-      if (data?.results?.length) {
-        result = data.results[0];
-        break;
-      }
-    }
-
-    if (!result) {
-      return `❌ لم يتم العثور على هذا الدواء في OpenFDA.
-جرّب اسم تاني/كتابة أدق بالإنجليزي.
-(الاسم: ${safe})`;
-    }
-
-    const brand = result?.openfda?.brand_name?.[0] || safe;
-    const generic = result?.openfda?.generic_name?.[0] || "غير متوفر";
-
-    // ✅ خدي أول كام جملة لتقليل الضخامة + تحسين الترجمة
-    let uses = takeFirstSentences(result?.indications_and_usage?.[0] || "غير متوفر", 6);
-    let dosage = takeFirstSentences(result?.dosage_and_administration?.[0] || "غير متوفر", 6);
-    let adverse = takeFirstSentences(result?.adverse_reactions?.[0] || "غير متوفر", 6);
-    let warnings = takeFirstSentences(
-      result?.warnings?.[0] || result?.boxed_warning?.[0] || "غير متوفر",
-      6
+    const { best, bestScore } = bestMatchByScore(
+      safe,
+      list,
+      r => r?.openfda?.brand_name?.[0],
+      r => r?.openfda?.generic_name?.[0]
     );
-    let interactions = takeFirstSentences(pickInteractionText(result) || "غير متوفر", 6);
 
-    if (TRANSLATE_TO_AR) {
-      uses = await translateLongTextEnToAr(uses);
-      dosage = await translateLongTextEnToAr(dosage);
-      adverse = await translateLongTextEnToAr(adverse);
-      warnings = await translateLongTextEnToAr(warnings);
-      interactions = await translateLongTextEnToAr(interactions);
+    const isExact = q.includes(':"') && q.includes('"');
+    const threshold = isExact ? 0.30 : 0.48;
+
+    if (best && bestScore >= threshold) return best;
+  }
+
+  const ndcQueries = [
+    `brand_name:"${safe}"`,
+    `generic_name:"${safe}"`,
+    `brand_name:${safe}*`,
+    `generic_name:${safe}*`,
+    `${safe}`
+  ];
+
+  for (const q of ndcQueries) {
+    const list = await ndcSearchList(q);
+    if (!list.length) continue;
+
+    const { best, bestScore } = bestMatchByScore(
+      safe,
+      list,
+      r => r?.brand_name,
+      r => r?.generic_name
+    );
+
+    const isExact = q.includes(':"') && q.includes('"');
+    const threshold = isExact ? 0.30 : 0.48;
+
+    if (!best || bestScore < threshold) continue;
+
+    const ndcBrand = best?.brand_name || "";
+    const ndcGeneric = best?.generic_name || "";
+    const retryNames = [ndcBrand, ndcGeneric].map(cleanForOpenFdaQuery).filter(Boolean);
+
+    for (const rn of retryNames) {
+      const list2 = await labelSearchList(`openfda.brand_name:"${rn}"`);
+      if (!list2.length) continue;
+
+      const { best: best2, bestScore: score2 } = bestMatchByScore(
+        rn,
+        list2,
+        r => r?.openfda?.brand_name?.[0],
+        r => r?.openfda?.generic_name?.[0]
+      );
+
+      if (best2 && score2 >= 0.30) return best2;
     }
 
-    const footer = "تنبيه: المعلومات هنا للتوعية ولا تُغني عن استشارة الطبيب أو الصيدلي.";
+    return null;
+  }
 
-    return `
+  return null;
+}
+
+async function filterCandidatesByOpenFda(candidates) {
+  const kept = [];
+  for (const c of candidates) {
+    const r = await searchOpenFdaBest(c);
+    if (r) kept.push({ name: c, result: r });
+  }
+  return kept;
+}
+
+// ==========================================================
+// 💊 Build medication card (Arabic ONLY)
+// ==========================================================
+async function formatMedicationInfoFromResult(queryName, result) {
+  const brand = result?.openfda?.brand_name?.[0] || queryName;
+  const generic = result?.openfda?.generic_name?.[0] || "غير متوفر";
+
+  const usesEN = takeFirstSentences(result?.indications_and_usage?.[0] || "غير متوفر", 12);
+  const dosageEN = takeFirstSentences(result?.dosage_and_administration?.[0] || "غير متوفر", 12);
+  const adverseEN = takeFirstSentences(result?.adverse_reactions?.[0] || "غير متوفر", 12);
+  const warningsEN = takeFirstSentences(result?.warnings?.[0] || result?.boxed_warning?.[0] || "غير متوفر", 12);
+  const interactionsEN = takeFirstSentences(pickInteractionText(result) || "غير متوفر", 12);
+
+  const uses = await translateLongTextEnToAr(usesEN, "uses");
+  const dosage = await translateLongTextEnToAr(dosageEN, "dosage");
+  const adverse = await translateLongTextEnToAr(adverseEN, "adverse");
+  const warnings = await translateLongTextEnToAr(warningsEN, "warnings");
+  const interactions = await translateLongTextEnToAr(interactionsEN, "interactions");
+
+  const footer = "تنبيه: المعلومات هنا للتوعية ولا تُغني عن استشارة الطبيب أو الصيدلي.";
+
+  return `
 ==============================
 💊 ${brand}
 ==============================
@@ -366,6 +565,29 @@ ${interactions}
 
 ${footer}
 `.trim();
+}
+
+// ==========================================================
+// 💊 Typing input (manual name)
+// ==========================================================
+async function getMedicationInfo(query) {
+  try {
+    let name = String(query || "").trim();
+    if (!name) return "❌ اسم الدواء غير صالح.";
+
+    if (containsArabic(name)) {
+      const en = await translateArToEnOrNull(name);
+      name = en || name;
+    }
+
+    const result = await searchOpenFdaBest(name);
+    if (!result) {
+      return `❌ لم أقدر أحدد الدواء بشكل مؤكد من قواعد OpenFDA.
+جرّبي كتابة الاسم بالإنجليزي بدقة أو ابعتي صورة أوضح.
+(الاسم: ${name})`;
+    }
+
+    return await formatMedicationInfoFromResult(name, result);
   } catch {
     return "❌ حدث خطأ أثناء جلب معلومات الدواء.";
   }
@@ -416,10 +638,8 @@ async function addMessageToChat(text, sender = "bot") {
   chatBody.scrollTop = chatBody.scrollHeight;
 }
 
-// 🔵 Typing Indicator (3 dots – زي ما كانت)
 function showTypingIndicator() {
   const chatBody = document.getElementById("drugChatBody");
-
   const indicator = document.createElement("div");
   indicator.className = "message bot typing-indicator";
   indicator.innerHTML = `
@@ -429,7 +649,6 @@ function showTypingIndicator() {
       <span></span>
     </div>
   `;
-
   chatBody.appendChild(indicator);
   chatBody.scrollTop = chatBody.scrollHeight;
   return indicator;
@@ -440,7 +659,7 @@ function showTypingIndicator() {
 // ==========================================================
 async function handleSendMessage() {
   const input = document.getElementById("drugInput");
-  const text = input.value.trim();
+  const text = input?.value?.trim();
   if (!text) return;
 
   await addMessageToChat(text, "user");
@@ -466,30 +685,50 @@ async function handleFileChange(e) {
 
   try {
     const fullText = await extractFullTextFromImage(file);
-    const meds = extractDrugNamesFromPrescription(fullText);
 
-    if (!meds.length) {
+    // استخراج + Dedup
+    const candidatesRaw = extractDrugNameCandidates(fullText);
+    const candidates = dedupeCandidates(candidatesRaw);
+
+    if (!candidates.length) {
       typing.remove();
       await addMessageToChat(
-        "❌ لم أستطع استخراج أسماء أدوية من الروشتة.\nجرّب صورة أوضح أو تكون الأسماء بالإنجليزي.",
+        "❌ ماقدرتش أطلع اسم دواء واضح من الصورة. جرّبي صورة أقرب لاسم الدواء أو اكتبيه يدويًا.",
         "bot"
       );
       return;
     }
 
-    let combined = `🧾 تم التعرف على ${meds.length} دواء من الروشتة:\n- ${meds.join("\n- ")}\n\n`;
+    const validAll = await filterCandidatesByOpenFda(candidates);
 
-    for (let i = 0; i < meds.length; i++) {
-      const medName = meds[i];
-      const info = await getMedicationInfo(medName);
+    if (!validAll.length) {
+      typing.remove();
+      await addMessageToChat(
+        "❌ اتعرفت على أسماء محتملة من الصورة، لكن مش موجودة/مش مؤكدة داخل OpenFDA.\nجرّبي تكتبي الاسم بالإنجليزي أو ابعتي صورة أوضح.",
+        "bot"
+      );
+      return;
+    }
+
+    // ✅ Single drug mode for images
+    const valid = IMAGE_SINGLE_MED_MODE ? [validAll[0]] : validAll;
+
+    const names = valid.map(x => x.result?.openfda?.brand_name?.[0] || x.name);
+
+    let combined = IMAGE_SINGLE_MED_MODE
+      ? `🧾 تم التعرف على دواء واحد:\n- ${names[0]}\n\n`
+      : `🧾 تم التعرف على ${valid.length} دواء:\n- ${names.join("\n- ")}\n\n`;
+
+    for (const item of valid) {
+      const info = await formatMedicationInfoFromResult(item.name, item.result);
       combined += `\n\n${info}\n`;
     }
 
     typing.remove();
     await addMessageToChat(combined.trim(), "bot");
-  } catch (err) {
+  } catch {
     typing.remove();
-    await addMessageToChat("❌ حصل خطأ أثناء قراءة الروشتة. جرّب صورة أوضح.", "bot");
+    await addMessageToChat("❌ حصل خطأ أثناء قراءة الصورة. جرّبي صورة أوضح.", "bot");
   } finally {
     const fi = document.getElementById("drugFileInput");
     if (fi) fi.value = "";

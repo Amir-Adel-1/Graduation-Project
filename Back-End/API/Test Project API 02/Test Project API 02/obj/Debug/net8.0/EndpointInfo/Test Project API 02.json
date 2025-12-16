@@ -491,10 +491,10 @@
         }
       }
     },
-    "/api/MedicineAvailability/my-responses": {
-      "get": {
+    "/api/Favorites/clear": {
+      "delete": {
         "tags": [
-          "MedicineAvailability"
+          "Favorites"
         ],
         "responses": {
           "200": {
@@ -503,7 +503,38 @@
         }
       }
     },
-    "/api/MedicineAvailability/respond": {
+    "/api/Favorites/toggle": {
+      "post": {
+        "tags": [
+          "Favorites"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddFavoriteDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddFavoriteDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddFavoriteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/MedicineAvailability": {
       "post": {
         "tags": [
           "MedicineAvailability"
@@ -512,17 +543,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RespondMedicineAvailabilityDto"
+                "$ref": "#/components/schemas/AddAvailabilityDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/RespondMedicineAvailabilityDto"
+                "$ref": "#/components/schemas/AddAvailabilityDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/RespondMedicineAvailabilityDto"
+                "$ref": "#/components/schemas/AddAvailabilityDto"
               }
             }
           }
@@ -612,6 +643,48 @@
         }
       }
     },
+    "/api/MedicineRequests/{requestId}/respond": {
+      "post": {
+        "tags": [
+          "MedicineRequests"
+        ],
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespondToRequestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespondToRequestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespondToRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Notifications/my": {
       "get": {
         "tags": [
@@ -624,8 +697,31 @@
         }
       }
     },
-    "/api/Notifications/{id}": {
-      "delete": {
+    "/api/Notifications/{id}/details": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Notifications/{id}/read": {
+      "put": {
         "tags": [
           "Notifications"
         ],
@@ -705,6 +801,18 @@
               "format": "int32"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Users/me": {
+      "get": {
+        "tags": [
+          "Users"
         ],
         "responses": {
           "200": {
@@ -1022,10 +1130,32 @@
   },
   "components": {
     "schemas": {
+      "AddAvailabilityDto": {
+        "type": "object",
+        "properties": {
+          "idRequest": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "availableQuantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "AddFavoriteDto": {
         "type": "object",
         "properties": {
           "productApiName": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "imageUrl": {
             "type": "string",
             "nullable": true
           }
@@ -1046,6 +1176,10 @@
           "price": {
             "type": "number",
             "format": "double"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1106,6 +1240,10 @@
             "format": "double"
           },
           "productApiName": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
             "type": "string",
             "nullable": true
           },
@@ -1238,6 +1376,9 @@
         "additionalProperties": false
       },
       "Favorite": {
+        "required": [
+          "productApiName"
+        ],
         "type": "object",
         "properties": {
           "idFavorite": {
@@ -1245,6 +1386,14 @@
             "format": "int32"
           },
           "productApiName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "imageUrl": {
             "type": "string",
             "nullable": true
           },
@@ -1276,15 +1425,15 @@
       "MedicineAvailability": {
         "type": "object",
         "properties": {
-          "availableQuantity": {
-            "type": "integer",
-            "format": "int32"
-          },
           "idRequest": {
             "type": "integer",
             "format": "int32"
           },
           "idUserPh": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "availableQuantity": {
             "type": "integer",
             "format": "int32"
           },
@@ -1366,10 +1515,21 @@
             "format": "int32",
             "nullable": true
           },
+          "idUserPh": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isRead": {
+            "type": "boolean"
+          },
           "idRequestNavigation": {
             "$ref": "#/components/schemas/MedicineRequest"
           },
           "idUserNavigation": {
+            "$ref": "#/components/schemas/User"
+          },
+          "idUserPhNavigation": {
             "$ref": "#/components/schemas/User"
           }
         },
@@ -1438,13 +1598,9 @@
         },
         "additionalProperties": false
       },
-      "RespondMedicineAvailabilityDto": {
+      "RespondToRequestDto": {
         "type": "object",
         "properties": {
-          "requestId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "availableQuantity": {
             "type": "integer",
             "format": "int32"

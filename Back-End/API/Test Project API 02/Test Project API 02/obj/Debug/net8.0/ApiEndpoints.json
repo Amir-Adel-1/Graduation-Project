@@ -306,6 +306,16 @@
   },
   {
     "ContainingType": "Test_Project_API_02.Controllers.FavoritesController",
+    "Method": "ClearFavorites",
+    "RelativePath": "api/Favorites/clear",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Test_Project_API_02.Controllers.FavoritesController",
     "Method": "GetMyFavorites",
     "RelativePath": "api/Favorites/my",
     "HttpMethod": "GET",
@@ -315,26 +325,32 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "Test_Project_API_02.Controllers.MedicineAvailabilityController",
-    "Method": "GetMyResponses",
-    "RelativePath": "api/MedicineAvailability/my-responses",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Test_Project_API_02.Controllers.MedicineAvailabilityController",
-    "Method": "Respond",
-    "RelativePath": "api/MedicineAvailability/respond",
+    "ContainingType": "Test_Project_API_02.Controllers.FavoritesController",
+    "Method": "ToggleFavorite",
+    "RelativePath": "api/Favorites/toggle",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "Test_Project_API_02.DTOs.RespondMedicineAvailabilityDto",
+        "Type": "Test_Project_API_02.DTOs.AddFavoriteDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Test_Project_API_02.Controllers.MedicineAvailabilityController",
+    "Method": "Add",
+    "RelativePath": "api/MedicineAvailability",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Test_Project_API_02.Controllers.MedicineAvailabilityController\u002BAddAvailabilityDto",
         "IsRequired": true
       }
     ],
@@ -351,6 +367,27 @@
       {
         "Name": "dto",
         "Type": "Test_Project_API_02.DTOs.CreateMedicineRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Test_Project_API_02.Controllers.MedicineRequestsController",
+    "Method": "RespondToRequest",
+    "RelativePath": "api/MedicineRequests/{requestId}/respond",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Test_Project_API_02.Controllers.RespondToRequestDto",
         "IsRequired": true
       }
     ],
@@ -394,9 +431,25 @@
   },
   {
     "ContainingType": "Test_Project_API_02.Controllers.NotificationsController",
-    "Method": "DeleteNotification",
-    "RelativePath": "api/Notifications/{id}",
-    "HttpMethod": "DELETE",
+    "Method": "GetNotificationDetails",
+    "RelativePath": "api/Notifications/{id}/details",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Test_Project_API_02.Controllers.NotificationsController",
+    "Method": "MarkRead",
+    "RelativePath": "api/Notifications/{id}/read",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -626,6 +679,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Test_Project_API_02.Controllers.UsersController",
+    "Method": "GetMe",
+    "RelativePath": "api/Users/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

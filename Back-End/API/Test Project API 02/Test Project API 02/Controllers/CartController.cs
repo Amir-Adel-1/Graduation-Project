@@ -32,11 +32,23 @@ namespace Test_Project_API_02.Controllers
             return int.Parse(id);
         }
 
+        // ✅ NEW: احصل على أحدث كارت للمستخدم (نفس منطق OrdersController)
+        private async Task<Cart?> GetLatestUserCartAsync(int userId, bool includeItems = true)
+        {
+            var q = _context.Carts
+                .Where(c => c.IdUser.HasValue && c.IdUser.Value == userId)
+                .OrderByDescending(c => c.IdCart)
+                .AsQueryable();
+
+            if (includeItems)
+                q = q.Include(c => c.CartItems);
+
+            return await q.FirstOrDefaultAsync();
+        }
+
         private async Task<Cart> GetOrCreateCartAsync(int userId)
         {
-            var cart = await _context.Carts
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.IdUser.HasValue && c.IdUser.Value == userId);
+            var cart = await GetLatestUserCartAsync(userId, includeItems: true);
 
             if (cart != null)
                 return cart;
@@ -51,7 +63,7 @@ namespace Test_Project_API_02.Controllers
             _context.Carts.Add(cart);
             await _context.SaveChangesAsync();
 
-            // reload with items
+            // رجّع نفس الكارت اللي اتعمل
             cart = await _context.Carts
                 .Include(c => c.CartItems)
                 .FirstAsync(c => c.IdCart == cart.IdCart);
@@ -61,7 +73,6 @@ namespace Test_Project_API_02.Controllers
 
         private async Task RecalculateCartTotalsAsync(Cart cart)
         {
-            // cart.CartItems ممكن تكون null؟ في موديلك initialized، بس احتياط
             var items = await _context.CartItems
                 .Where(i => i.IdCart.HasValue && i.IdCart.Value == cart.IdCart)
                 .ToListAsync();
@@ -74,16 +85,14 @@ namespace Test_Project_API_02.Controllers
 
         // ==========================================
         // GET: api/Cart/my
-        // يرجع الكارت بتاع اليوزر + items
         // ==========================================
         [HttpGet("my")]
         public async Task<IActionResult> GetMyCart()
         {
             var userId = GetUserId();
 
-            var cart = await _context.Carts
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.IdUser.HasValue && c.IdUser.Value == userId);
+            // ✅ بدل FirstOrDefault -> latest
+            var cart = await GetLatestUserCartAsync(userId, includeItems: true);
 
             if (cart == null)
                 return Ok(new
@@ -108,14 +117,15 @@ namespace Test_Project_API_02.Controllers
                     i.IdCartItem,
                     i.ProductApiName,
                     i.Quantity,
-                    i.Price
+                    i.Price,
+                    i.ImageUrl,
+                    LineTotal = i.Price * i.Quantity
                 })
             });
         }
 
         // ==========================================
         // POST: api/Cart/items
-        // إضافة منتج للكارت
         // ==========================================
         [HttpPost("items")]
         public async Task<IActionResult> AddItem([FromBody] AddToCartDto dto)
@@ -135,7 +145,6 @@ namespace Test_Project_API_02.Controllers
             var userId = GetUserId();
             var cart = await GetOrCreateCartAsync(userId);
 
-            // لو نفس المنتج موجود قبل كده: نزود الكمية ونعمل متوسط/نفس السعر (هنثبت السعر القادم)
             var existing = await _context.CartItems.FirstOrDefaultAsync(i =>
                 i.IdCart.HasValue && i.IdCart.Value == cart.IdCart &&
                 i.ProductApiName == dto.ProductApiName);
@@ -143,7 +152,8 @@ namespace Test_Project_API_02.Controllers
             if (existing != null)
             {
                 existing.Quantity += dto.Quantity;
-                existing.Price = dto.Price; // آخر سعر
+                existing.Price = dto.Price;
+                existing.ImageUrl = dto.ImageUrl;
             }
             else
             {
@@ -152,7 +162,8 @@ namespace Test_Project_API_02.Controllers
                     IdCart = cart.IdCart,
                     ProductApiName = dto.ProductApiName,
                     Quantity = dto.Quantity,
-                    Price = dto.Price
+                    Price = dto.Price,
+                    ImageUrl = dto.ImageUrl
                 };
 
                 _context.CartItems.Add(item);
@@ -166,7 +177,6 @@ namespace Test_Project_API_02.Controllers
 
         // ==========================================
         // PUT: api/Cart/items/{itemId}
-        // تعديل كمية item
         // ==========================================
         [HttpPut("items/{itemId:int}")]
         public async Task<IActionResult> UpdateItemQuantity(int itemId, [FromBody] UpdateCartItemDto dto)
@@ -179,21 +189,22 @@ namespace Test_Project_API_02.Controllers
 
             var userId = GetUserId();
 
-            var cart = await _context.Carts
-                .FirstOrDefaultAsync(c => c.IdUser.HasValue && c.IdUser.Value == userId);
+            // ✅ بدل FirstOrDefault -> latest
+            var cart = await GetLatestUserCartAsync(userId, includeItems: false);
 
             if (cart == null)
                 return NotFound(new { message = "Cart not found" });
 
             var item = await _context.CartItems
-                .FirstOrDefaultAsync(i => i.IdCartItem == itemId && i.IdCart.HasValue && i.IdCart.Value == cart.IdCart);
+                .FirstOrDefaultAsync(i =>
+                    i.IdCartItem == itemId &&
+                    i.IdCart.HasValue && i.IdCart.Value == cart.IdCart);
 
             if (item == null)
                 return NotFound(new { message = "Cart item not found" });
 
             item.Quantity = dto.Quantity;
 
-            // لو عايز تحدث السعر كمان (اختياري)
             if (dto.Price.HasValue)
             {
                 if (dto.Price.Value < 0)
@@ -210,21 +221,22 @@ namespace Test_Project_API_02.Controllers
 
         // ==========================================
         // DELETE: api/Cart/items/{itemId}
-        // حذف item واحد من الكارت
         // ==========================================
         [HttpDelete("items/{itemId:int}")]
         public async Task<IActionResult> RemoveItem(int itemId)
         {
             var userId = GetUserId();
 
-            var cart = await _context.Carts
-                .FirstOrDefaultAsync(c => c.IdUser.HasValue && c.IdUser.Value == userId);
+            // ✅ بدل FirstOrDefault -> latest
+            var cart = await GetLatestUserCartAsync(userId, includeItems: false);
 
             if (cart == null)
                 return NotFound(new { message = "Cart not found" });
 
             var item = await _context.CartItems
-                .FirstOrDefaultAsync(i => i.IdCartItem == itemId && i.IdCart.HasValue && i.IdCart.Value == cart.IdCart);
+                .FirstOrDefaultAsync(i =>
+                    i.IdCartItem == itemId &&
+                    i.IdCart.HasValue && i.IdCart.Value == cart.IdCart);
 
             if (item == null)
                 return NotFound(new { message = "Cart item not found" });
@@ -238,20 +250,18 @@ namespace Test_Project_API_02.Controllers
 
         // ==========================================
         // DELETE: api/Cart/clear
-        // ✅ Clear Cart (زرار Clear Cart)
         // ==========================================
         [HttpDelete("clear")]
         public async Task<IActionResult> ClearCart()
         {
             var userId = GetUserId();
 
-            var cart = await _context.Carts
-                .FirstOrDefaultAsync(c => c.IdUser.HasValue && c.IdUser.Value == userId);
+            // ✅ بدل FirstOrDefault -> latest
+            var cart = await GetLatestUserCartAsync(userId, includeItems: false);
 
             if (cart == null)
                 return NotFound(new { message = "Cart not found" });
 
-            // ✅ FIX: IdCart في CartItem هو int? فلازم HasValue/Value
             var items = await _context.CartItems
                 .Where(i => i.IdCart.HasValue && i.IdCart.Value == cart.IdCart)
                 .ToListAsync();
@@ -268,18 +278,19 @@ namespace Test_Project_API_02.Controllers
     }
 
     // =========================
-    // DTOs (داخل نفس الملف للتسهيل)
+    // DTOs
     // =========================
     public class AddToCartDto
     {
         public string ProductApiName { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+        public string? ImageUrl { get; set; }
     }
 
     public class UpdateCartItemDto
     {
         public int Quantity { get; set; }
-        public decimal? Price { get; set; } // اختياري
+        public decimal? Price { get; set; }
     }
 }

@@ -77,7 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
+// عداد الكارت
+document.addEventListener("DOMContentLoaded", () => {
+  window.refreshCartBadge?.();
+});
 
 
 

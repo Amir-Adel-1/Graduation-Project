@@ -18,30 +18,6 @@ const decodeText = (str) => {
 };
 
 // ==============================
-// ✅ Image filter (remove uploads/ and non-images)
-// ==============================
-function isValidImage(image) {
-  if (!image || typeof image !== "string") return false;
-
-  const img = image.toLowerCase().trim();
-
-  // ❌ لو اللينك منتهي بـ /
-  if (img.endsWith("/")) return false;
-
-  // ❌ لو فيه uploads ومفيش امتداد صورة
-  if (img.includes("/uploads") && !img.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
-    return false;
-  }
-
-  // ❌ لازم يكون صورة فعلًا
-  if (!img.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
-    return false;
-  }
-
-  return true;
-}
-
-// ==============================
 // Proxy helpers
 // ==============================
 function getProxyBase() {
@@ -55,7 +31,6 @@ function normalizeProducts(data) {
   if (data && Array.isArray(data.products)) return data.products;
   if (data && Array.isArray(data.data)) return data.data;
 
-  // fallback: sometimes proxied response inside "contents"
   if (data && typeof data.contents === "string") {
     try {
       return normalizeProducts(JSON.parse(data.contents));
@@ -65,6 +40,7 @@ function normalizeProducts(data) {
   return [];
 }
 
+// يحاول يطلع نص التفاصيل من أي شكل JSON
 function pickDetailsText(details) {
   if (!details) return null;
 
@@ -105,22 +81,24 @@ async function fetchProducts(searchTerm) {
 
   try {
     const response = await fetch(url, {
-      headers: { Accept: "application/json" }, // GET => بدون Content-Type
+      headers: { Accept: "application/json" },
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error("Search failed:", error);
+      const text = await response.text();
+      console.error(`Search failed (${response.status}):`, text);
       return [];
     }
 
     const data = await response.json();
-    console.log("Search results:", data);
-
     const products = normalizeProducts(data);
 
-    // ✅ فلترة المنتجات اللي صورها بايظة (uploads/ أو بدون امتداد)
-    return products.filter((p) => isValidImage(p.image));
+    if (!products || products.length === 0) {
+      console.warn(`No products found for search term: ${searchTerm}`);
+      return [];
+    }
+
+    return products;
   } catch (error) {
     console.error(`Error fetching products for ${searchTerm}:`, error);
     return [];
@@ -144,6 +122,7 @@ async function getProductDetails(productId) {
 
     const text = await response.text();
     if (!text) return null;
+
     if (text.trim() === "null") return null;
 
     try {
@@ -183,6 +162,7 @@ function decodeAndSanitize(html) {
     "div",
     "span",
   ];
+
   const doc = new DOMParser().parseFromString(decoded, "text/html");
 
   const walker = document.createTreeWalker(
@@ -236,6 +216,30 @@ function createPopup(product, detailsHtmlOrText) {
 }
 
 // ==============================
+// Cart helpers
+// ==============================
+function parsePrice(product) {
+  const n = Number(product?.price);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function productToCartPayload(product) {
+  const name = decodeText(product?.name) || "Unknown";
+  const price = parsePrice(product);
+
+  const imageUrl =
+    product?.image ||
+    product?.img ||
+    product?.image_url ||
+    product?.imageUrl ||
+    product?.photo ||
+    product?.thumbnail ||
+    "";
+
+  return { name, price, imageUrl };
+}
+
+// ==============================
 // Card UI
 // ==============================
 function createProductCard(product) {
@@ -243,15 +247,14 @@ function createProductCard(product) {
   card.className = "card";
 
   const name = decodeText(product.name) || "اسم المنتج غير متوفر";
-  const price = product.price ? `${product.price} ج.م` : "السعر غير متوفر";
-
-  // ✅ هنا الصورة سليمة 100% لأننا فلترنا قبل العرض
-  const image = product.image;
+  const priceNum = parsePrice(product);
+  const priceTxt = priceNum ? `${priceNum} ج.م` : "السعر غير متوفر";
+  const image = product.image || "placeholder-image.jpg";
 
   card.innerHTML = `
     <div class="card-content">
       <div class="card-image">
-        <img src="${image}" alt="${name}" />
+        <img src="${image}" alt="${name}" onerror="this.src='placeholder-image.jpg'" />
         <div class="overlay">
           <i class="fa-solid fa-eye"></i>
         </div>
@@ -260,7 +263,7 @@ function createProductCard(product) {
         <p class="card__title">${name}</p>
       </div>
       <div class="card-footer">
-        <div class="card__price">${price}</div>
+        <div class="card__price">${priceTxt}</div>
         <div class="buttons">
           <button class="card-button add-to-cart" data-product-id="${product.id}">
             <i class="fa-solid fa-cart-shopping"></i>
@@ -273,6 +276,7 @@ function createProductCard(product) {
     </div>
   `;
 
+  // Eye -> popup details
   const overlay = card.querySelector(".overlay");
   overlay.addEventListener("click", async () => {
     const popup = createPopup(product, "جاري تحميل التفاصيل...");
@@ -282,20 +286,17 @@ function createProductCard(product) {
     const detailsElement = popup.querySelector(".popup-details");
 
     try {
-      console.log("INFO REQUEST ID:", product.id);
-
       const details = await getProductDetails(product.id);
-      console.log("INFO RESPONSE:", details);
 
       if (details == null) {
         detailsElement.textContent = "لا توجد تفاصيل متاحة لهذا المنتج";
         return;
       }
 
-      const detailsText = pickDetailsText(details);
+      const picked = pickDetailsText(details);
 
-      if (detailsText) {
-        detailsElement.innerHTML = decodeAndSanitize(detailsText);
+      if (picked) {
+        detailsElement.innerHTML = decodeAndSanitize(picked);
       } else {
         detailsElement.textContent = "لا توجد تفاصيل متاحة لهذا المنتج";
       }
@@ -327,8 +328,9 @@ async function displayAllProducts() {
       const products = await fetchProducts(term);
 
       products.forEach((product) => {
-        if (product.id && !uniqueProducts.has(product.id)) {
-          uniqueProducts.set(product.id, product);
+        // ✅ خليك دايمًا String عشان Map تظبط مع dataset
+        if (product.id && !uniqueProducts.has(String(product.id))) {
+          uniqueProducts.set(String(product.id), product);
         }
       });
 
@@ -338,8 +340,7 @@ async function displayAllProducts() {
     container.innerHTML = "";
 
     for (const product of uniqueProducts.values()) {
-      const card = createProductCard(product);
-      container.appendChild(card);
+      container.appendChild(createProductCard(product));
     }
 
     if (uniqueProducts.size === 0) {
@@ -347,7 +348,13 @@ async function displayAllProducts() {
         '<div class="no-products">لا توجد منتجات متاحة حالياً</div>';
     }
 
-    addEventListeners();
+    addEventListeners(uniqueProducts);
+
+    // ✅ تحديث عداد الكارت
+    if (window.refreshCartBadge) await window.refreshCartBadge();
+
+    // ✅ تحديث عداد المفضلة
+    if (window.refreshFavBadge) await window.refreshFavBadge();
   } catch (error) {
     console.error("Error displaying products:", error);
     container.innerHTML =
@@ -358,21 +365,112 @@ async function displayAllProducts() {
 // ==============================
 // Events
 // ==============================
-function addEventListeners() {
+function addEventListeners(uniqueProductsMap) {
+  // ✅ Add to cart الحقيقي
   document.querySelectorAll(".add-to-cart").forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const productId = e.currentTarget.dataset.productId;
-      console.log("Added to cart:", productId);
+    button.addEventListener("click", async (e) => {
+      const productId = String(e.currentTarget.dataset.productId || "");
+      const product = uniqueProductsMap.get(productId);
+
+      if (!product) {
+        window.showErrorMessage?.("المنتج غير موجود");
+        return;
+      }
+
+      if (!window.cartApi) {
+        window.showErrorMessage?.("cartApi.js مش متحمّل");
+        return;
+      }
+
+      const payload = productToCartPayload(product);
+
+      try {
+        // ✅ نفس استدعاءك الأساسي (ما غيرتوش)
+        await cartApi.addItem(payload, 1);
+
+        // ✅ تحديث العداد
+        if (window.refreshCartBadge) await window.refreshCartBadge();
+
+        // ✅ رسالة نجاح (المعتمد)
+        window.showSuccessMessage?.("تم إضافة المنتج للكارت بنجاح");
+      } catch (err) {
+        console.error("ADD TO CART ERROR:", err);
+
+        // ❌ رسالة خطأ (المعتمد)
+        window.showErrorMessage?.("حصل خطأ أثناء الإضافة للكارت");
+      }
     });
   });
 
+  // ✅ Favorites الحقيقي + تحديث العداد
   document.querySelectorAll(".add-to-favorites").forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const productId = e.currentTarget.dataset.productId;
-      console.log("Added to favorites:", productId);
+    button.addEventListener("click", async (e) => {
+      const btn = e.currentTarget;
+
+      const productId = String(btn.dataset.productId || "");
+      const product = uniqueProductsMap.get(productId);
+
+      if (!product) {
+        window.showErrorMessage?.("المنتج غير موجود");
+        return;
+      }
+
+      if (!window.favoritesApi?.add) {
+        window.showErrorMessage?.("favoritesApi.js مش متحمّل");
+        return;
+      }
+
+      const name = decodeText(product?.name) || "Unknown";
+      const price = parsePrice(product);
+
+      const imageUrl =
+        product?.image ||
+        product?.img ||
+        product?.image_url ||
+        product?.imageUrl ||
+        product?.photo ||
+        product?.thumbnail ||
+        "";
+
+      const payload = {
+        productApiName: name,
+        price: price,
+        imageUrl: imageUrl || null,
+      };
+
+      const oldHtml = btn.innerHTML;
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+
+        await window.favoritesApi.add(payload);
+
+        // ✅ تحديث العداد الحقيقي
+        if (window.refreshFavBadge) await window.refreshFavBadge();
+
+        // ✅ رسالة نجاح
+        window.showSuccessMessage?.("تم إضافة المنتج للمفضلة ❤️");
+
+        // (اختياري) علامة شكلية
+        btn.classList.add("is-fav");
+      } catch (err) {
+        console.error("ADD TO FAV ERROR:", err);
+
+        const msg = String(err?.message || "");
+        if (msg.toLowerCase().includes("already") || msg.includes("موجود")) {
+          window.showErrorMessage?.("المنتج موجود بالفعل في المفضلة");
+        } else {
+          window.showErrorMessage?.("حصل خطأ أثناء الإضافة للمفضلة");
+        }
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = oldHtml;
+      }
     });
   });
 
+  // Close popup
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("nova-close-btn")) {
       const popup = e.target.closest(".nova-popup");
@@ -386,6 +484,7 @@ function addEventListeners() {
     }
   });
 
+  // Close popup on ESC
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       const popup = document.querySelector(".nova-popup");
@@ -400,8 +499,13 @@ function addEventListeners() {
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   displayAllProducts();
+
+  // ✅ تحديث العدادات أول ما الصفحة تفتح
+  if (window.refreshCartBadge) window.refreshCartBadge();
+  if (window.refreshFavBadge) window.refreshFavBadge();
 });
 
+// Flip image
 document.addEventListener("click", (e) => {
   const card = e.target.closest(".card-image");
   if (card) {

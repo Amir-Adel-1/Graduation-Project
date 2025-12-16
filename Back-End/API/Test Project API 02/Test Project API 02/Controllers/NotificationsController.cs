@@ -35,48 +35,101 @@ namespace Test_Project_API_02.Controllers
             return int.Parse(id);
         }
 
+        // ======================================
         // GET: api/Notifications/my
-        // يرجع إشعارات المستخدم الحالي
+        // ======================================
         [HttpGet("my")]
         public async Task<IActionResult> GetMyNotifications()
         {
             var userId = GetUserId();
 
-            var notifications = await _context.Notifications
+            var list = await _context.Notifications
                 .Where(n => n.IdUser == userId)
                 .OrderByDescending(n => n.CreateAt)
                 .Select(n => new
                 {
                     n.IdNotification,
                     n.CreateAt,
-                    n.IdRequest
+                    n.IdRequest,
+                    n.IsRead,
+                    pharmacyName =
+                        (n.IdUserPhNavigation != null
+                            ? (n.IdUserPhNavigation.FirstName + " " + n.IdUserPhNavigation.LastName)
+                            : "صيدلية")
                 })
                 .ToListAsync();
 
+            // ✅ العداد: غير المقروء بس
+            var unreadCount = list.Count(x => x.IsRead == false);
+
             return Ok(new
             {
-                count = notifications.Count,
-                notifications
+                count = unreadCount,
+                notifications = list
             });
         }
 
-        // DELETE: api/Notifications/{id}
-        // (اختياري) يمسح إشعار واحد للمستخدم الحالي
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteNotification(int id)
+        // ======================================
+        // GET: api/Notifications/{id}/details
+        // ======================================
+        [HttpGet("{id:int}/details")]
+        public async Task<IActionResult> GetNotificationDetails(int id)
         {
             var userId = GetUserId();
 
-            var notification = await _context.Notifications
+            var notif = await _context.Notifications
+                .Include(n => n.IdUserPhNavigation)
                 .FirstOrDefaultAsync(n => n.IdNotification == id && n.IdUser == userId);
 
-            if (notification == null)
+            if (notif == null)
                 return NotFound(new { message = "Notification not found" });
 
-            _context.Notifications.Remove(notification);
-            await _context.SaveChangesAsync();
+            var ph = notif.IdUserPhNavigation;
 
-            return Ok(new { message = "Notification deleted" });
+            // Phones/Addresses اختياري حسب جداولك
+            var phone = await _context.UsersPhones
+                .Where(p => p.IdUser == notif.IdUserPh)
+                .Select(p => p.Phone)
+                .FirstOrDefaultAsync();
+
+            var address = await _context.UsersAddresses
+                .Where(a => a.IdUser == notif.IdUserPh)
+                .Select(a => a.Address)
+                .FirstOrDefaultAsync();
+
+            return Ok(new
+            {
+                pharmacyName = ph != null ? (ph.FirstName + " " + ph.LastName) : "صيدلية",
+                email = ph?.Email ?? "",
+                phone = phone ?? "",
+                address = address ?? "",
+                requestId = notif.IdRequest,
+                createAt = notif.CreateAt,
+                isRead = notif.IsRead
+            });
+        }
+
+        // ======================================
+        // PUT: api/Notifications/{id}/read
+        // ======================================
+        [HttpPut("{id:int}/read")]
+        public async Task<IActionResult> MarkRead(int id)
+        {
+            var userId = GetUserId();
+
+            var notif = await _context.Notifications
+                .FirstOrDefaultAsync(n => n.IdNotification == id && n.IdUser == userId);
+
+            if (notif == null)
+                return NotFound(new { message = "Notification not found" });
+
+            if (!notif.IsRead)
+            {
+                notif.IsRead = true;
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok(new { message = "Marked as read" });
         }
     }
 }

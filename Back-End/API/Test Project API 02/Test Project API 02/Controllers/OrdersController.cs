@@ -54,8 +54,6 @@ namespace Test_Project_API_02.Controllers
 
         // ======================================
         // POST: api/Orders/checkout
-        // يحول السلة الحالية لـ Order
-        // ويعمل Cart جديدة فاضية للمستخدم
         // ======================================
         [HttpPost("checkout")]
         public async Task<IActionResult> Checkout([FromBody] CheckoutDto dto)
@@ -65,14 +63,12 @@ namespace Test_Project_API_02.Controllers
 
             var userId = GetUserId();
 
-            // تأكد Payment Method موجودة
             var paymentExists = await _context.PaymentMethods
                 .AnyAsync(p => p.IdPaymentMethod == dto.PaymentMethodId);
 
             if (!paymentExists)
                 return BadRequest(new { message = "Invalid payment method" });
 
-            // هات أحدث cart للمستخدم
             var cart = await GetLatestUserCartAsync(userId);
 
             if (cart == null)
@@ -81,28 +77,23 @@ namespace Test_Project_API_02.Controllers
             if (cart.CartItems == null || cart.CartItems.Count == 0)
                 return BadRequest(new { message = "Cart is empty" });
 
-            // احسب الإجمالي من الداتابيز (server-side)
             RecalculateCartTotals(cart);
 
-            // Transaction عشان الطلب + الكارت الجديدة يبقوا مع بعض
             using var tx = await _context.Database.BeginTransactionAsync();
 
             try
             {
-                // أنشئ Order مربوط بالسلة الحالية
                 var order = new Order
                 {
                     IdUser = userId,
                     IdCart = cart.IdCart,
                     IdPaymentMethod = dto.PaymentMethodId,
                     TotalAmount = cart.TotalPrice
-                    // CreateAtOrder هيتحط تلقائي من DB default
                 };
 
                 _context.Orders.Add(order);
                 await _context.SaveChangesAsync();
 
-                // اعمل Cart جديدة فاضية للمستخدم (عشان السلة القديمة تبقى سجل للأوردر)
                 var newCart = new Cart
                 {
                     IdUser = userId,
@@ -134,7 +125,6 @@ namespace Test_Project_API_02.Controllers
 
         // ======================================
         // GET: api/Orders/my
-        // عرض أوردرات المستخدم
         // ======================================
         [HttpGet("my")]
         public async Task<IActionResult> GetMyOrders()
@@ -163,7 +153,7 @@ namespace Test_Project_API_02.Controllers
 
         // ======================================
         // GET: api/Orders/{orderId}
-        // تفاصيل أوردر واحد + عناصره (من CartItems)
+        // ✅ Details + ImageUrl
         // ======================================
         [HttpGet("{orderId:int}")]
         public async Task<IActionResult> GetOrderDetails(int orderId)
@@ -182,6 +172,7 @@ namespace Test_Project_API_02.Controllers
                 {
                     i.IdCartItem,
                     i.ProductApiName,
+                    i.ImageUrl, // ✅ هنا الإضافة
                     i.Price,
                     i.Quantity,
                     lineTotal = i.Price * i.Quantity
@@ -195,7 +186,7 @@ namespace Test_Project_API_02.Controllers
                 order.TotalAmount,
                 order.IdPaymentMethod,
                 cartId = order.IdCart,
-                itemsCount = cartItems.Count,   
+                itemsCount = cartItems.Count,
                 items = cartItems
             });
         }

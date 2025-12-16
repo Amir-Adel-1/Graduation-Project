@@ -89,72 +89,7 @@
 <div class="cart-container">
 
   <!-- المنتجات -->
-  <div class="fav-items">
-
-    <!-- عنصر واحد -->
-    <div class="fav-item">
-      <img src="../Home/images/1.jpg" class="item-img">
-
-      <div class="item-info">
-        <h3 class="item-name">اوميجا 3 بلس</h3>
-        <div class="item-actions">
-        <button class="remove-btn">
-          <i class="fa-solid fa-trash"></i>
-            إزالة
-        </button>
-        <button class="add-to-cart-btn">
-          <i class="fa-solid fa-cart-plus"></i>
-            إضافة إلى العربة
-        </button>
-        </div>
-      </div>
-
-      <div class="item-price">
-        <span class="price">255 جنيه</span>
-      </div>
-    </div>
-    <div class="fav-item">
-      <img src="../Home/images/2.jpg" class="item-img">
-
-      <div class="item-info">
-        <h3 class="item-name">أسبرين</h3>
-        <div class="item-actions">
-        <button class="remove-btn">
-          <i class="fa-solid fa-trash"></i>
-            إزالة
-        </button>
-        <button class="add-to-cart-btn">
-          <i class="fa-solid fa-cart-plus"></i>
-            إضافة إلى العربة
-        </button>
-        </div>
-      </div>
-
-      <div class="item-price">
-        <span class="price">75 جنيه</span>
-      </div>
-    </div>
-    <div class="fav-item">
-      <img src="../Home/images/4.jpg" class="item-img">
-
-      <div class="item-info">
-        <h3 class="item-name">بنادول إكسترا</h3>
-        <div class="item-actions">
-        <button class="remove-btn">
-          <i class="fa-solid fa-trash"></i>
-            إزالة
-        </button>
-        <button class="add-to-cart-btn">
-          <i class="fa-solid fa-cart-plus"></i>
-            إضافة إلى العربة
-        </button>
-        </div>
-      </div>
-
-      <div class="item-price">
-        <span class="price">145 جنيه</span>
-      </div>
-    </div>
+  <div class="fav-items" id="favItemsList">
 
 
   </div>
@@ -235,8 +170,16 @@
     </button>
     <!-- End scroll To Top Btn -->
 
+
+
+<script src="../../shared/cartApi.js"></script>
+<script src="../../shared/notificationsApi.js"></script>
+<script src="../../shared/ui.js"></script>
+
 <script src="../../shared/config.js"></script>
 <script src="../../shared/apiClient.js"></script>
+
+<script src="../../shared/favoritesApi.js"></script>
 
 <script src="Favorites.js"></script>
 </body>

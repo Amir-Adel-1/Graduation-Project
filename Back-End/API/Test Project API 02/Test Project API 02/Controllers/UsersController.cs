@@ -42,6 +42,44 @@ namespace Test_Project_API_02.Controllers
         }
 
         // =========================
+        // ✅ GET: api/Users/me  (Current logged-in user)
+        // =========================
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMe()
+        {
+            var userId = GetUserId();
+
+            var me = await _context.Users
+                .AsNoTracking()
+                .Where(u => u.IdUser == userId)
+                .Select(u => new
+                {
+                    u.IdUser,
+                    u.FirstName,
+                    u.LastName,
+                    u.Email,
+                    u.Role,
+                    u.BlockStatus,
+
+                    // اول رقم تليفون (لأنك بتخزن واحد بس غالباً)
+                    Phone = u.UsersPhones
+                        .Select(p => p.Phone)
+                        .FirstOrDefault(),
+
+                    // اول عنوان (لأنك بتخزن واحد بس غالباً)
+                    Address = u.UsersAddresses
+                        .Select(a => a.Address)
+                        .FirstOrDefault()
+                })
+                .FirstOrDefaultAsync();
+
+            if (me == null)
+                return NotFound(new { message = "User not found" });
+
+            return Ok(me);
+        }
+
+        // =========================
         // GET: api/Users  (Admin only)
         // =========================
         [HttpGet]

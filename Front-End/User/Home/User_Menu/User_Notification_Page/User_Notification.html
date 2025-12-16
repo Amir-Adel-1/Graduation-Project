@@ -85,38 +85,7 @@
     <h2>• الإشعارات •</h2>
 </div>
 
-<div class="notifications-container">
-
-    <!-- مثال على إشعار -->
-    <div class="notification-card new">
-        <div class="notif-header">
-            <span class="dot"></span>
-            <h3>صيدلية الشفاء</h3>
-        </div>
-
-        <p class="notif-text">
-            تم الرد على طلبك بخصوص الدواء المطلوب.
-        </p>
-
-        <p class="notif-time">منذ 5 دقائق</p>
-
-        <button class="view-btn"><i class="fa-solid fa-eye"></i>عرض التفاصيل</button>
-    </div>
-
-    <div class="notification-card">
-        <div class="notif-header">
-            <h3>صيدلية الحياة</h3>
-        </div>
-
-        <p class="notif-text">
-            تم الرد على طلبك بخصوص الدواء المطلوب.
-        </p>
-
-        <p class="notif-time">منذ 3 ساعات</p>
-
-        <button class="view-btn"><i class="fa-solid fa-eye"></i>عرض التفاصيل</button>
-    </div>
-
+<div class="notifications-container" id="notificationsList">
 
 
 </div>
@@ -130,12 +99,7 @@
 <!-- نافذة عرض التفاصيل -->
 <div class="popup-overlay" id="popup">
   <div class="popup-content">
-    <h3>تفاصيل الصيدلية</h3>
-    <p><strong>الاسم:</strong> صيدلية الشفاء</p>
-    <p><strong>العنوان:</strong> ١٢ شارع التحرير، القاهرة</p>
-    <p><strong>رقم الهاتف:</strong> 01012345678</p>
-    <p><strong>البريد الإلكتروني:</strong> pharmacy@gmail.com</p>
-    <button id="closePopup" class="btn close">إغلاق</button>
+
   </div>
 </div>
 
@@ -206,6 +170,13 @@
       <i class="fa-solid fa-arrow-up-from-bracket"></i>
     </button>
     <!-- End scroll To Top Btn -->
+
+
+<script src="../../../../shared/cartApi.js"></script>
+<script src="../../../../shared/favoritesApi.js"></script>
+<script src="../../../../shared/notificationsApi.js"></script>
+<script src="../../../../shared/ui.js"></script>
+
 
 
 <script src="../../../../shared/config.js"></script>

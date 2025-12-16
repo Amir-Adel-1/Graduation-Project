@@ -20,16 +20,12 @@ namespace Test_Project_API_02.Controllers
             _context = context;
         }
 
-        // ============= Helper =============
         private int GetUserId()
         {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (string.IsNullOrWhiteSpace(id))
-                id = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
-
-            if (string.IsNullOrWhiteSpace(id))
-                id = User.FindFirstValue("sub");
+            var id =
+                User.FindFirstValue(ClaimTypes.NameIdentifier) ??
+                User.FindFirstValue(JwtRegisteredClaimNames.Sub) ??
+                User.FindFirstValue("sub");
 
             if (string.IsNullOrWhiteSpace(id))
                 throw new Exception("Token does not contain user id.");
@@ -39,7 +35,6 @@ namespace Test_Project_API_02.Controllers
 
         // ======================================
         // GET: api/Favorites/my
-        // عرض مفضلة المستخدم الحالي
         // ======================================
         [HttpGet("my")]
         public async Task<IActionResult> GetMyFavorites()
@@ -52,7 +47,9 @@ namespace Test_Project_API_02.Controllers
                 .Select(f => new
                 {
                     f.IdFavorite,
-                    f.ProductApiName
+                    f.ProductApiName,
+                    f.Price,
+                    f.ImageUrl
                 })
                 .ToListAsync();
 
@@ -70,8 +67,14 @@ namespace Test_Project_API_02.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFavorite([FromBody] AddFavoriteDto dto)
         {
+            if (dto == null)
+                return BadRequest(new { message = "Invalid data" });
+
             if (string.IsNullOrWhiteSpace(dto.ProductApiName))
                 return BadRequest(new { message = "ProductApiName is required" });
+
+            if (dto.Price < 0)
+                return BadRequest(new { message = "Price must be 0 or greater" });
 
             var userId = GetUserId();
 
@@ -84,7 +87,9 @@ namespace Test_Project_API_02.Controllers
             var favorite = new Favorite
             {
                 IdUser = userId,
-                ProductApiName = dto.ProductApiName
+                ProductApiName = dto.ProductApiName,
+                Price = dto.Price,
+                ImageUrl = dto.ImageUrl
             };
 
             _context.Favorites.Add(favorite);
@@ -99,7 +104,6 @@ namespace Test_Project_API_02.Controllers
 
         // ======================================
         // DELETE: api/Favorites/{id}
-        // حذف من المفضلة بالـ id
         // ======================================
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> RemoveFavorite(int id)
@@ -116,6 +120,61 @@ namespace Test_Project_API_02.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Removed from favorites" });
+        }
+
+        // ======================================
+        // ✅ DELETE: api/Favorites/clear
+        // تفريغ المفضلة
+        // ======================================
+        [HttpDelete("clear")]
+        public async Task<IActionResult> ClearFavorites()
+        {
+            var userId = GetUserId();
+
+            var items = await _context.Favorites
+                .Where(f => f.IdUser == userId)
+                .ToListAsync();
+
+            _context.Favorites.RemoveRange(items);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Favorites cleared successfully" });
+        }
+
+        // ======================================
+        // ✅ POST: api/Favorites/toggle  (اختياري)
+        // لو موجود يشيله، لو مش موجود يضيفه
+        // ======================================
+        [HttpPost("toggle")]
+        public async Task<IActionResult> ToggleFavorite([FromBody] AddFavoriteDto dto)
+        {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.ProductApiName))
+                return BadRequest(new { message = "ProductApiName is required" });
+
+            var userId = GetUserId();
+
+            var existing = await _context.Favorites
+                .FirstOrDefaultAsync(f => f.IdUser == userId && f.ProductApiName == dto.ProductApiName);
+
+            if (existing != null)
+            {
+                _context.Favorites.Remove(existing);
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Removed from favorites", isFavorite = false });
+            }
+
+            var favorite = new Favorite
+            {
+                IdUser = userId,
+                ProductApiName = dto.ProductApiName,
+                Price = dto.Price,
+                ImageUrl = dto.ImageUrl
+            };
+
+            _context.Favorites.Add(favorite);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Added to favorites", isFavorite = true, favoriteId = favorite.IdFavorite });
         }
     }
 }

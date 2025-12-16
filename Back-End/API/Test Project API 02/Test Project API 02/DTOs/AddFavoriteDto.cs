@@ -2,6 +2,8 @@
 {
     public class AddFavoriteDto
     {
-        public string ProductApiName { get; set; } = null!;
+        public string ProductApiName { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

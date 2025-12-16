@@ -82,11 +82,11 @@
     <div class="missing-container">
       <h2>طلبات الأدوية الناقصة</h2>
 
-      <form class="form-grid-missing">
+      <form class="form-grid-missing" id="missingMedicineForm">
         <!-- اسم المستخدم -->
         <div class="nebula-input-missing">
-          <input type="text" class="input" value="اسم المستخدم من قاعدة البيانات" readonly required />
-          <label class="user-label"> </label>
+          <input type="text" class="input" id="userNameInput" readonly required />
+          <label class="user-label"></label>
             <div class="nebula-particle-login" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
   <div class="nebula-particle-login" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
   <div class="nebula-particle-login" style="--x:0.3; --y:0.3; --delay:0.5s"></div>
@@ -97,7 +97,7 @@
 
         <!-- اسم الدواء -->
         <div class="nebula-input-missing">
-          <input id="medName" type="text" class="input" required  autocomplete="off" />
+          <input type="text" id="medicineNameInput" class="input" required  autocomplete="off" />
           <label class="user-label">اسم الدواء المطلوب</label>
   <div class="nebula-particle-login" style="--x:0.2; --y:-0.4; --delay:0.1s"></div>
   <div class="nebula-particle-login" style="--x:0.5; --y:-0.2; --delay:0.3s"></div>
@@ -109,7 +109,7 @@
 
         <!-- الكمية -->
         <div class="nebula-input-missing">
-          <select id="selectq" class="input  color" required>
+          <select id="quantitySelect" class="input  color" required>
             <option disabled selected>اختر الكمية</option>
             <option value="شريط واحد">شريط واحد</option>
             <option value="شريطين">شريطين</option>
@@ -128,7 +128,7 @@
 
         <!-- زر الإرسال -->
         <div class="submit-wrap">
-          <button type="submit" class="submit-btn-missing">إرسال الطلب</button>
+          <button type="submit" id="submitRequestBtn" class="submit-btn-missing">إرسال الطلب</button>
         </div>
       </form>
     </div>
@@ -215,11 +215,16 @@
     </button>
     <!-- End scroll To Top Btn -->
 
-
-
 <script src="../../shared/config.js"></script>
 <script src="../../shared/apiClient.js"></script>
+<script src="../../shared/ui.js"></script>
+
+<script src="../../shared/cartApi.js"></script>
+<script src="../../shared/favoritesApi.js"></script>
+<script src="../../shared/notificationsApi.js"></script>
+<script src="../../shared/medicineRequestsApi.js"></script>
 
 <script src="Medicine Requests.js"></script>
+
 </body>
 </html>

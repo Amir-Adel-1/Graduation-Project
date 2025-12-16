@@ -424,6 +424,26 @@ body {
 /* End (User Menu) 👤 */
 
 
+/* رقم الاشعار */
+.notif-link {
+  position: relative;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -6px;
+  right: -13px;
+  background: #e63946;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  display: none; /* هتظهر لما يبقى فيه إشعارات */
+}
+
+
+
 /* ------------------- 🔘 End Navbar ------------------- */
 
 
@@ -805,6 +825,33 @@ animation: fadeIn 0.6s cubic-bezier(0.22, 1.15, 0.4, 1) forwards;
 
 
 
+/* Toast */
+.se7ty-toast {
+  position: fixed;
+  top: 20px;
+  left: 20px;          /* عشان RTL ممكن تخليها right:20px لو تحب */
+  z-index: 99999;
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity .2s ease, transform .2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.se7ty-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.se7ty-toast.success { background: #16c47f; }
+.se7ty-toast.error   { background: #e74c3c; }
+.se7ty-toast .icon { font-weight: 700; }
 
 
 
